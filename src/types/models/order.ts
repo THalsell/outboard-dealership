@@ -80,9 +80,13 @@ export interface CartItem {
   id: string;
   productId: string;
   productType: 'motor' | 'part' | 'accessory';
+  name: string;        
   quantity: number;
   price: number;
-  selectedOptions?: Record<string, any>;
+  image?: string;      
+  type?: 'motor' | 'part' | 'accessory';  
+  selectedOptions?: Record<string, unknown>;
+  partNumber?: string;
 }
 
 export interface Quote {
@@ -109,6 +113,8 @@ export interface QuoteItem {
 }
 
 interface Address {
+  firstName?: string;       
+  lastName?: string;        
   street1: string;
   street2?: string;
   city: string;

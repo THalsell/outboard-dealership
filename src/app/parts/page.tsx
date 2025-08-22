@@ -1,16 +1,11 @@
-// Parts and accessories main page
 import { Metadata } from 'next';
+import PartsPageClient from '@/components/parts/PartsPageClient';
 
 export const metadata: Metadata = {
-  title: 'Outboard Motor Parts & Accessories',
-  description: 'Find genuine parts and accessories for your outboard motor.',
+  title: 'Outboard Motor Parts & Accessories | OEM & Aftermarket Parts',
+  description: 'Browse our complete catalog of outboard motor parts and accessories. Find OEM and aftermarket parts by category or motor model with bulk pricing available.',
 };
 
 export default function PartsPage() {
-  return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-3xl font-bold mb-6">Parts & Accessories</h1>
-      {/* Parts catalog will be implemented here */}
-    </div>
-  );
+  return <PartsPageClient />;
 }

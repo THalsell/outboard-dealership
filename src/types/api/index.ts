@@ -1,5 +1,5 @@
 // API request and response type definitions
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: ApiError;
@@ -9,7 +9,7 @@ export interface ApiResponse<T = any> {
 export interface ApiError {
   code: string;
   message: string;
-  details?: any;
+  details?: unknown;
 }
 
 export interface ApiMeta {
@@ -28,7 +28,7 @@ export interface PaginationParams {
 
 export interface SearchParams extends PaginationParams {
   query?: string;
-  filters?: Record<string, any>;
+  filters?: Record<string, unknown>;
 }
 
 export interface ProductFilters {

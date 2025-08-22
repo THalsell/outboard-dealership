@@ -1,3 +1,6 @@
+
+import { Part } from './part';
+
 // Product-related type definitions
 export interface OutboardMotor {
   id: string;
@@ -45,29 +48,6 @@ export interface Warranty {
   duration: string;
   coverage: string[];
   price?: number;
-}
-
-export interface Part {
-  id: string;
-  partNumber: string;
-  name: string;
-  description: string;
-  category: PartCategory;
-  subcategory?: string;
-  brand: string;
-  price: number;
-  images: ProductImage[];
-  compatibility: CompatibilityInfo[];
-  inStock: boolean;
-  stockQuantity: number;
-}
-
-export interface PartCategory {
-  id: string;
-  name: string;
-  slug: string;
-  parentId?: string;
-  image?: string;
 }
 
 export interface CompatibilityInfo {

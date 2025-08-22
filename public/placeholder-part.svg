@@ -1,0 +1,52 @@
+<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="partGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5f5f5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e5e5e5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#f5f5f5"/>
+  <rect x="1" y="1" width="298" height="298" fill="none" stroke="#e5e5e5" stroke-width="2"/>
+  
+  <!-- Part illustration (generic marine part) -->
+  <g transform="translate(150, 150)">
+    <!-- Main part body -->
+    <rect x="-60" y="-40" width="120" height="80" rx="8" fill="url(#partGradient)" stroke="#333333" stroke-width="2"/>
+    
+    <!-- Mounting holes -->
+    <circle cx="-40" cy="-20" r="6" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+    <circle cx="40" cy="-20" r="6" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+    <circle cx="-40" cy="20" r="6" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+    <circle cx="40" cy="20" r="6" fill="#ffffff" stroke="#333333" stroke-width="1"/>
+    
+    <!-- Center feature -->
+    <circle cx="0" cy="0" r="25" fill="#0e4c92" opacity="0.7"/>
+    <circle cx="0" cy="0" r="15" fill="#ffffff"/>
+    <circle cx="0" cy="0" r="8" fill="#00a8a8"/>
+    
+    <!-- Part number area -->
+    <rect x="-50" y="45" width="100" height="15" fill="#ffffff" stroke="#333333"/>
+    <text x="0" y="56" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#333333">
+      PART #12345
+    </text>
+    
+    <!-- Brand accent -->
+    <rect x="-60" y="-45" width="120" height="4" fill="#0e4c92"/>
+  </g>
+  
+  <!-- Corner brand elements -->
+  <rect x="20" y="20" width="30" height="4" fill="#0e4c92"/>
+  <rect x="20" y="28" width="30" height="4" fill="#00a8a8"/>
+  
+  <!-- OEM indicator -->
+  <text x="150" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#0e4c92">
+    OEM PART
+  </text>
+  
+  <!-- Size indicator -->
+  <text x="20" y="280" font-family="Arial, sans-serif" font-size="10" fill="#333333" opacity="0.7">
+    300 × 300 Part Image
+  </text>
+</svg>
