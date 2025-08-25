@@ -603,7 +603,7 @@ export const allMotors: Motor[] = [
   },
   {
     id: '17',
-    brand: 'Evinrude',
+    brand: 'Freedom',
     model: 'E-TEC G2 250',
     year: 2022,
     horsepower: 250,
@@ -742,5 +742,158 @@ export const allMotors: Motor[] = [
     rating: 4.6,
     reviewCount: 87,
     featured: true
+  },
+  // Overstock Motors - Great deals on excess inventory
+  {
+    id: '21',
+    brand: 'Yamaha',
+    model: 'F150',
+    year: 2023,
+    horsepower: 150,
+    type: 'outboard',
+    fuelType: 'gasoline',
+    cylinders: 4,
+    displacement: 2670,
+    weight: 487,
+    shaftLength: 'long',
+    price: 17999,
+    salePrice: 14499, // Deep discount for overstock
+    inStock: true,
+    stockQuantity: 8,
+    images: ['/api/placeholder/800/600'],
+    features: [
+      'EFI System',
+      'Variable Camshaft Timing',
+      'Multi-Point Electronic Fuel Injection',
+      'Composite Intake Manifold',
+      'Fresh Water Flush System'
+    ],
+    specifications: {
+      'Engine Type': 'Inline 4, DOHC',
+      'Displacement': '2,670cc',
+      'Bore x Stroke': '86mm x 96mm',
+      'Compression Ratio': '10.3:1',
+      'Fuel System': 'Electronic Fuel Injection',
+      'Alternator': '35A',
+      'Gear Ratio': '2.15:1'
+    },
+    warranty: '5 Year Limited Warranty',
+    condition: 'overstock',
+    rating: 4.7,
+    reviewCount: 45
+  },
+  {
+    id: '22',
+    brand: 'Mercury',
+    model: 'FourStroke 60',
+    year: 2023,
+    horsepower: 60,
+    type: 'outboard',
+    fuelType: 'gasoline',
+    cylinders: 4,
+    displacement: 995,
+    weight: 247,
+    shaftLength: 'long',
+    price: 8599,
+    salePrice: 6899, // Overstock pricing
+    inStock: true,
+    stockQuantity: 12,
+    images: ['/api/placeholder/800/600'],
+    features: [
+      'EFI for Easy Starting',
+      'SmartCraft Compatible',
+      'Big Foot Lower Unit',
+      'Power Trim and Tilt',
+      'Single Ram Power Trim'
+    ],
+    specifications: {
+      'Engine Type': 'Inline 4',
+      'Displacement': '995cc',
+      'Bore x Stroke': '65mm x 75mm',
+      'Fuel System': 'Electronic Fuel Injection',
+      'Alternator': '18A',
+      'Gear Ratio': '2.33:1'
+    },
+    warranty: '3 Year Limited Warranty',
+    condition: 'overstock',
+    rating: 4.5,
+    reviewCount: 67
+  },
+  // Scratch & Dent - Cosmetic imperfections, fully functional
+  {
+    id: '23',
+    brand: 'Honda',
+    model: 'BF225',
+    year: 2024,
+    horsepower: 225,
+    type: 'outboard',
+    fuelType: 'gasoline',
+    cylinders: 6,
+    displacement: 3471,
+    weight: 599,
+    shaftLength: 'extra-long',
+    price: 24999,
+    salePrice: 19999, // Reduced for cosmetic damage
+    inStock: true,
+    stockQuantity: 2,
+    images: ['/api/placeholder/800/600'],
+    features: [
+      'VTEC Technology',
+      'Lean Burn Control',
+      'BLAST Hole Shot Technology',
+      'Multi-Port Programmed Fuel Injection',
+      'Variable Valve Timing'
+    ],
+    specifications: {
+      'Engine Type': 'V6, SOHC, VTEC',
+      'Displacement': '3,471cc',
+      'Bore x Stroke': '89mm x 93mm',
+      'Compression Ratio': '9.5:1',
+      'Fuel System': 'Multi-Port PGM-FI',
+      'Alternator': '60A',
+      'Gear Ratio': '2.0:1'
+    },
+    warranty: '5 Year Limited Warranty (Full Coverage)',
+    condition: 'scratch-dent',
+    rating: 4.6,
+    reviewCount: 23
+  },
+  {
+    id: '24',
+    brand: 'Suzuki',
+    model: 'DF115B',
+    year: 2024,
+    horsepower: 115,
+    type: 'outboard',
+    fuelType: 'gasoline',
+    cylinders: 4,
+    displacement: 2044,
+    weight: 406,
+    shaftLength: 'long',
+    price: 13999,
+    salePrice: 11499, // Scratch & dent discount
+    inStock: true,
+    stockQuantity: 3,
+    images: ['/api/placeholder/800/600'],
+    features: [
+      'Lean Burn Technology',
+      'Suzuki Precision Control',
+      'Multi-Point Sequential EFI',
+      'Offset Driveshaft',
+      'Two-Stage Gear Reduction'
+    ],
+    specifications: {
+      'Engine Type': 'Inline 4, DOHC',
+      'Displacement': '2,044cc',
+      'Bore x Stroke': '86mm x 88mm',
+      'Compression Ratio': '10.5:1',
+      'Fuel System': 'Multi-Point Sequential EFI',
+      'Alternator': '44A',
+      'Gear Ratio': '2.59:1'
+    },
+    warranty: '6 Year Limited Warranty (Full Coverage)',
+    condition: 'scratch-dent',
+    rating: 4.4,
+    reviewCount: 18
   }
 ];

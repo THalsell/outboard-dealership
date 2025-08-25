@@ -9,87 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Custom brand colors
+        // Custom brand colors (actively used)
         'deep-blue': '#0e4c92',
         'teal': '#00a8a8',
-        'light-gray': '#f5f5f5',
-        'charcoal': '#333333',
-        
-        // Semantic color mappings
-        primary: {
-          50: '#eff8ff',
-          100: '#dbeefe',
-          200: '#bfe2fe',
-          300: '#93d1fd',
-          400: '#60b7fa',
-          500: '#3b97f6',
-          600: '#2575eb',
-          700: '#1d5dd8',
-          800: '#1e4bb0',
-          900: '#0e4c92', // deep-blue
-          950: '#0f2a4a',
-        },
-        secondary: {
-          50: '#ecfffe',
-          100: '#cffffe',
-          200: '#a5fffd',
-          300: '#67fffa',
-          400: '#22fff3',
-          500: '#00e9de',
-          600: '#00bab7',
-          700: '#00a8a8', // teal
-          800: '#05817e',
-          900: '#0a6a68',
-          950: '#003d3d',
-        },
-        neutral: {
-          50: '#f9f9f9',
-          100: '#f5f5f5', // light-gray
-          200: '#e5e5e5',
-          300: '#d4d4d4',
-          400: '#a3a3a3',
-          500: '#737373',
-          600: '#525252',
-          700: '#404040',
-          800: '#333333', // charcoal
-          900: '#171717',
-          950: '#0a0a0a',
-        },
-        
-        // Component-specific colors derived from brand colors
-        background: '#f5f5f5', // light-gray
-        foreground: '#333333', // charcoal
-        card: '#ffffff',
-        'card-foreground': '#333333',
-        popover: '#ffffff',
-        'popover-foreground': '#333333',
-        muted: '#f5f5f5',
-        'muted-foreground': '#666666',
-        border: '#e5e5e5',
-        input: '#ffffff',
-        ring: '#0e4c92',
-        
-        // State colors (keeping good contrast)
-        destructive: {
-          DEFAULT: '#dc2626',
-          foreground: '#ffffff',
-        },
-        success: {
-          DEFAULT: '#16a34a',
-          foreground: '#ffffff',
-        },
-        warning: {
-          DEFAULT: '#ea580c',
-          foreground: '#ffffff',
-        },
-        info: {
-          DEFAULT: '#0e4c92',
-          foreground: '#ffffff',
-        },
+        'light-gray': '#f8fafc',
+        'charcoal': '#1e293b',
+        'professional-gray': '#64748b',
+        'border-gray': '#e2e8f0',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        heading: ['Inter', 'system-ui', 'sans-serif'],
+        'bebas-neue': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
+        'inter': ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        'roboto': ['var(--font-roboto)', 'system-ui', 'sans-serif'],
+        'heading': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
+        'body': ['var(--font-roboto)', 'system-ui', 'sans-serif'],
+        'ui': ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-roboto)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         xs: ['0.75rem', { lineHeight: '1rem' }],
@@ -109,12 +44,21 @@ const config: Config = {
         '128': '32rem',
       },
       borderRadius: {
-        '4xl': '2rem',
+        'xs': '0.25rem',
+        'sm': '0.375rem',
+        'DEFAULT': '0.5rem',
+        'lg': '0.75rem',
+        'xl': '1rem',
+        '2xl': '1.25rem',
       },
       boxShadow: {
-        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
-        'brand': '0 4px 14px 0 rgba(14, 76, 146, 0.15)',
-        'teal': '0 4px 14px 0 rgba(0, 168, 168, 0.15)',
+        'xs': '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        'sm': '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'DEFAULT': '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        'lg': '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+        'xl': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+        'card': '0 1px 3px 0 rgb(0 0 0 / 0.05)',
+        'hover': '0 4px 12px 0 rgb(0 0 0 / 0.08)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

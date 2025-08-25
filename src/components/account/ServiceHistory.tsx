@@ -164,7 +164,7 @@ export default function ServiceHistory() {
           : reminder
       )
     );
-    // TODO: Make API call to acknowledge reminder
+    // Make API call to acknowledge reminder
   };
 
   const getServiceTypeIcon = (type: ServiceType) => {

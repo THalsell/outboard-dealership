@@ -1,10 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   const navigation = [
     { name: 'Inventory', href: '/inventory' },
@@ -15,9 +27,9 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
-      <div className="top-bar bg-charcoal text-white py-2">
-        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+    <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-border-gray">
+      <div className="top-bar bg-charcoal text-white py-2.5">
+        <div className="container mx-auto px-6 flex justify-between items-center text-sm">
           <div className="flex items-center gap-4">
             <a href="tel:9312434555" className="hover:text-teal">
               📞 (931) 243-4555
@@ -36,15 +48,15 @@ export default function Header() {
         </div>
       </div>
 
-      <nav className="container mx-auto px-4">
-        <div className="flex justify-between items-center py-4">
+      <nav className="container mx-auto px-6">
+        <div className="flex justify-between items-center py-5">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-deep-blue rounded-full flex items-center justify-center text-white font-bold">
+            <div className="w-12 h-12 bg-deep-blue rounded-xl flex items-center justify-center text-white font-bold text-lg">
               OM
             </div>
             <div>
-              <div className="text-xl font-bold text-charcoal">Outboard Motors</div>
-              <div className="text-xs text-charcoal opacity-70">Premium Marine Dealership</div>
+              <div className="text-2xl font-bold text-charcoal">Outboard Motors</div>
+              <div className="text-sm text-professional-gray font-medium">Premium Marine Dealership</div>
             </div>
           </Link>
 
@@ -60,7 +72,7 @@ export default function Header() {
             ))}
             <Link
               href="/inventory/new"
-              className="bg-deep-blue text-white px-6 py-2 rounded-lg hover:bg-teal transition-colors font-medium"
+              className="bg-deep-blue text-white px-6 py-2.5 rounded-lg hover:bg-deep-blue/90 transition-all duration-200 font-semibold shadow-sm"
             >
               Shop New Motors
             </Link>
@@ -97,8 +109,8 @@ export default function Header() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t">
-            <div className="flex flex-col gap-4">
+          <div className="lg:hidden fixed inset-0 top-[120px] bg-white z-40 overflow-y-auto">
+            <div className="flex flex-col gap-4 p-6">
               {navigation.map((item) => (
                 <Link
                   key={item.name}

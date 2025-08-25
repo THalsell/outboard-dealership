@@ -22,7 +22,6 @@ export default function UserAccountMenu() {
   const accountLinks = isLoggedIn ? [
     { name: 'My Profile', href: '/account/profile', icon: '👤' },
     { name: 'Orders', href: '/account/orders', icon: '📦' },
-    { name: 'Wishlist', href: '/account/wishlist', icon: '❤️' },
     { name: 'Service History', href: '/service/history', icon: '🔧' },
     { name: 'Loyalty Points', href: '/account/loyalty', icon: '⭐' },
     { name: 'Settings', href: '/account/settings', icon: '⚙️' },

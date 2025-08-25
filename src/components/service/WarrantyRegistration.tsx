@@ -146,12 +146,11 @@ export default function WarrantyRegistration() {
             required
           >
             <option value="">Select Brand</option>
+            <option value="Honda">Honda</option>
             <option value="Yamaha">Yamaha</option>
             <option value="Mercury">Mercury</option>
-            <option value="Honda">Honda</option>
+            <option value="Freedom">Freedom</option>
             <option value="Suzuki">Suzuki</option>
-            <option value="Evinrude">Evinrude</option>
-            <option value="Johnson">Johnson</option>
             <option value="Tohatsu">Tohatsu</option>
           </select>
         </div>

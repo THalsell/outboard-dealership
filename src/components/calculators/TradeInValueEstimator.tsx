@@ -65,12 +65,11 @@ export default function TradeInValueEstimator() {
                   onChange={(e) => updateSpec('brand', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 >
+                  <option value="Honda">Honda</option>
                   <option value="Yamaha">Yamaha</option>
                   <option value="Mercury">Mercury</option>
-                  <option value="Honda">Honda</option>
+                  <option value="Freedom">Freedom</option>
                   <option value="Suzuki">Suzuki</option>
-                  <option value="Evinrude">Evinrude</option>
-                  <option value="Johnson">Johnson</option>
                   <option value="Tohatsu">Tohatsu</option>
                 </select>
               </div>

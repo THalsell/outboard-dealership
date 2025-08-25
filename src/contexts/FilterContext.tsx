@@ -15,6 +15,7 @@ interface FilterState {
   sortBy: string;
   viewMode: 'grid' | 'list';
   searchQuery: string;
+  resultsPerPage: number;
 }
 
 interface FilterContextType {
@@ -39,7 +40,8 @@ const defaultFilters: FilterState = {
   onSaleOnly: false,
   sortBy: 'featured',
   viewMode: 'grid',
-  searchQuery: ''
+  searchQuery: '',
+  resultsPerPage: 36
 };
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);

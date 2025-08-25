@@ -27,6 +27,8 @@ export default function InventoryHeader({
     { value: 'rating', label: 'Highest Rated' },
   ];
 
+  const displayOptions = [36, 72, 108];
+
   const activeFiltersCount = [
     ...filters.brands,
     ...filters.shaftLengths, 
@@ -39,158 +41,159 @@ export default function InventoryHeader({
     ...(filters.maxHorsepower < 500 ? ['maxHorsepower'] : []),
   ].length;
 
+  const getMainHeading = () => {
+    if (filters.brands.length === 0) {
+      return 'SHOP ALL OUTBOARD MOTORS';
+    } else if (filters.brands.length === 1) {
+      return `SHOP ALL ${filters.brands[0].toUpperCase()} OUTBOARD MOTORS`;
+    } else {
+      return 'SHOP MULTIPLE BRANDS';
+    }
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-sm border p-4 mb-6">
-      {/* Top Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+    <div className="mb-8">
+      {/* Main Heading */}
+      <div className="mb-6">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-charcoal uppercase tracking-wide">
+          {getMainHeading()}
+        </h1>
+      </div>
+      {/* Filter & Sort Header - Only on mobile */}
+      <div className="lg:hidden bg-professional-gray text-white text-center py-1 mb-6">
+        <button
+          onClick={onShowMobileFilters}
+          className="text-lg font-semibold uppercase tracking-wide"
+        >
+          FILTER & SORT
+        </button>
+      </div>
+
+      {/* Results and Display Options */}
+      <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold text-gray-900">
-            Outboard Motors
-          </h1>
           {!loading && (
-            <span className="text-gray-600">
-              ({totalResults.toLocaleString()} result{totalResults !== 1 ? 's' : ''})
-            </span>
+            <div className="text-charcoal text-lg font-semibold">
+              {totalResults} Results
+            </div>
           )}
         </div>
-
-        {/* Search Bar */}
-        <div className="flex-1 max-w-md">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search motors..."
-              value={filters.searchQuery}
-              onChange={(e) => updateFilter('searchQuery', e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-            {filters.searchQuery && (
+        
+        <div className="flex items-center gap-4">
+          <span className="text-charcoal font-medium">Display:</span>
+          <div className="flex items-center gap-2">
+            {displayOptions.map((option) => (
               <button
-                onClick={() => updateFilter('searchQuery', '')}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                key={option}
+                onClick={() => updateFilter('resultsPerPage', option)}
+                className={`px-3 py-1.5 text-sm font-medium rounded ${
+                  (filters.resultsPerPage || 36) === option
+                    ? 'bg-gray-300 text-charcoal'
+                    : 'bg-gray-100 text-professional-gray hover:bg-gray-200'
+                }`}
               >
-                <svg className="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Hidden search and sort - keep for mobile filter functionality */}
+      <div className="hidden">
+        <input
+          type="text"
+          placeholder="Search outboard motors..."
+          value={filters.searchQuery}
+          onChange={(e) => updateFilter('searchQuery', e.target.value)}
+        />
+        <select
+          value={filters.sortBy}
+          onChange={(e) => updateFilter('sortBy', e.target.value)}
+        >
+          {sortOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Active Filters */}
+      {activeFiltersCount > 0 && (
+        <div className="flex items-center gap-3 flex-wrap mb-4">
+          <span className="text-sm text-professional-gray">Active filters:</span>
+          
+          {/* Brand filters */}
+          {filters.brands.map((brand) => (
+            <span key={brand} className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-charcoal text-sm rounded-full">
+              {brand}
+              <button
+                onClick={() => updateFilter('brands', filters.brands.filter(b => b !== brand))}
+                className="text-professional-gray hover:text-charcoal ml-1"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-            )}
-          </div>
-        </div>
-      </div>
+            </span>
+          ))}
 
-      {/* Bottom Row */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center gap-4">
-          {/* Mobile Filter Button */}
-          <button
-            onClick={onShowMobileFilters}
-            className="lg:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
-            </svg>
-            Filters
-            {activeFiltersCount > 0 && (
-              <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full min-w-[20px] h-5 flex items-center justify-center">
-                {activeFiltersCount}
-              </span>
-            )}
-          </button>
+          {/* Condition filters */}
+          {filters.conditions.map((condition) => (
+            <span key={condition} className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-charcoal text-sm rounded-full">
+              {condition === 'scratch-dent' ? 'Scratch & Dent' :
+               condition === 'overstock' ? 'Overstock' :
+               condition.charAt(0).toUpperCase() + condition.slice(1)}
+              <button
+                onClick={() => updateFilter('conditions', filters.conditions.filter(c => c !== condition))}
+                className="text-professional-gray hover:text-charcoal ml-1"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </span>
+          ))}
 
-          {/* Clear Filters */}
-          {activeFiltersCount > 0 && (
-            <button
-              onClick={resetFilters}
-              className="text-sm text-blue-600 hover:text-blue-700 underline"
-            >
-              Clear all filters
-            </button>
+          {/* Other filters */}
+          {filters.inStockOnly && (
+            <span className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-charcoal text-sm rounded-full">
+              In Stock
+              <button
+                onClick={() => updateFilter('inStockOnly', false)}
+                className="text-professional-gray hover:text-charcoal ml-1"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </span>
           )}
 
-          {/* Active Filter Tags */}
-          <div className="hidden md:flex items-center gap-2 flex-wrap">
-            {filters.brands.map((brand) => (
-              <span key={brand} className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-sm rounded-md">
-                {brand}
-                <button
-                  onClick={() => updateFilter('brands', filters.brands.filter(b => b !== brand))}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-            {filters.conditions.map((condition) => (
-              <span key={condition} className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-sm rounded-md">
-                {condition === 'certified-preowned' ? 'Certified' : condition}
-                <button
-                  onClick={() => updateFilter('conditions', filters.conditions.filter(c => c !== condition))}
-                  className="text-green-600 hover:text-green-800"
-                >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
+          {filters.onSaleOnly && (
+            <span className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full">
+              On Sale
+              <button
+                onClick={() => updateFilter('onSaleOnly', false)}
+                className="text-red-500 hover:text-red-700 ml-1"
+              >
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </span>
+          )}
 
-        <div className="flex items-center gap-4">
-          {/* Sort Dropdown */}
-          <div className="flex items-center gap-2">
-            <label className="text-sm text-gray-600 whitespace-nowrap">Sort by:</label>
-            <select
-              value={filters.sortBy}
-              onChange={(e) => updateFilter('sortBy', e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              {sortOptions.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* View Toggle */}
-          <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-            <button
-              onClick={() => updateFilter('viewMode', 'grid')}
-              className={`p-2 transition-colors ${
-                filters.viewMode === 'grid'
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
-              aria-label="Grid view"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-            </button>
-            <button
-              onClick={() => updateFilter('viewMode', 'list')}
-              className={`p-2 transition-colors ${
-                filters.viewMode === 'list'
-                  ? 'bg-blue-600 text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`}
-              aria-label="List view"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+          {/* Clear all button */}
+          <button
+            onClick={resetFilters}
+            className="text-sm text-deep-blue hover:text-deep-blue/80 font-medium underline"
+          >
+            Clear all
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 }

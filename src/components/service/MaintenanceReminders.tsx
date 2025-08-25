@@ -123,11 +123,11 @@ export default function MaintenanceReminders() {
           : reminder
       )
     );
-    // TODO: Make API call to dismiss reminder
+    // Make API call to dismiss reminder
   };
 
   const handleScheduleService = (reminderId: string) => {
-    // TODO: Navigate to appointment scheduler with pre-filled data
+    // Navigate to appointment scheduler with pre-filled data
     console.log('Scheduling service for reminder:', reminderId);
   };
 

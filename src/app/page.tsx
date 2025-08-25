@@ -45,7 +45,7 @@ function NewsletterSection() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+              className="flex-1 px-4 py-3 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-white placeholder-gray-500"
               required
               disabled={isLoading}
             />
@@ -199,14 +199,7 @@ export default function Home() {
   ];
 
   const brands = [
-    "Yamaha", "Mercury", "Honda", "Suzuki", "Evinrude", "Johnson", "Tohatsu", "Nissan"
-  ];
-
-  const certifications = [
-    { name: "Yamaha Certified", badge: "⭐" },
-    { name: "Mercury Premier", badge: "🏆" },
-    { name: "Honda Marine", badge: "🎖️" },
-    { name: "NMMA Certified", badge: "✓" }
+    "Honda", "Yamaha", "Mercury", "Freedom", "Suzuki", "Tohatsu"
   ];
 
   return (
@@ -356,15 +349,6 @@ export default function Home() {
                     <span className="text-deep-blue text-xl">✓</span>
                   </div>
                   <div>
-                    <h3 className="text-xl font-semibold mb-2">40+ Years of Excellence</h3>
-                    <p className="text-charcoal opacity-80">Trusted by boaters since 1985 with thousands of satisfied customers.</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-deep-blue text-xl">✓</span>
-                  </div>
-                  <div>
                     <h3 className="text-xl font-semibold mb-2">Authorized Dealer</h3>
                     <p className="text-charcoal opacity-80">Official dealer for all major brands with full warranty support.</p>
                   </div>
@@ -391,7 +375,7 @@ export default function Home() {
             </div>
             <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
               <Image
-                src="/placeholder-dealership.svg"
+                src="/yamaha.jpg"
                 alt="Our dealership"
                 fill
                 className="object-cover"
@@ -408,37 +392,20 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Brands We Carry</h2>
             <p className="text-xl text-charcoal opacity-80">Authorized dealer for industry-leading manufacturers</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
             {brands.map((brand, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-md flex items-center justify-center hover:shadow-lg transition-shadow"
+                className="bg-white p-4 sm:p-6 rounded-lg shadow-md flex items-center justify-center hover:shadow-lg transition-all duration-300 hover:-translate-y-1 min-h-[80px] sm:min-h-[100px]"
               >
-                <span className="text-lg font-semibold text-gray-700">{brand}</span>
+                <span className="text-sm sm:text-base lg:text-lg font-semibold text-navy text-center">{brand}</span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Trust Badges & Certifications */}
-      <section className="py-12 bg-blue-900 text-white">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            <div className="text-center">
-              <p className="text-sm uppercase tracking-wide mb-2">Certified Excellence</p>
-              <div className="flex gap-6">
-                {certifications.map((cert, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <span className="text-2xl">{cert.badge}</span>
-                    <span className="font-semibold">{cert.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+     
 
       {/* Newsletter CTA */}
       <NewsletterSection />

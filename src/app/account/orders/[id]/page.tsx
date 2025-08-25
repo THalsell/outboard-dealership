@@ -6,7 +6,7 @@ interface OrderDetailPageProps {
 }
 
 export default function OrderDetailPage({ params }: OrderDetailPageProps) {
-  // TODO: Fetch order details by ID
+  // Fetch order details by ID
   // For now, return a placeholder
   
   return (

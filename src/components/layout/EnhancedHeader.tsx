@@ -63,10 +63,9 @@ export default function EnhancedHeader() {
       name: 'Learn',
       href: '/learn',
       dropdown: [
-        { name: 'Buying Guides', href: '/learn/guides', description: 'How to choose' },
-        { name: 'FAQs', href: '/learn/faqs', description: 'Common questions' },
+        { name: 'Buying Guides', href: '/learn/guides', description: 'How to choose the perfect motor' },
+        { name: 'FAQs', href: '/learn/faqs', description: 'Common questions answered' },
         { name: 'Videos', href: '/learn/videos', description: 'Tutorials & reviews' },
-        { name: 'Glossary', href: '/learn/glossary', description: 'Marine terms' },
         { name: 'Blog', href: '/learn/blog', description: 'Tips & news' },
       ]
     },
@@ -116,9 +115,6 @@ export default function EnhancedHeader() {
               </span>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
-              <Link href="/commercial/wholesale" className="hover:text-blue-400 hidden lg:inline">
-                Commercial Sales
-              </Link>
               <Link href="/learn/faqs" className="hover:text-blue-400 hidden sm:inline">
                 Help
               </Link>

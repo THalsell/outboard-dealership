@@ -1,58 +1,83 @@
 @import "tailwindcss";
 
 :root {
-  /* Brand Colors */
+  /* Brand Colors (actively used) */
   --deep-blue: #0e4c92;
   --teal: #00a8a8;
-  --light-gray: #f5f5f5;
-  --charcoal: #333333;
-  
-  /* Theme Colors */
-  --background: #f5f5f5;
-  --foreground: #333333;
-  --card: #ffffff;
-  --card-foreground: #333333;
-  --popover: #ffffff;
-  --popover-foreground: #333333;
-  --primary: #0e4c92;
-  --primary-foreground: #ffffff;
-  --secondary: #00a8a8;
-  --secondary-foreground: #ffffff;
-  --muted: #f5f5f5;
-  --muted-foreground: #666666;
-  --accent: #00a8a8;
-  --accent-foreground: #ffffff;
-  --destructive: #dc2626;
-  --destructive-foreground: #ffffff;
-  --border: #e5e5e5;
-  --input: #ffffff;
-  --ring: #0e4c92;
-  --radius: 0.5rem;
+  --light-gray: #f8fafc;
+  --charcoal: #1e293b;
+  --professional-gray: #64748b;
+  --border-gray: #e2e8f0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
   --color-deep-blue: var(--deep-blue);
   --color-teal: var(--teal);
   --color-light-gray: var(--light-gray);
   --color-charcoal: var(--charcoal);
+  --color-professional-gray: var(--professional-gray);
+  --color-border-gray: var(--border-gray);
   --font-sans: 'Inter', system-ui, sans-serif;
 }
 
 * {
-  border-color: var(--border);
+  border-color: var(--border-gray);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', system-ui, sans-serif;
-  font-feature-settings: "cv11", "ss01";
-  font-variation-settings: "opsz" 32;
+  background: var(--light-gray);
+  color: var(--charcoal);
+  font-family: var(--font-roboto), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Classes */
+.font-heading {
+  font-family: var(--font-bebas-neue), Arial, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.font-body {
+  font-family: var(--font-roboto), system-ui, sans-serif;
+  font-weight: 400;
+}
+
+.font-ui {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 500;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bebas-neue), Arial, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+/* Navigation and UI elements */
+nav, button, .btn, [role="button"] {
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 500;
+}
+
+/* Product cards and commerce elements */
+.product-card, .price, .filter-section {
+  font-family: var(--font-roboto), system-ui, sans-serif;
+}
+
+/* Footer override */
+footer {
+  font-family: var(--font-roboto), system-ui, sans-serif !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
 }
 
 /* Smooth scrolling */
@@ -80,7 +105,7 @@ html {
 
 /* Focus styles */
 *:focus-visible {
-  outline: 2px solid var(--ring);
+  outline: 2px solid var(--deep-blue);
   outline-offset: 2px;
 }
 
@@ -88,7 +113,15 @@ html {
 button, 
 [role="button"], 
 input[type="submit"], 
-input[type="button"] {
+input[type="button"],
+a,
+label,
+select,
+[role="tab"],
+[role="menuitem"],
+[aria-expanded],
+.cursor-pointer {
+  cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
@@ -98,4 +131,26 @@ input[type="submit"]:disabled,
 input[type="button"]:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Ensure all clickable elements have pointer cursor */
+[onclick],
+[data-clickable="true"] {
+  cursor: pointer;
+}
+
+/* Force pointer cursor on all interactive elements */
+* {
+  cursor: inherit;
+}
+
+button:not(:disabled),
+a:not([aria-disabled="true"]),
+label:not([aria-disabled="true"]),
+select:not(:disabled),
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[tabindex]:not([tabindex="-1"]):not([aria-disabled="true"]) {
+  cursor: pointer !important;
 }

@@ -18,7 +18,7 @@ export interface Motor {
   features: string[];
   specifications: Record<string, string>;
   warranty?: string;
-  condition: 'new' | 'used' | 'certified-preowned';
+  condition: 'new' | 'used' | 'certified-preowned' | 'overstock' | 'scratch-dent';
   rating?: number;
   reviewCount?: number;
   featured?: boolean;

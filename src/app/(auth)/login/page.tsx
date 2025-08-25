@@ -2,7 +2,7 @@ import LoginForm from '@/components/auth/LoginForm';
 
 export const metadata = {
   title: 'Sign In | Clay Powersports',
-  description: 'Sign in to your Clay Powersports account to access your orders, service history, and wishlist.',
+  description: 'Sign in to your Clay Powersports account to access your orders and service history.',
 };
 
 export default function LoginPage() {

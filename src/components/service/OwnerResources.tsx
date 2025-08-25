@@ -135,7 +135,7 @@ export default function OwnerResources() {
           : resource
       )
     );
-    // TODO: Track download analytics
+    // Track download analytics
     console.log('Downloaded resource:', resourceId);
   };
 

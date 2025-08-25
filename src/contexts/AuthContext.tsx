@@ -87,8 +87,6 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-console.log('AuthProvider rendering...');
-
   // Initialize auth state on app load
   useEffect(() => {
     const initializeAuth = async () => {
@@ -201,7 +199,6 @@ console.log('AuthProvider rendering...');
     try {
       // Simulate API call - replace with actual API
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Password reset email sent to:", email);
     } catch (error) {
       dispatch({
         type: "SET_ERROR",
@@ -246,7 +243,6 @@ console.log('AuthProvider rendering...');
 }
 
 export function useAuth() {
-  console.log('useAuth called, context:', useContext(AuthContext));
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");

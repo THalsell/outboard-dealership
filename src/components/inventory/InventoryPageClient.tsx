@@ -3,15 +3,32 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useFilter } from '@/contexts/FilterContext';
 import { allMotors } from '@/lib/data/allMotors';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import FilterSidebar from './FilterSidebar';
 import InventoryGrid from './InventoryGrid';
-import InventoryList from './InventoryList';
 import InventoryHeader from './InventoryHeader';
 
 export default function InventoryPageClient() {
-  const { filters, compareList } = useFilter();
+  const { filters, compareList, removeFromCompare } = useFilter();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Prevent background scroll when mobile filters are open
+  useEffect(() => {
+    if (showMobileFilters) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showMobileFilters]);
 
   // Simulate loading
   useEffect(() => {
@@ -109,89 +126,174 @@ export default function InventoryPageClient() {
     return filtered;
   }, [filters]);
 
+  // Pagination logic
+  const totalResults = filteredMotors.length;
+  const resultsPerPage = filters.resultsPerPage;
+  const totalPages = Math.ceil(totalResults / resultsPerPage);
+  const startIndex = (currentPage - 1) * resultsPerPage;
+  const endIndex = startIndex + resultsPerPage;
+  const paginatedMotors = filteredMotors.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters.brands, filters.minPrice, filters.maxPrice, filters.minHorsepower, filters.maxHorsepower, filters.shaftLengths, filters.conditions, filters.inStockOnly, filters.onSaleOnly, filters.searchQuery, filters.sortBy]);
+
+  // Reset to page 1 when results per page changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters.resultsPerPage]);
+
   const compareMotors = useMemo(() => {
     return allMotors.filter(motor => compareList.includes(motor.id));
   }, [compareList]);
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Mobile Filter Overlay */}
+      {/* Mobile Filter Page */}
       {showMobileFilters && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50"
-            onClick={() => setShowMobileFilters(false)}
+        <div className="fixed inset-0 z-50 lg:hidden bg-white">
+          <FilterSidebar 
+            isMobile={true} 
+            onClose={() => setShowMobileFilters(false)} 
           />
-          <div className="relative w-80 max-w-sm h-full bg-white shadow-xl">
-            <FilterSidebar 
-              isMobile={true} 
-              onClose={() => setShowMobileFilters(false)} 
-            />
+        </div>
+      )}
+
+      {/* Floating Compare Bar */}
+      {compareList.length > 0 && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-deep-blue text-white shadow-xl border-t">
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="text-lg font-semibold">
+                  {compareList.length} motor{compareList.length > 1 ? 's' : ''} selected for comparison
+                </div>
+                <div className="text-sm opacity-80">
+                  {compareList.length < 4 ? `Select up to ${4 - compareList.length} more` : 'Maximum reached'}
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => {
+                    compareList.forEach(id => removeFromCompare(id));
+                  }}
+                  className="text-white/70 hover:text-white text-sm font-medium transition-colors"
+                >
+                  Clear All
+                </button>
+                <button
+                  className="bg-white text-deep-blue px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => {
+                    router.push('/inventory/compare');
+                  }}
+                  disabled={compareList.length < 2}
+                >
+                  Compare Motors {compareList.length > 1 ? `(${compareList.length})` : ''}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
-      {/* Compare Bar */}
-      {compareList.length > 0 && (
-        <div className="bg-blue-600 text-white py-3 px-4">
-          <div className="container mx-auto flex items-center justify-between">
-            <div>
-              <span className="font-medium">
-                {compareList.length} motor{compareList.length > 1 ? 's' : ''} selected for comparison
-              </span>
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                className="text-blue-100 hover:text-white underline"
-                onClick={() => {
-                  // Navigate to compare page (implement when needed)
-                  console.log('Navigate to compare page with:', compareMotors);
-                }}
-                disabled={compareList.length < 2}
-              >
-                Compare ({compareList.length})
-              </button>
-            </div>
-          </div>
+      {/* Breadcrumb */}
+      <div className="bg-white border-b">
+        <div className="container mx-auto px-4 py-3">
+          <nav className="flex items-center text-sm">
+            <Link href="/" className="text-gray-600 hover:text-deep-blue">Home</Link>
+            <span className="mx-2 text-gray-400">/</span>
+            <span className="text-gray-900 font-medium">Outboard Motors</span>
+          </nav>
         </div>
-      )}
+      </div>
 
       <div className="container mx-auto px-4 py-6">
-        <div className="flex gap-8">
+        <div className="flex gap-6">
           {/* Desktop Sidebar */}
-          <aside className="hidden lg:block w-80 flex-shrink-0">
-            <div className="sticky top-24">
-              <FilterSidebar />
-            </div>
+          <aside className="hidden lg:block w-64 flex-shrink-0">
+            <FilterSidebar />
           </aside>
+
+          {/* Vertical Line Separator */}
+          <div className="hidden lg:block w-px bg-gray-200"></div>
 
           {/* Main Content */}
           <main className="flex-1">
             {/* Header with controls */}
             <InventoryHeader
-              totalResults={filteredMotors.length}
+              totalResults={totalResults}
               onShowMobileFilters={() => setShowMobileFilters(true)}
               loading={loading}
             />
 
-            {/* Results */}
-            <div className="mt-6">
-              {filters.viewMode === 'grid' ? (
-                <InventoryGrid motors={filteredMotors} loading={loading} />
-              ) : (
-                <InventoryList motors={filteredMotors} loading={loading} />
-              )}
-            </div>
+            {/* Grid Content */}
+            <InventoryGrid
+              motors={paginatedMotors}
+              loading={loading}
+            />
 
-            {/* Load More / Pagination */}
-            {!loading && filteredMotors.length > 0 && (
-              <div className="mt-12 text-center">
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors">
-                  Load More Motors
-                </button>
-                <p className="text-gray-500 text-sm mt-2">
-                  Showing {filteredMotors.length} of {allMotors.length} motors
-                </p>
+            {/* Pagination */}
+            {!loading && totalResults > 0 && totalPages > 1 && (
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 py-4 border-t">
+                <div className="text-sm text-gray-600">
+                  Showing <span className="font-medium">{startIndex + 1}-{Math.min(endIndex, totalResults)}</span> of <span className="font-medium">{totalResults}</span> results
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Previous
+                  </button>
+                  <div className="flex gap-1">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage > totalPages - 3) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`px-3 py-2 rounded ${
+                            currentPage === pageNum
+                              ? 'bg-deep-blue text-white'
+                              : 'border border-gray-300 hover:bg-gray-50'
+                          }`}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                    {totalPages > 5 && currentPage <= totalPages - 3 && (
+                      <>
+                        <span className="px-3 py-2">...</span>
+                        <button
+                          onClick={() => setCurrentPage(totalPages)}
+                          className="px-3 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                        >
+                          {totalPages}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                  <button 
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             )}
           </main>

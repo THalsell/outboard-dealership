@@ -1,22 +1,37 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Bebas_Neue, Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import EnhancedHeader from "@/components/layout/EnhancedHeader";
 import Footer from "@/components/layout/Footer";
-import { AuthProvider } from "@/contexts/AuthContext"; // ADDED BACK
-import { CartProvider } from "@/contexts/CartContext";
-import { FilterProvider } from "@/contexts/FilterContext";
-import { PartsProvider } from "@/contexts/PartsContext";
+import AppProviders from "@/providers/AppProviders";
 
-const inter = Inter({ subsets: ["latin"] });
+const bebasNeue = Bebas_Neue({ 
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-bebas-neue"
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter"
+});
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700"],
+  display: "swap",
+  variable: "--font-roboto"
+});
 
 export const metadata: Metadata = {
   title: {
     template: "%s | Outboard Motors Dealership",
     default: "Outboard Motors Dealership - Premium Marine Motors & Service"
   },
-  description: "Your trusted source for new and used outboard motors. Yamaha, Mercury, Honda, Suzuki authorized dealer. Expert service, parts, and financing available.",
-  keywords: ["outboard motors", "marine engines", "boat motors", "Yamaha", "Mercury", "Honda", "Suzuki", "boat parts", "marine service", "boat repair", "outboard service", "marine dealer"],
+  description: "Your trusted source for new and used outboard motors. Honda, Yamaha, Mercury, Freedom, Suzuki, Tohatsu authorized dealer. Expert service, parts, and financing available.",
+  keywords: ["outboard motors", "marine engines", "boat motors", "Honda", "Yamaha", "Mercury", "Freedom", "Suzuki", "Tohatsu", "boat parts", "marine service", "boat repair", "outboard service", "marine dealer"],
   authors: [{ name: "Outboard Motors Dealership" }],
   creator: "Outboard Motors Dealership",
   publisher: "Outboard Motors Dealership",
@@ -73,20 +88,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased flex flex-col min-h-screen`}>
-        <AuthProvider>
-          <CartProvider>
-            <FilterProvider>
-              <PartsProvider>
-                <EnhancedHeader />
-                <main className="flex-grow">
-                  {children}
-                </main>
-                <Footer />
-              </PartsProvider>
-            </FilterProvider>
-          </CartProvider>
-        </AuthProvider>
+      <body className={`${bebasNeue.variable} ${inter.variable} ${roboto.variable} antialiased flex flex-col min-h-screen`}>
+        <AppProviders>
+          <EnhancedHeader />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </AppProviders>
       </body>
     </html>
   );
