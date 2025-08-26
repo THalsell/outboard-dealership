@@ -3,7 +3,6 @@ import FeaturedProducts from '@/components/sections/FeaturedProducts';
 import ShopByCategory from '@/components/sections/ShopByCategory';
 import WhyChooseUs from '@/components/sections/WhyChooseUs';
 import BrandsSection from '@/components/sections/BrandsSection';
-import Newsletter from '@/components/sections/Newsletter';
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -75,9 +74,6 @@ export default function Home() {
 
       {/* Brands We Carry */}
       <BrandsSection />
-
-      {/* Newsletter CTA */}
-      <Newsletter />
     </div>
   );
 }

@@ -2,21 +2,28 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Motor } from '@/types/models/motor';
+import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { useFilter } from '@/contexts/FilterContext';
 import { useState } from 'react';
 
 interface ProductCardProps {
-  motor: Motor;
+  product: Product;
 }
 
-export default function ProductCard({ motor }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   const { addItem, setIsOpen } = useCart();
   const { compareList, addToCompare, removeFromCompare } = useFilter();
   const [isAdding, setIsAdding] = useState(false);
   const [imageHover, setImageHover] = useState(false);
-  const isInCompare = compareList.includes(motor.id);
+  const isInCompare = compareList.includes(product.id as string);
+
+  // Get the default variant (first one)
+  const defaultVariant = product.variants[0];
+  const price = defaultVariant?.price || 0;
+  const comparePrice = defaultVariant?.compareAtPrice || price;
+  const hasDiscount = comparePrice > price;
+  const mainImage = product.images[0]?.src || '/placeholder-motor.svg';
 
   return (
     <article 
@@ -26,7 +33,7 @@ export default function ProductCard({ motor }: ProductCardProps) {
           : 'border-border-gray hover:shadow-hover'
       }`}
       role="article"
-      aria-labelledby={`motor-title-${motor.id}`}
+      aria-labelledby={`product-title-${product.id}`}
     >
 
       {/* Compare Checkbox - Top Left */}
@@ -36,10 +43,10 @@ export default function ProductCard({ motor }: ProductCardProps) {
             e.preventDefault();
             e.stopPropagation();
             if (isInCompare) {
-              removeFromCompare(motor.id);
+              removeFromCompare(product.id);
             } else {
               if (compareList.length < 4) {
-                addToCompare(motor.id);
+                addToCompare(product.id);
               }
             }
           }}
@@ -57,22 +64,32 @@ export default function ProductCard({ motor }: ProductCardProps) {
           )}
         </button>
       </div>
+
+      {/* Sale Badge */}
+      {hasDiscount && (
+        <div className="absolute top-2 right-2 z-20">
+          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+            SALE
+          </span>
+        </div>
+      )}
+
       {/* Image Section */}
       <Link 
-        href={`/inventory/${motor.id}`}
+        href={`/inventory/${product.handle}`}
         className="block relative aspect-square overflow-hidden bg-gradient-to-b from-gray-50 to-white p-6"
         onMouseEnter={() => setImageHover(true)}
         onMouseLeave={() => setImageHover(false)}
       >
         <div className="relative w-full h-full">
           <Image
-            src={motor.images[0] || '/placeholder-motor.svg'}
-            alt={`${motor.brand} ${motor.model}`}
+            src={mainImage}
+            alt={product.title}
             fill
             className={`object-contain transition-transform duration-200 ${imageHover ? 'scale-[1.02]' : 'scale-100'}`}
+            unoptimized={mainImage.startsWith('https://') || mainImage.startsWith('/placeholder')}
           />
           
-
           {/* Quick View Button */}
           <div className={`absolute bottom-2 left-1/2 -translate-x-1/2 transition-opacity duration-300 ${imageHover ? 'opacity-100' : 'opacity-0'}`}>
             <button className="relative z-20 bg-white/95 backdrop-blur-sm text-deep-blue px-4 py-2 rounded-lg text-sm font-medium hover:bg-white transition-all duration-200 shadow-sm">
@@ -86,75 +103,82 @@ export default function ProductCard({ motor }: ProductCardProps) {
       <div className="flex-1 flex flex-col p-5 relative z-10">
         {/* Brand */}
         <div className="text-xs text-professional-gray font-medium tracking-wider uppercase mb-2">
-          {motor.brand}
+          {product.brand}
         </div>
 
         {/* Title */}
-        <Link href={`/inventory/${motor.id}`}>
+        <Link href={`/inventory/${product.handle}`}>
           <h3 
-            id={`motor-title-${motor.id}`}
+            id={`product-title-${product.id}`}
             className="text-base font-semibold text-charcoal hover:text-deep-blue transition-colors mb-3 line-clamp-2 leading-tight"
           >
-            {motor.model} - {motor.year}
+            {product.title}
           </h3>
         </Link>
 
         {/* Specs */}
         <div className="flex items-center gap-3 text-sm text-professional-gray mb-4">
-          <span className="font-semibold text-charcoal">{motor.horsepower} HP</span>
-          {motor.shaftLength && (
+          {product.horsepower > 0 && (
+            <span className="font-semibold text-charcoal">{product.horsepower} HP</span>
+          )}
+          {product.variants.length > 1 && (
             <>
               <span className="text-gray-400">|</span>
-              <span className="capitalize text-professional-gray">{motor.shaftLength} Shaft</span>
+              <span className="text-professional-gray">{product.variants.length} options</span>
             </>
           )}
         </div>
 
-        {/* Rating */}
-        {motor.rating && (
-          <div className="flex items-center gap-1 mb-3">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <svg
-                  key={i}
-                  className={`w-3.5 h-3.5 ${i < Math.floor(motor.rating!) ? 'text-yellow-400 fill-current' : 'text-gray-300 fill-current'}`}
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-            </div>
-            <span className="text-xs text-professional-gray">({motor.reviewCount})</span>
+        {/* Tags */}
+        {product.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {product.tags.slice(0, 3).map((tag, i) => (
+              <span 
+                key={i}
+                className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         )}
 
         {/* Price - Push to bottom */}
         <div className="mt-auto">
           <div className="mb-3">
-            {motor.salePrice ? (
+            {hasDiscount ? (
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold text-charcoal">
-                  ${motor.salePrice.toLocaleString()}
+                  ${price.toLocaleString()}
                 </span>
                 <span className="text-sm text-gray-500 line-through">
-                  ${motor.price.toLocaleString()}
+                  ${comparePrice.toLocaleString()}
                 </span>
+                {Math.round(((comparePrice - price) / comparePrice) * 100) > 0 && (
+                  <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-semibold">
+                    {Math.round(((comparePrice - price) / comparePrice) * 100)}% OFF
+                  </span>
+                )}
               </div>
+            ) : product.priceRange.min !== product.priceRange.max ? (
+              <span className="text-xl font-bold text-charcoal">
+                ${product.priceRange.min.toLocaleString()} - ${product.priceRange.max.toLocaleString()}
+              </span>
             ) : (
               <span className="text-2xl font-bold text-charcoal">
-                ${motor.price.toLocaleString()}
+                ${price.toLocaleString()}
               </span>
             )}
           </div>
 
           {/* Stock Status */}
           <div className="mb-3">
-            {motor.inStock ? (
+            {product.inStock ? (
               <span className="text-xs text-green-600 font-medium flex items-center gap-1">
                 <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                In Stock
+                In Stock {defaultVariant?.inventory && `(${defaultVariant.inventory} available)`}
               </span>
             ) : (
               <span className="text-xs text-red-600 font-medium">Out of Stock</span>
@@ -167,13 +191,13 @@ export default function ProductCard({ motor }: ProductCardProps) {
               onClick={() => {
                 setIsAdding(true);
                 addItem({
-                  id: motor.id,
-                  productId: motor.id,
+                  id: product.id,
+                  productId: product.id,
                   productType: 'motor',
-                  name: `${motor.brand} ${motor.model}`,
-                  price: motor.salePrice || motor.price,
+                  name: product.title,
+                  price: price,
                   quantity: 1,
-                  image: motor.images[0] || '/placeholder-motor.svg',
+                  image: mainImage,
                   type: 'motor',
                 });
                 setTimeout(() => {
@@ -181,22 +205,18 @@ export default function ProductCard({ motor }: ProductCardProps) {
                   setIsOpen(true);
                 }, 500);
               }}
-              disabled={!motor.inStock || isAdding}
+              disabled={!product.inStock || isAdding}
               className={`flex-1 py-2.5 px-4 rounded font-medium text-sm transition-all ${
                 isAdding 
                   ? 'bg-green-600 text-white' 
-                  : motor.inStock 
+                  : product.inStock 
                     ? 'bg-deep-blue hover:bg-deep-blue/80 text-white' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
-              aria-describedby={`motor-price-${motor.id}`}
+              aria-describedby={`product-price-${product.id}`}
             >
-              {isAdding ? '✓ Added' : motor.inStock ? 'Add to Cart' : 'Out of Stock'}
+              {isAdding ? '✓ Added' : product.inStock ? 'Add to Cart' : 'Out of Stock'}
             </button>
-            
-            
-
-            
           </div>
         </div>
       </div>

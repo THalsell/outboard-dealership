@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useFilter } from '@/contexts/FilterContext';
-import { allMotors } from '@/lib/data/motors';
+import { Product } from '@/lib/data/products';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import FilterSidebar from './FilterSidebar';
@@ -17,6 +17,7 @@ export default function InventoryPageClient() {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   // Get URL parameters for filtering
   const urlFilters: FilterParams = {
@@ -40,59 +41,97 @@ export default function InventoryPageClient() {
     };
   }, [showMobileFilters]);
 
-  // Simulate loading
+  // Load products from Shopify API
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 300);
-    return () => clearTimeout(timer);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/products');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const fetchedProducts = await response.json();
+        setAllProducts(fetchedProducts);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setAllProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  // Filter and sort motors
-  const filteredMotors = useMemo(() => {
-    // First apply URL parameter filters
-    let filtered = filterMotors(allMotors, urlFilters);
+  // Filter and sort products
+  const filteredProducts = useMemo(() => {
+    // Start with all published products (including out of stock)
+    let filtered = allProducts.filter(product => product.published);
     
-    // Then apply context filters on top of URL filters
-    filtered = filtered.filter((motor) => {
-      // Brand filter from context (if no URL brand filter)
-      if (!urlFilters.brand && filters.brands.length > 0 && !filters.brands.includes(motor.brand)) {
+    // Apply filters
+    filtered = filtered.filter((product) => {
+      // Brand filter
+      if (filters.brands.length > 0 && !filters.brands.includes(product.brand)) {
         return false;
       }
 
-      // Price filter from context
-      const price = motor.salePrice || motor.price;
+      // Condition filter
+      if (filters.conditions.length > 0) {
+        // Check if product has any of the selected conditions in tags
+        const productConditions = product.tags.filter(tag => 
+          ['new', 'used', 'overstock', 'scratch-dent'].includes(tag.toLowerCase())
+        );
+        
+        // If no condition tags exist, assume products are 'new' by default
+        const defaultCondition = productConditions.length === 0 ? 'new' : productConditions[0];
+        const hasMatchingCondition = productConditions.length > 0 
+          ? productConditions.some(condition => filters.conditions.includes(condition.toLowerCase()))
+          : filters.conditions.includes(defaultCondition);
+          
+        if (!hasMatchingCondition) {
+          return false;
+        }
+      }
+
+      // Shaft length filter
+      if (filters.shaftLengths.length > 0) {
+        // Check if product has shaft length in specs or tags
+        const shaftLength = product.specs?.shaftLength || 
+                           product.tags.find(tag => ['short', 'long', 'extra-long'].includes(tag));
+        if (!shaftLength || !filters.shaftLengths.includes(shaftLength)) {
+          return false;
+        }
+      }
+
+      // In stock only filter
+      if (filters.inStockOnly && !product.inStock) {
+        return false;
+      }
+
+      // On sale only filter (check if compare price is higher than regular price)
+      if (filters.onSaleOnly) {
+        const variant = product.variants[0];
+        const hasDiscount = variant?.compareAtPrice && variant.compareAtPrice > variant.price;
+        if (!hasDiscount) {
+          return false;
+        }
+      }
+
+      // Price filter
+      const price = product.variants[0]?.price || 0;
       if (price < filters.minPrice || price > filters.maxPrice) {
         return false;
       }
 
-      // Horsepower filter from context (if no URL hp filter)
-      if (!urlFilters.hp && (motor.horsepower < filters.minHorsepower || motor.horsepower > filters.maxHorsepower)) {
+      // Horsepower filter
+      if (product.horsepower < filters.minHorsepower || product.horsepower > filters.maxHorsepower) {
         return false;
       }
 
-      // Shaft length filter from context
-      if (filters.shaftLengths.length > 0 && motor.shaftLength && !filters.shaftLengths.includes(motor.shaftLength)) {
-        return false;
-      }
-
-      // Condition filter from context (if no URL condition filter)
-      if (!urlFilters.condition && filters.conditions.length > 0 && !filters.conditions.includes(motor.condition)) {
-        return false;
-      }
-
-      // In stock filter from context
-      if (filters.inStockOnly && !motor.inStock) {
-        return false;
-      }
-
-      // On sale filter from context (if no URL status filter)
-      if (!urlFilters.status && filters.onSaleOnly && !motor.salePrice) {
-        return false;
-      }
-
-      // Search query filter from context
+      // Search query filter
       if (filters.searchQuery) {
         const query = filters.searchQuery.toLowerCase();
-        const searchableText = `${motor.brand} ${motor.model} ${motor.year}`.toLowerCase();
+        const searchableText = `${product.brand} ${product.title} ${product.description}`.toLowerCase();
         if (!searchableText.includes(query)) {
           return false;
         }
@@ -101,13 +140,13 @@ export default function InventoryPageClient() {
       return true;
     });
 
-    // Sort motors
+    // Sort products
     switch (filters.sortBy) {
       case 'price-low':
-        filtered.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price));
+        filtered.sort((a, b) => (a.variants[0]?.price || 0) - (b.variants[0]?.price || 0));
         break;
       case 'price-high':
-        filtered.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price));
+        filtered.sort((a, b) => (b.variants[0]?.price || 0) - (a.variants[0]?.price || 0));
         break;
       case 'horsepower-low':
         filtered.sort((a, b) => a.horsepower - b.horsepower);
@@ -115,38 +154,28 @@ export default function InventoryPageClient() {
       case 'horsepower-high':
         filtered.sort((a, b) => b.horsepower - a.horsepower);
         break;
-      case 'year-new':
-        filtered.sort((a, b) => b.year - a.year);
-        break;
-      case 'year-old':
-        filtered.sort((a, b) => a.year - b.year);
-        break;
       case 'brand':
         filtered.sort((a, b) => a.brand.localeCompare(b.brand));
         break;
-      case 'rating':
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
       default: // 'featured'
         filtered.sort((a, b) => {
-          if (a.featured && !b.featured) return -1;
-          if (!a.featured && b.featured) return 1;
-          if (a.bestSeller && !b.bestSeller) return -1;
-          if (!a.bestSeller && b.bestSeller) return 1;
-          return (b.rating || 0) - (a.rating || 0);
+          // Sort by inventory (in stock items first)
+          const aInventory = a.variants.reduce((sum, v) => sum + v.inventory, 0);
+          const bInventory = b.variants.reduce((sum, v) => sum + v.inventory, 0);
+          return bInventory - aInventory;
         });
     }
 
     return filtered;
-  }, [filters]);
+  }, [allProducts, filters]);
 
   // Pagination logic
-  const totalResults = filteredMotors.length;
+  const totalResults = filteredProducts.length;
   const resultsPerPage = filters.resultsPerPage;
   const totalPages = Math.ceil(totalResults / resultsPerPage);
   const startIndex = (currentPage - 1) * resultsPerPage;
   const endIndex = startIndex + resultsPerPage;
-  const paginatedMotors = filteredMotors.slice(startIndex, endIndex);
+  const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   // Reset to page 1 when filters change
   useEffect(() => {
@@ -158,9 +187,9 @@ export default function InventoryPageClient() {
     setCurrentPage(1);
   }, [filters.resultsPerPage]);
 
-  const compareMotors = useMemo(() => {
-    return allMotors.filter(motor => compareList.includes(motor.id));
-  }, [compareList]);
+  const compareProducts = useMemo(() => {
+    return allProducts.filter(product => compareList.includes(product.id));
+  }, [allProducts, compareList]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -244,7 +273,7 @@ export default function InventoryPageClient() {
 
             {/* Grid Content */}
             <InventoryGrid
-              motors={paginatedMotors}
+              products={paginatedProducts}
               loading={loading}
             />
 

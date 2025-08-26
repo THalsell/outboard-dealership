@@ -46,15 +46,26 @@ export default function InventoryHeader({
   ].length;
 
   const getMainHeading = () => {
-    // Priority: URL filters first, then context filters
-    if (urlFilters?.condition === 'new') {
+    // Test brand filter first (simplest case)
+    if (filters.brands.length === 1) {
+      return `SHOP ${filters.brands[0].toUpperCase()} OUTBOARD MOTORS`;
+    } else if (filters.brands.length > 1) {
+      return 'SHOP MULTIPLE BRANDS';
+    }
+    
+    // Check context filters first (sidebar), then URL filters as fallback
+    if (filters.conditions.includes('new') || urlFilters?.condition === 'new') {
       return 'SHOP NEW OUTBOARD MOTORS';
-    } else if (urlFilters?.condition === 'used') {
+    } else if (filters.conditions.includes('used') || urlFilters?.condition === 'used') {
       return 'SHOP USED OUTBOARD MOTORS';
-    } else if (urlFilters?.status === 'sale') {
-      return 'SHOP OUTBOARD MOTORS ON SALE';
-    } else if (urlFilters?.status === 'overstock') {
+    } else if (filters.conditions.includes('overstock') || urlFilters?.status === 'overstock') {
       return 'SHOP OVERSTOCK OUTBOARD MOTORS';
+    } else if (filters.conditions.includes('scratch-dent')) {
+      return 'SHOP SCRATCH & DENT OUTBOARD MOTORS';
+    } else if (filters.onSaleOnly || urlFilters?.status === 'sale') {
+      return 'SHOP OUTBOARD MOTORS ON SALE';
+    } else if (filters.inStockOnly) {
+      return 'SHOP IN STOCK OUTBOARD MOTORS';
     } else if (urlFilters?.hp) {
       const hpDisplay = urlFilters.hp.includes('+') 
         ? `${urlFilters.hp.replace('+', '')}+ HP` 
@@ -62,10 +73,18 @@ export default function InventoryHeader({
       return `SHOP ${hpDisplay} OUTBOARD MOTORS`;
     } else if (urlFilters?.brand) {
       return `SHOP ${urlFilters.brand.toUpperCase()} OUTBOARD MOTORS`;
-    } else if (filters.brands.length === 1) {
-      return `SHOP ALL ${filters.brands[0].toUpperCase()} OUTBOARD MOTORS`;
-    } else if (filters.brands.length > 1) {
-      return 'SHOP MULTIPLE BRANDS';
+    } else if (filters.minHorsepower > 0 || filters.maxHorsepower < 500) {
+      if (filters.minHorsepower <= 30 && filters.maxHorsepower <= 30) {
+        return 'SHOP PORTABLE OUTBOARD MOTORS';
+      } else if (filters.minHorsepower >= 31 && filters.maxHorsepower <= 100) {
+        return 'SHOP MID-RANGE OUTBOARD MOTORS';
+      } else if (filters.minHorsepower >= 101 && filters.maxHorsepower <= 200) {
+        return 'SHOP HIGH PERFORMANCE OUTBOARD MOTORS';
+      } else if (filters.minHorsepower >= 201) {
+        return 'SHOP COMMERCIAL OUTBOARD MOTORS';
+      } else {
+        return `SHOP ${filters.minHorsepower}-${filters.maxHorsepower} HP OUTBOARD MOTORS`;
+      }
     } else {
       return 'SHOP ALL OUTBOARD MOTORS';
     }

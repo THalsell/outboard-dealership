@@ -1,14 +1,14 @@
 'use client';
 
-import { Motor } from '@/types/models/motor';
+import { Product } from '@/lib/data/products';
 import ProductCard from '@/components/ui/ProductCard';
 
 interface InventoryGridProps {
-  motors: Motor[];
+  products: Product[];
   loading?: boolean;
 }
 
-export default function InventoryGrid({ motors, loading = false }: InventoryGridProps) {
+export default function InventoryGrid({ products, loading = false }: InventoryGridProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -28,7 +28,7 @@ export default function InventoryGrid({ motors, loading = false }: InventoryGrid
     );
   }
 
-  if (motors.length === 0) {
+  if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-lg border border-gray-200">
         <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
@@ -49,8 +49,8 @@ export default function InventoryGrid({ motors, loading = false }: InventoryGrid
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {motors.map((motor) => (
-        <ProductCard key={motor.id} motor={motor} />
+      {products.map((product) => (
+        <ProductCard key={product.id} product={product} />
       ))}
     </div>
   );
