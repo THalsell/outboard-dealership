@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useFilter } from '@/contexts/FilterContext';
-import { allMotors } from '@/lib/data/allMotors';
+import { allMotors } from '@/lib/data/motors';
 import { Motor } from '@/types/models/motor';
 import Image from 'next/image';
 import Link from 'next/link';

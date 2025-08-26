@@ -13,7 +13,7 @@ import {
   PerformanceInputs,
   PerformanceResult
 } from '@/types/models/calculator';
-import { allMotors } from '@/lib/data/allMotors';
+import { allMotors } from '@/lib/data/motors';
 
 // Motor Selection Calculator
 export function calculateMotorRecommendation(

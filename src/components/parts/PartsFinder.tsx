@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { allMotors } from '@/lib/data/allMotors';
+import { allMotors } from '@/lib/data/motors';
 import { useParts } from '@/contexts/PartsContext';
 
 interface PartsFinderProps {

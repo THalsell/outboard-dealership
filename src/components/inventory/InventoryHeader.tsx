@@ -2,16 +2,20 @@
 
 import { useFilter } from '@/contexts/FilterContext';
 
+import { FilterParams } from '@/lib/utils/filters';
+
 interface InventoryHeaderProps {
   totalResults: number;
   onShowMobileFilters: () => void;
   loading?: boolean;
+  urlFilters?: FilterParams;
 }
 
 export default function InventoryHeader({ 
   totalResults, 
   onShowMobileFilters, 
-  loading = false 
+  loading = false,
+  urlFilters 
 }: InventoryHeaderProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
 
@@ -42,12 +46,28 @@ export default function InventoryHeader({
   ].length;
 
   const getMainHeading = () => {
-    if (filters.brands.length === 0) {
-      return 'SHOP ALL OUTBOARD MOTORS';
+    // Priority: URL filters first, then context filters
+    if (urlFilters?.condition === 'new') {
+      return 'SHOP NEW OUTBOARD MOTORS';
+    } else if (urlFilters?.condition === 'used') {
+      return 'SHOP USED OUTBOARD MOTORS';
+    } else if (urlFilters?.status === 'sale') {
+      return 'SHOP OUTBOARD MOTORS ON SALE';
+    } else if (urlFilters?.status === 'overstock') {
+      return 'SHOP OVERSTOCK OUTBOARD MOTORS';
+    } else if (urlFilters?.hp) {
+      const hpDisplay = urlFilters.hp.includes('+') 
+        ? `${urlFilters.hp.replace('+', '')}+ HP` 
+        : `${urlFilters.hp.replace('-', '-')} HP`;
+      return `SHOP ${hpDisplay} OUTBOARD MOTORS`;
+    } else if (urlFilters?.brand) {
+      return `SHOP ${urlFilters.brand.toUpperCase()} OUTBOARD MOTORS`;
     } else if (filters.brands.length === 1) {
       return `SHOP ALL ${filters.brands[0].toUpperCase()} OUTBOARD MOTORS`;
-    } else {
+    } else if (filters.brands.length > 1) {
       return 'SHOP MULTIPLE BRANDS';
+    } else {
+      return 'SHOP ALL OUTBOARD MOTORS';
     }
   };
 

@@ -2,19 +2,29 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useFilter } from '@/contexts/FilterContext';
-import { allMotors } from '@/lib/data/allMotors';
+import { allMotors } from '@/lib/data/motors';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import FilterSidebar from './FilterSidebar';
 import InventoryGrid from './InventoryGrid';
 import InventoryHeader from './InventoryHeader';
+import { filterMotors, FilterParams } from '@/lib/utils/filters';
 
 export default function InventoryPageClient() {
   const { filters, compareList, removeFromCompare } = useFilter();
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Get URL parameters for filtering
+  const urlFilters: FilterParams = {
+    hp: searchParams.get('hp') || undefined,
+    brand: searchParams.get('brand') || undefined,
+    condition: searchParams.get('condition') || undefined,
+    status: searchParams.get('status') || undefined,
+  };
 
   // Prevent background scroll when mobile filters are open
   useEffect(() => {
@@ -38,44 +48,48 @@ export default function InventoryPageClient() {
 
   // Filter and sort motors
   const filteredMotors = useMemo(() => {
-    const filtered = allMotors.filter((motor) => {
-      // Brand filter
-      if (filters.brands.length > 0 && !filters.brands.includes(motor.brand)) {
+    // First apply URL parameter filters
+    let filtered = filterMotors(allMotors, urlFilters);
+    
+    // Then apply context filters on top of URL filters
+    filtered = filtered.filter((motor) => {
+      // Brand filter from context (if no URL brand filter)
+      if (!urlFilters.brand && filters.brands.length > 0 && !filters.brands.includes(motor.brand)) {
         return false;
       }
 
-      // Price filter
+      // Price filter from context
       const price = motor.salePrice || motor.price;
       if (price < filters.minPrice || price > filters.maxPrice) {
         return false;
       }
 
-      // Horsepower filter
-      if (motor.horsepower < filters.minHorsepower || motor.horsepower > filters.maxHorsepower) {
+      // Horsepower filter from context (if no URL hp filter)
+      if (!urlFilters.hp && (motor.horsepower < filters.minHorsepower || motor.horsepower > filters.maxHorsepower)) {
         return false;
       }
 
-      // Shaft length filter
+      // Shaft length filter from context
       if (filters.shaftLengths.length > 0 && motor.shaftLength && !filters.shaftLengths.includes(motor.shaftLength)) {
         return false;
       }
 
-      // Condition filter
-      if (filters.conditions.length > 0 && !filters.conditions.includes(motor.condition)) {
+      // Condition filter from context (if no URL condition filter)
+      if (!urlFilters.condition && filters.conditions.length > 0 && !filters.conditions.includes(motor.condition)) {
         return false;
       }
 
-      // In stock filter
+      // In stock filter from context
       if (filters.inStockOnly && !motor.inStock) {
         return false;
       }
 
-      // On sale filter
-      if (filters.onSaleOnly && !motor.salePrice) {
+      // On sale filter from context (if no URL status filter)
+      if (!urlFilters.status && filters.onSaleOnly && !motor.salePrice) {
         return false;
       }
 
-      // Search query filter
+      // Search query filter from context
       if (filters.searchQuery) {
         const query = filters.searchQuery.toLowerCase();
         const searchableText = `${motor.brand} ${motor.model} ${motor.year}`.toLowerCase();
@@ -225,6 +239,7 @@ export default function InventoryPageClient() {
               totalResults={totalResults}
               onShowMobileFilters={() => setShowMobileFilters(true)}
               loading={loading}
+              urlFilters={urlFilters}
             />
 
             {/* Grid Content */}
