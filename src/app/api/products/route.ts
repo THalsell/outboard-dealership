@@ -61,21 +61,22 @@ function transformShopifyProduct(shopifyProduct: ShopifyProduct): Product {
 
   // Transform variants
   const variants = shopifyProduct.variants.map(variant => ({
-    sku: variant.sku,
-    option1Name: variant.option1 ? 'Shaft Length' : undefined,
-    option1Value: variant.option1 || undefined,
-    option2Name: variant.option2 ? 'Color' : undefined,
-    option2Value: variant.option2 || undefined,
+      id: variant.id.toString(),
+      sku: variant.sku,
+      option1Name: variant.option1 ? 'Shaft Length' : undefined,
+      option1Value: variant.option1 || undefined,
+      option2Name: variant.option2 ? 'Color' : undefined,
+      option2Value: variant.option2 || undefined,
     price: parseFloat(variant.price),
     compareAtPrice: variant.compare_at_price ? parseFloat(variant.compare_at_price) : parseFloat(variant.price),
     weight: variant.weight,
-    weightUnit: variant.weight_unit,
-    inventory: variant.inventory_quantity,
-    available: variant.inventory_quantity > 0,
-    barcode: variant.barcode,
-    taxable: variant.taxable,
-    requiresShipping: variant.requires_shipping,
-    costPerItem: parseFloat(variant.price) * 0.7,
+      weightUnit: variant.weight_unit,
+      inventory: variant.inventory_quantity,
+      available: variant.inventory_quantity > 0,
+      barcode: variant.barcode,
+      taxable: variant.taxable,
+      requiresShipping: variant.requires_shipping,
+      costPerItem: parseFloat(variant.price) * 0.7,
   }));
 
   // Calculate price range
@@ -114,7 +115,7 @@ function transformShopifyProduct(shopifyProduct: ShopifyProduct): Product {
 export async function GET() {
   try {
     const response = await fetch(
-      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/products.json?limit=250`,
+      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-10/products.json?limit=250`,
       {
         method: 'GET',
         headers: {

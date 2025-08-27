@@ -22,8 +22,8 @@ export default function WhyChooseUs() {
                   <span className="text-deep-blue text-xl">✓</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Expert Service Team</h3>
-                  <p className="text-charcoal opacity-80">Factory-trained technicians ensure your motor runs perfectly.</p>
+                  <h3 className="text-xl font-semibold mb-2">Large Inventory</h3>
+                  <p className="text-charcoal opacity-80">Wide selection of new and used motors always in stock.</p>
                 </div>
               </div>
               <div className="flex gap-4">

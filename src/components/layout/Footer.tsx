@@ -45,18 +45,18 @@ export default function Footer() {
               <li><Link href="/inventory/new" className="text-xs text-gray-400 hover:text-white">New Motors</Link></li>
               <li><Link href="/inventory/used" className="text-xs text-gray-400 hover:text-white">Used Motors</Link></li>
               <li><Link href="/parts" className="text-xs text-gray-400 hover:text-white">Parts & Accessories</Link></li>
-              <li><Link href="/service/schedule" className="text-xs text-gray-400 hover:text-white">Schedule Service</Link></li>
+              <li><Link href="/inventory/trade-in" className="text-xs text-gray-400 hover:text-white">Trade-In Program</Link></li>
               <li><Link href="/financing/calculator" className="text-xs text-gray-400 hover:text-white">Financing Calculator</Link></li>
               <li><Link href="/learn/guides" className="text-xs text-gray-400 hover:text-white">Buying Guides</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-sm font-semibold mb-4">Customer Service</h4>
+            <h4 className="text-sm font-semibold mb-4">Information</h4>
             <ul className="space-y-2">
               <li><Link href="/about" className="text-xs text-gray-400 hover:text-white">About Us</Link></li>
               <li><Link href="/learn/faqs" className="text-xs text-gray-400 hover:text-white">FAQs</Link></li>
-              <li><Link href="/account/orders" className="text-xs text-gray-400 hover:text-white">Order Tracking</Link></li>
+              <li><a href="https://outboard-practice-store.myshopify.com/account" className="text-xs text-gray-400 hover:text-white">Order Tracking</a></li>
             </ul>
           </div>
 
@@ -86,9 +86,11 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
           <p className="text-xs">&copy; {currentYear} Outboard Motors Dealership. All rights reserved.</p>
           <div className="mt-2 space-x-4 text-xs">
-            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+            <a href="https://outboard-practice-store.myshopify.com/policies/privacy-policy" className="hover:text-white" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
             <span>|</span>
-            <Link href="/terms" className="hover:text-white">Terms of Service</Link>
+            <a href="https://outboard-practice-store.myshopify.com/policies/terms-of-service" className="hover:text-white" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+            <span>|</span>
+            <a href="https://outboard-practice-store.myshopify.com/policies/refund-policy" className="hover:text-white" target="_blank" rel="noopener noreferrer">Refund Policy</a>
             <span>|</span>
             <Link href="/sitemap" className="hover:text-white">Sitemap</Link>
           </div>

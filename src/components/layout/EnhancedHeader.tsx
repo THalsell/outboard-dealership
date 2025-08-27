@@ -53,17 +53,6 @@ export default function EnhancedHeader() {
       ]
     },
     {
-      name: 'Service',
-      href: '/service',
-      dropdown: [
-        { name: 'Schedule Service', href: '/service/schedule', description: 'Book appointment' },
-        { name: 'Service Status', href: '/service/status', description: 'Track your service' },
-        { name: 'Service History', href: '/service/history', description: 'View past services' },
-        { name: 'Maintenance Plans', href: '/service/plans', description: 'Service packages' },
-        { name: 'Warranty Info', href: '/service/warranty', description: 'Coverage details' },
-      ]
-    },
-    {
       name: 'Financing',
       href: '/financing',
       dropdown: [
@@ -82,6 +71,10 @@ export default function EnhancedHeader() {
         { name: 'Videos', href: '/learn/videos', description: 'Tutorials & reviews' },
         { name: 'Blog', href: '/learn/blog', description: 'Tips & news' },
       ]
+    },
+    {
+      name: 'Calculators',
+      href: '/calculators'
     },
   ];
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -14,6 +15,38 @@ export default function CartDrawer() {
     isOpen,
     setIsOpen,
   } = useCart();
+  
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  
+  const handleCheckout = async () => {
+    setIsCheckingOut(true);
+    
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Redirect to Shopify checkout
+        window.location.href = data.checkoutUrl;
+      } else {
+        console.error('Checkout error:', data.error);
+        alert('Failed to create checkout. Please try again.');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert('Failed to create checkout. Please try again.');
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
 
   if (!isOpen) return null;
 
@@ -149,13 +182,13 @@ export default function CartDrawer() {
               Shipping and taxes calculated at checkout
             </div>
             <div className="space-y-2">
-              <Link
-                href="/checkout"
-                className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={handleCheckout}
+                disabled={isCheckingOut || items.length === 0}
+                className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Proceed to Checkout
-              </Link>
+                {isCheckingOut ? 'Creating Checkout...' : 'Proceed to Checkout'}
+              </button>
               <button
                 onClick={() => setIsOpen(false)}
                 className="block w-full border border-gray-300 text-gray-700 text-center py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium"

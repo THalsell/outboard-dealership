@@ -5,6 +5,15 @@ const SHOPIFY_ADMIN_ACCESS_TOKEN = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
 
 export async function POST(request: Request) {
   try {
+    // Check if environment variables are set
+    if (!SHOPIFY_STORE_DOMAIN || !SHOPIFY_ADMIN_ACCESS_TOKEN) {
+      console.error('Missing Shopify environment variables');
+      return NextResponse.json(
+        { error: 'Server configuration error. Please contact support.' },
+        { status: 500 }
+      );
+    }
+
     const { email, firstName, lastName } = await request.json();
 
     if (!email) {
@@ -14,9 +23,11 @@ export async function POST(request: Request) {
       );
     }
 
+    console.log('Processing newsletter signup for:', email);
+
     // Check if customer already exists
     const searchResponse = await fetch(
-      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/customers/search.json?query=email:${encodeURIComponent(email)}`,
+      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-10/customers/search.json?query=email:${encodeURIComponent(email)}`,
       {
         method: 'GET',
         headers: {
@@ -39,7 +50,7 @@ export async function POST(request: Request) {
       
       // Update existing customer to accept marketing
       const updateResponse = await fetch(
-        `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/customers/${existingCustomer.id}.json`,
+        `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-10/customers/${existingCustomer.id}.json`,
         {
           method: 'PUT',
           headers: {
@@ -49,9 +60,11 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             customer: {
               id: existingCustomer.id,
-              accepts_marketing: true,
-              accepts_marketing_updated_at: new Date().toISOString(),
-              marketing_opt_in_level: 'confirmed_opt_in',
+              email_marketing_consent: {
+                state: 'subscribed',
+                opt_in_level: 'confirmed_opt_in',
+                consent_updated_at: new Date().toISOString()
+              },
               tags: existingCustomer.tags 
                 ? `${existingCustomer.tags}, newsletter-subscriber`
                 : 'newsletter-subscriber'
@@ -67,7 +80,7 @@ export async function POST(request: Request) {
       }
 
       const updateData = await updateResponse.json();
-      console.log('Customer updated successfully:', updateData.customer.accepts_marketing);
+      console.log('Customer updated successfully:', updateData.customer.email_marketing_consent);
 
       return NextResponse.json({ 
         success: true, 
@@ -78,7 +91,7 @@ export async function POST(request: Request) {
 
     // Create new customer
     const createResponse = await fetch(
-      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/customers.json`,
+      `https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-10/customers.json`,
       {
         method: 'POST',
         headers: {
@@ -90,9 +103,11 @@ export async function POST(request: Request) {
             email: email,
             first_name: firstName || '',
             last_name: lastName || '',
-            accepts_marketing: true,
-            accepts_marketing_updated_at: new Date().toISOString(),
-            marketing_opt_in_level: 'confirmed_opt_in',
+            email_marketing_consent: {
+              state: 'subscribed',
+              opt_in_level: 'confirmed_opt_in',
+              consent_updated_at: new Date().toISOString()
+            },
             tags: 'newsletter-subscriber',
             verified_email: false,
             send_email_welcome: false
@@ -108,7 +123,7 @@ export async function POST(request: Request) {
     }
 
     const customerData = await createResponse.json();
-    console.log('Customer created successfully:', customerData.customer.accepts_marketing);
+    console.log('Customer created successfully:', customerData.customer.email_marketing_consent);
 
     return NextResponse.json({ 
       success: true, 

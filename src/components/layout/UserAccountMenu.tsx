@@ -5,7 +5,8 @@ import Link from 'next/link';
 
 export default function UserAccountMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // This would normally come from auth context
+  // For now, we'll assume users aren't logged in and direct them to Shopify
+  const isLoggedIn = false;
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,12 +20,12 @@ export default function UserAccountMenu() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const SHOPIFY_STORE_URL = 'https://outboard-practice-store.myshopify.com';
+  
   const accountLinks = isLoggedIn ? [
-    { name: 'My Profile', href: '/account/profile', icon: '👤' },
-    { name: 'Orders', href: '/account/orders', icon: '📦' },
-    { name: 'Service History', href: '/service/history', icon: '🔧' },
-    { name: 'Loyalty Points', href: '/account/loyalty', icon: '⭐' },
-    { name: 'Settings', href: '/account/settings', icon: '⚙️' },
+    { name: 'My Account', href: `${SHOPIFY_STORE_URL}/account`, icon: '👤' },
+    { name: 'Orders', href: `${SHOPIFY_STORE_URL}/account`, icon: '📦' },
+    { name: 'Addresses', href: `${SHOPIFY_STORE_URL}/account/addresses`, icon: '📍' },
   ] : [];
 
   return (
@@ -94,26 +95,26 @@ export default function UserAccountMenu() {
               {/* Guest User */}
               <div className="px-4 py-3">
                 <p className="text-gray-700 mb-3">Welcome! Sign in to access your account</p>
-                <Link
-                  href="/login"
+                <a
+                  href={`${SHOPIFY_STORE_URL}/account/login`}
                   className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium mb-2"
                   onClick={() => setIsOpen(false)}
                 >
                   Sign In
-                </Link>
-                <Link
-                  href="/register"
+                </a>
+                <a
+                  href={`${SHOPIFY_STORE_URL}/account/register`}
                   className="block w-full border border-gray-300 text-gray-700 text-center py-2 rounded-lg hover:bg-gray-50 transition-colors font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   Create Account
-                </Link>
+                </a>
               </div>
 
               {/* Quick Links for Guests */}
               <div className="border-t py-2">
-                <Link
-                  href="/account/orders"
+                <a
+                  href={`${SHOPIFY_STORE_URL}/account`}
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
@@ -121,17 +122,7 @@ export default function UserAccountMenu() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                   <span className="text-gray-700">Track Order</span>
-                </Link>
-                <Link
-                  href="/service/status"
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span className="text-gray-700">Service Status</span>
-                </Link>
+                </a>
                 <Link
                   href="/learn/faqs"
                   className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors"

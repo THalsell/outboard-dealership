@@ -17,12 +17,12 @@ export default function HeroSlider() {
       link: "/inventory"
     },
     {
-      title: "Spring Service Special",
-      subtitle: "Save 20% on Maintenance",
-      description: "Get your motor ready for the season with our comprehensive service package.",
+      title: "Trade-In Program",
+      subtitle: "Get Top Dollar",
+      description: "Trade in your old motor and upgrade to the latest models with our competitive trade-in values.",
       image: "/mercury.jpeg",
-      cta: "Book Service",
-      link: "/service/schedule"
+      cta: "Get Quote",
+      link: "/inventory/trade-in"
     },
     {
       title: "0% Financing Available",

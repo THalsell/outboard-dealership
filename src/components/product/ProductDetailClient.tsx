@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
@@ -31,6 +30,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     addItem({
       id: `${product.id}-${selectedVariantIndex}`,
       productId: product.id,
+      variantId: selectedVariant.id, // Use Shopify variant ID
       productType: 'motor',
       name: `${product.title} - ${selectedVariant.option1Value || 'Standard'}`,
       price: price,

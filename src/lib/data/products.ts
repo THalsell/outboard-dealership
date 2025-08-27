@@ -2,6 +2,7 @@
 // Generated on 2025-08-26T18:22:18.877Z
 
 export interface ProductVariant {
+  id: string;
   sku: string;
   option1Name?: string;
   option1Value?: string;
