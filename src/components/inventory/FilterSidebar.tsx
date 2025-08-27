@@ -6,15 +6,32 @@ import { useState } from 'react';
 interface FilterSidebarProps {
   isMobile?: boolean;
   onClose?: () => void;
+  availableBrands?: string[];
+  priceRange?: { min: number; max: number };
+  horsepowerRange?: { min: number; max: number };
+  availableShaftLengths?: string[];
 }
 
-export default function FilterSidebar({ isMobile = false, onClose }: FilterSidebarProps) {
+export default function FilterSidebar({ 
+  isMobile = false, 
+  onClose,
+  availableBrands = ['Honda', 'Yamaha', 'Mercury', 'Freedom', 'Suzuki', 'Tohatsu'],
+  priceRange = { min: 0, max: 100000 },
+  horsepowerRange = { min: 0, max: 500 },
+  availableShaftLengths = ['15"', '20"', '25"']
+}: FilterSidebarProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
-  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition']);
+  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'cylinders', 'shaft']);
 
-  const brands = ['Honda', 'Yamaha', 'Mercury', 'Freedom', 'Suzuki', 'Tohatsu'];
-  const shaftLengths = ['short', 'long', 'extra-long'];
+  const brands = availableBrands;
+  const shaftLengths = availableShaftLengths;
   const conditions = ['new', 'used', 'overstock', 'scratch-dent'];
+  const cylinders = ['1', '2', '3'];
+
+  // Debug logging
+  console.log('Available shaft lengths:', availableShaftLengths);
+  console.log('Shaft lengths variable:', shaftLengths);
+  console.log('Expanded sections:', expandedSections);
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev =>
@@ -43,6 +60,13 @@ export default function FilterSidebar({ isMobile = false, onClose }: FilterSideb
       ? filters.conditions.filter(c => c !== condition)
       : [...filters.conditions, condition];
     updateFilter('conditions', newConditions);
+  };
+
+  const handleCylinderToggle = (cylinder: string) => {
+    const newCylinders = filters.cylinders.includes(cylinder)
+      ? filters.cylinders.filter(c => c !== cylinder)
+      : [...filters.cylinders, cylinder];
+    updateFilter('cylinders', newCylinders);
   };
 
   return (
@@ -180,8 +204,8 @@ export default function FilterSidebar({ isMobile = false, onClose }: FilterSideb
                   <input
                     type="number"
                     placeholder="Max"
-                    value={filters.maxPrice === 100000 ? '' : filters.maxPrice}
-                    onChange={(e) => updateFilter('maxPrice', Number(e.target.value) || 100000)}
+                    value={filters.maxPrice === priceRange.max ? '' : filters.maxPrice}
+                    onChange={(e) => updateFilter('maxPrice', Number(e.target.value) || priceRange.max)}
                     className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
                   />
                 </div>
@@ -257,8 +281,8 @@ export default function FilterSidebar({ isMobile = false, onClose }: FilterSideb
                 <input
                   type="number"
                   placeholder="Max HP"
-                  value={filters.maxHorsepower === 500 ? '' : filters.maxHorsepower}
-                  onChange={(e) => updateFilter('maxHorsepower', Number(e.target.value) || 500)}
+                  value={filters.maxHorsepower === horsepowerRange.max ? '' : filters.maxHorsepower}
+                  onChange={(e) => updateFilter('maxHorsepower', Number(e.target.value) || horsepowerRange.max)}
                   className="px-3 py-2 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
                 />
               </div>
@@ -344,6 +368,41 @@ export default function FilterSidebar({ isMobile = false, onClose }: FilterSideb
           )}
         </div>
 
+        {/* Cylinders */}
+        <div className="py-4 border-b border-gray-200">
+          <button
+            onClick={() => toggleSection('cylinders')}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h3 className="text-base font-semibold text-charcoal">Cylinders</h3>
+            <svg 
+              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('cylinders') ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {expandedSections.includes('cylinders') && (
+            <div className="mt-3 space-y-2">
+              {cylinders.map((cylinder) => (
+                <label key={cylinder} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={filters.cylinders.includes(cylinder)}
+                    onChange={() => handleCylinderToggle(cylinder)}
+                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
+                  />
+                  <span className="text-sm text-gray-700">
+                    {cylinder} Cylinder{cylinder !== '1' ? 's' : ''}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Shaft Length */}
         <div className="py-4">
           <button
@@ -370,8 +429,10 @@ export default function FilterSidebar({ isMobile = false, onClose }: FilterSideb
                     onChange={() => handleShaftLengthToggle(length)}
                     className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
                   />
-                  <span className="text-sm text-gray-700 capitalize">
-                    {length.replace('-', ' ')}
+                  <span className="text-sm text-gray-700">
+                    {length === '15"' ? '15" (Short)' :
+                     length === '20"' ? '20" (Long)' :
+                     length === '25"' ? '25" (Extra Long)' : length}
                   </span>
                 </label>
               ))}

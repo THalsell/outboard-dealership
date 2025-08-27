@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { BoatSpecs, UsageProfile, MotorRecommendation } from '@/types/models/calculator';
 import { calculateMotorRecommendation } from '@/lib/calculators/utils';
+import { Product } from '@/lib/data/products';
 
 export default function MotorSelectionCalculator() {
   const [step, setStep] = useState(1);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [boatSpecs, setBoatSpecs] = useState<BoatSpecs>({
     length: 20,
     beam: 8,
@@ -28,8 +31,27 @@ export default function MotorSelectionCalculator() {
 
   const [results, setResults] = useState<MotorRecommendation | null>(null);
 
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          const fetchedProducts = await response.json();
+          setAllProducts(fetchedProducts);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const handleCalculate = () => {
-    const recommendation = calculateMotorRecommendation(boatSpecs, usageProfile);
+    const recommendation = calculateMotorRecommendation(boatSpecs, usageProfile, allProducts);
     setResults(recommendation);
     setStep(4);
   };

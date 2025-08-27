@@ -10,6 +10,7 @@ interface FilterState {
   maxHorsepower: number;
   shaftLengths: string[];
   conditions: string[];
+  cylinders: string[];
   inStockOnly: boolean;
   onSaleOnly: boolean;
   sortBy: string;
@@ -28,21 +29,24 @@ interface FilterContextType {
   clearCompare: () => void;
 }
 
-const defaultFilters: FilterState = {
+const getDefaultFilters = (maxPrice = 100000, maxHorsepower = 500): FilterState => ({
   brands: [],
   minPrice: 0,
-  maxPrice: 100000,
+  maxPrice,
   minHorsepower: 0,
-  maxHorsepower: 500,
+  maxHorsepower,
   shaftLengths: [],
   conditions: [],
+  cylinders: [],
   inStockOnly: false,
   onSaleOnly: false,
   sortBy: 'featured',
   viewMode: 'grid',
   searchQuery: '',
   resultsPerPage: 36
-};
+});
+
+const defaultFilters = getDefaultFilters();
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 

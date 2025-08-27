@@ -2,31 +2,53 @@
 
 import { useState, useEffect } from 'react';
 import { useFilter } from '@/contexts/FilterContext';
-import { allMotors } from '@/lib/data/motors';
-import { Motor } from '@/types/models/motor';
+import { Product } from '@/lib/data/products';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function ComparePageClient() {
   const { compareList, removeFromCompare, clearCompare } = useFilter();
-  const [selectedMotors, setSelectedMotors] = useState<Motor[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
   const [showAddMotor, setShowAddMotor] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch products from API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          const fetchedProducts = await response.json();
+          setAllProducts(fetchedProducts);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
-    const motors = compareList.map(id => allMotors.find(m => m.id === id)).filter(Boolean) as Motor[];
-    setSelectedMotors(motors);
-  }, [compareList]);
+    const motors = compareList.map(id => allProducts.find(p => p.id === id)).filter(Boolean) as Product[];
+    setSelectedProducts(motors);
+  }, [compareList, allProducts]);
 
-  const availableMotors = allMotors.filter(motor => 
-    !compareList.includes(motor.id) &&
+  const availableProducts = allProducts.filter(product => 
+    !compareList.includes(product.id) &&
+    product.published &&
+    product.type === 'Outboard Motor' &&
     (searchQuery === '' || 
-     `${motor.brand} ${motor.model}`.toLowerCase().includes(searchQuery.toLowerCase()))
+     `${product.brand} ${product.title}`.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
-  const addMotorToCompare = (motor: Motor) => {
+  const addMotorToCompare = (product: Product) => {
     if (compareList.length < 4) {
-      const event = new CustomEvent('addToCompare', { detail: motor.id });
+      const event = new CustomEvent('addToCompare', { detail: product.id });
       window.dispatchEvent(event);
       setShowAddMotor(false);
       setSearchQuery('');
@@ -34,17 +56,17 @@ export default function ComparePageClient() {
   };
 
   const getSpecificationRows = () => {
-    if (selectedMotors.length === 0) return [];
+    if (selectedProducts.length === 0) return [];
 
     const specKeys = new Set<string>();
-    selectedMotors.forEach(motor => {
-      Object.keys(motor.specifications || {}).forEach(key => specKeys.add(key));
+    selectedProducts.forEach(product => {
+      Object.keys(product.specs || {}).forEach(key => specKeys.add(key));
     });
 
     return Array.from(specKeys).sort();
   };
 
-  if (selectedMotors.length === 0) {
+  if (selectedProducts.length === 0) {
     return (
       <div className="min-h-screen bg-light-gray py-8">
         <div className="container mx-auto px-4">
@@ -106,19 +128,19 @@ export default function ComparePageClient() {
                   />
                   
                   <div className="max-h-64 overflow-y-auto">
-                    {availableMotors.slice(0, 20).map((motor) => (
+                    {availableProducts.slice(0, 20).map((product) => (
                       <div
-                        key={motor.id}
-                        onClick={() => addMotorToCompare(motor)}
+                        key={product.id}
+                        onClick={() => addMotorToCompare(product)}
                         className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer rounded-lg"
                       >
                         <div className="w-12 h-12 bg-gray-200 rounded flex-shrink-0"></div>
                         <div className="flex-1">
-                          <h4 className="font-medium">{motor.brand} {motor.model}</h4>
-                          <p className="text-sm text-gray-600">{motor.year} • {motor.horsepower}HP</p>
+                          <h4 className="font-medium">{product.brand} {product.title}</h4>
+                          <p className="text-sm text-gray-600">{product.horsepower}HP</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-semibold">${(motor.salePrice || motor.price).toLocaleString()}</p>
+                          <p className="font-semibold">${(product.variants[0]?.price || 0).toLocaleString()}</p>
                         </div>
                       </div>
                     ))}
@@ -141,11 +163,11 @@ export default function ComparePageClient() {
         <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-charcoal mb-2">Compare Motors</h1>
-            <p className="text-gray-600">Comparing {selectedMotors.length} motor{selectedMotors.length !== 1 ? 's' : ''}</p>
+            <p className="text-gray-600">Comparing {selectedProducts.length} motor{selectedProducts.length !== 1 ? 's' : ''}</p>
           </div>
           
           <div className="flex gap-3">
-            {selectedMotors.length < 4 && (
+            {selectedProducts.length < 4 && (
               <button
                 onClick={() => setShowAddMotor(true)}
                 className="border border-deep-blue text-deep-blue px-4 py-2 rounded-lg hover:bg-deep-blue hover:text-white transition-colors text-sm"
@@ -170,29 +192,29 @@ export default function ComparePageClient() {
               <thead>
                 <tr className="border-b border-gray-200">
                   <th className="text-left p-4 bg-gray-50 font-medium text-gray-700 w-48">Specifications</th>
-                  {selectedMotors.map((motor) => (
-                    <th key={motor.id} className="p-4 bg-gray-50 min-w-64">
+                  {selectedProducts.map((product) => (
+                    <th key={product.id} className="p-4 bg-gray-50 min-w-64">
                       <div className="text-center">
                         <div className="relative w-32 h-24 mx-auto mb-3 bg-gray-200 rounded">
                           <Image
-                            src={motor.images[0] || '/api/placeholder/200/150'}
-                            alt={`${motor.brand} ${motor.model}`}
+                            src={product.images[0]?.src || '/placeholder-motor.svg'}
+                            alt={product.title}
                             fill
                             className="object-cover rounded"
                           />
                         </div>
-                        <h3 className="font-semibold text-charcoal text-lg">{motor.brand} {motor.model}</h3>
-                        <p className="text-sm text-gray-600 mb-2">{motor.year} • {motor.horsepower}HP</p>
+                        <h3 className="font-semibold text-charcoal text-lg">{product.brand} {product.title}</h3>
+                        <p className="text-sm text-gray-600 mb-2">{product.horsepower}HP</p>
                         <div className="text-lg font-bold text-deep-blue">
-                          {motor.salePrice && (
+                          {product.variants[0]?.compareAtPrice && product.variants[0].compareAtPrice > product.variants[0].price && (
                             <span className="line-through text-sm text-gray-500 mr-2">
-                              ${motor.price.toLocaleString()}
+                              ${product.variants[0].compareAtPrice.toLocaleString()}
                             </span>
                           )}
-                          <span>${(motor.salePrice || motor.price).toLocaleString()}</span>
+                          <span>${(product.variants[0]?.price || 0).toLocaleString()}</span>
                         </div>
                         <button
-                          onClick={() => removeFromCompare(motor.id)}
+                          onClick={() => removeFromCompare(product.id)}
                           className="mt-2 text-red-600 hover:bg-red-50 px-2 py-1 rounded text-sm"
                         >
                           Remove
@@ -207,17 +229,10 @@ export default function ComparePageClient() {
                 {/* Key Specs */}
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Condition</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 text-center">
-                      <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                        motor.condition === 'new' ? 'bg-green-100 text-green-800' :
-                        motor.condition === 'used' ? 'bg-blue-100 text-blue-800' :
-                        motor.condition === 'overstock' ? 'bg-orange-100 text-orange-800' :
-                        motor.condition === 'scratch-dent' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {motor.condition === 'scratch-dent' ? 'Scratch & Dent' :
-                         motor.condition.charAt(0).toUpperCase() + motor.condition.slice(1)}
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 text-center">
+                      <span className="inline-flex px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        {product.status || 'New'}
                       </span>
                     </td>
                   ))}
@@ -225,47 +240,49 @@ export default function ComparePageClient() {
 
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Fuel Type</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 text-center capitalize">{motor.fuelType}</td>
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 text-center capitalize">Gasoline</td>
                   ))}
                 </tr>
 
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Weight</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 text-center">{motor.weight} lbs</td>
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 text-center">{product.specs?.Weight || 'N/A'}</td>
                   ))}
                 </tr>
 
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Cylinders</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 text-center">{motor.cylinders || 'N/A'}</td>
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 text-center">{product.specs?.Cylinders || 'N/A'}</td>
                   ))}
                 </tr>
 
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Shaft Length</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 text-center capitalize">{motor.shaftLength || 'N/A'}</td>
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 text-center capitalize">
+                      {product.variants.find(v => v.option1Name === 'Shaft Length')?.option1Value || 'N/A'}
+                    </td>
                   ))}
                 </tr>
 
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Warranty</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 text-center text-sm">{motor.warranty || 'Contact for details'}</td>
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 text-center text-sm">Contact for details</td>
                   ))}
                 </tr>
 
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Stock</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 text-center">
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 text-center">
                       <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${
-                        motor.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        product.inStock ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}>
-                        {motor.inStock ? `${motor.stockQuantity} Available` : 'Out of Stock'}
+                        {product.inStock ? 'Available' : 'Out of Stock'}
                       </span>
                     </td>
                   ))}
@@ -275,9 +292,9 @@ export default function ComparePageClient() {
                 {specRows.map((specKey) => (
                   <tr key={specKey} className="border-b border-gray-100">
                     <td className="p-4 font-medium text-gray-700 bg-gray-50">{specKey}</td>
-                    {selectedMotors.map((motor) => (
-                      <td key={motor.id} className="p-4 text-center text-sm">
-                        {motor.specifications?.[specKey] || 'N/A'}
+                    {selectedProducts.map((product) => (
+                      <td key={product.id} className="p-4 text-center text-sm">
+                        {product.specs?.[specKey] || 'N/A'}
                       </td>
                     ))}
                   </tr>
@@ -286,17 +303,17 @@ export default function ComparePageClient() {
                 {/* Features */}
                 <tr className="border-b border-gray-100">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50 align-top">Key Features</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4 align-top">
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4 align-top">
                       <ul className="text-sm space-y-1 text-left">
-                        {motor.features.slice(0, 5).map((feature, index) => (
+                        {product.tags.slice(0, 5).map((tag, index) => (
                           <li key={index} className="flex items-start gap-1">
                             <span className="text-green-600 mt-1">•</span>
-                            <span>{feature}</span>
+                            <span>{tag}</span>
                           </li>
                         ))}
-                        {motor.features.length > 5 && (
-                          <li className="text-gray-500 italic">+{motor.features.length - 5} more</li>
+                        {product.tags.length > 5 && (
+                          <li className="text-gray-500 italic">+{product.tags.length - 5} more</li>
                         )}
                       </ul>
                     </td>
@@ -306,11 +323,11 @@ export default function ComparePageClient() {
                 {/* Action Buttons */}
                 <tr>
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Actions</td>
-                  {selectedMotors.map((motor) => (
-                    <td key={motor.id} className="p-4">
+                  {selectedProducts.map((product) => (
+                    <td key={product.id} className="p-4">
                       <div className="space-y-2">
                         <Link
-                          href={`/inventory/${motor.id}`}
+                          href={`/inventory/${product.handle}`}
                           className="block bg-deep-blue text-white px-4 py-2 rounded-lg hover:bg-teal transition-colors text-center text-sm"
                         >
                           View Details
@@ -318,7 +335,7 @@ export default function ComparePageClient() {
                         <button className="block w-full border border-deep-blue text-deep-blue px-4 py-2 rounded-lg hover:bg-deep-blue hover:text-white transition-colors text-sm">
                           Get Quote
                         </button>
-                        {motor.inStock && (
+                        {product.inStock && (
                           <button className="block w-full bg-teal text-white px-4 py-2 rounded-lg hover:bg-teal/90 transition-colors text-sm">
                             Add to Cart
                           </button>
@@ -377,19 +394,19 @@ export default function ComparePageClient() {
                 />
                 
                 <div className="max-h-64 overflow-y-auto">
-                  {availableMotors.slice(0, 20).map((motor) => (
+                  {availableProducts.slice(0, 20).map((product) => (
                     <div
-                      key={motor.id}
-                      onClick={() => addMotorToCompare(motor)}
+                      key={product.id}
+                      onClick={() => addMotorToCompare(product)}
                       className="flex items-center gap-3 p-3 hover:bg-gray-50 cursor-pointer rounded-lg"
                     >
                       <div className="w-12 h-12 bg-gray-200 rounded flex-shrink-0"></div>
                       <div className="flex-1">
-                        <h4 className="font-medium">{motor.brand} {motor.model}</h4>
-                        <p className="text-sm text-gray-600">{motor.year} • {motor.horsepower}HP</p>
+                        <h4 className="font-medium">{product.brand} {product.title}</h4>
+                        <p className="text-sm text-gray-600">{product.horsepower}HP</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">${(motor.salePrice || motor.price).toLocaleString()}</p>
+                        <p className="font-semibold">${(product.variants[0]?.price || 0).toLocaleString()}</p>
                       </div>
                     </div>
                   ))}

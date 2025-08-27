@@ -28,8 +28,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const categories = [
     { value: 'all', label: 'All' },
     { value: 'motors', label: 'Motors' },
-    { value: 'parts', label: 'Parts' },
-    { value: 'accessories', label: 'Accessories' },
     { value: 'guides', label: 'Guides' },
   ];
 
@@ -69,14 +67,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             price: '$49,999',
             image: '/placeholder-motor.svg',
             link: '/inventory/2',
-          },
-          {
-            id: '3',
-            title: 'Stainless Steel Propeller',
-            category: 'parts',
-            price: '$899',
-            image: '/placeholder-motor.svg',
-            link: '/parts/propellers/3',
           },
         ];
         
@@ -192,14 +182,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   >
                     <div className="text-2xl mb-2">🚤</div>
                     <div className="font-medium">New Motors</div>
-                  </Link>
-                  <Link
-                    href="/parts"
-                    className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors text-center"
-                    onClick={handleClose}
-                  >
-                    <div className="text-2xl mb-2">⚙️</div>
-                    <div className="font-medium">Parts</div>
                   </Link>
                   <Link
                     href="/service/schedule"

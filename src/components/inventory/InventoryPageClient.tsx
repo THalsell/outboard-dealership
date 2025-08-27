@@ -8,7 +8,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import FilterSidebar from './FilterSidebar';
 import InventoryGrid from './InventoryGrid';
 import InventoryHeader from './InventoryHeader';
-import { filterMotors, FilterParams } from '@/lib/utils/filters';
+
+interface URLFilters {
+  hp?: string;
+  brand?: string;
+  condition?: string;
+  status?: string;
+}
 
 export default function InventoryPageClient() {
   const { filters, compareList, removeFromCompare } = useFilter();
@@ -20,7 +26,7 @@ export default function InventoryPageClient() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   // Get URL parameters for filtering
-  const urlFilters: FilterParams = {
+  const urlFilters: URLFilters = {
     hp: searchParams.get('hp') || undefined,
     brand: searchParams.get('brand') || undefined,
     condition: searchParams.get('condition') || undefined,
@@ -77,28 +83,102 @@ export default function InventoryPageClient() {
 
       // Condition filter
       if (filters.conditions.length > 0) {
-        // Check if product has any of the selected conditions in tags
-        const productConditions = product.tags.filter(tag => 
-          ['new', 'used', 'overstock', 'scratch-dent'].includes(tag.toLowerCase())
+        // Check product status field first, then tags, then default to 'new'
+        let productCondition = 'new'; // Default condition
+        
+        // Check status field
+        if (product.status) {
+          const status = product.status.toLowerCase();
+          if (['used', 'refurbished', 'open-box'].includes(status)) {
+            productCondition = 'used';
+          } else if (status === 'overstock') {
+            productCondition = 'overstock';
+          } else if (status === 'scratch-dent' || status === 'damaged') {
+            productCondition = 'scratch-dent';
+          }
+        }
+        
+        // Also check tags as fallback
+        const conditionTag = product.tags.find(tag => 
+          ['new', 'used', 'overstock', 'scratch-dent', 'refurbished', 'open-box'].includes(tag.toLowerCase())
         );
         
-        // If no condition tags exist, assume products are 'new' by default
-        const defaultCondition = productConditions.length === 0 ? 'new' : productConditions[0];
-        const hasMatchingCondition = productConditions.length > 0 
-          ? productConditions.some(condition => filters.conditions.includes(condition.toLowerCase()))
-          : filters.conditions.includes(defaultCondition);
-          
-        if (!hasMatchingCondition) {
+        if (conditionTag) {
+          const normalizedTag = conditionTag.toLowerCase();
+          if (['refurbished', 'open-box'].includes(normalizedTag)) {
+            productCondition = 'used';
+          } else {
+            productCondition = normalizedTag;
+          }
+        }
+        
+        if (!filters.conditions.includes(productCondition)) {
           return false;
         }
       }
 
       // Shaft length filter
       if (filters.shaftLengths.length > 0) {
-        // Check if product has shaft length in specs or tags
-        const shaftLength = product.specs?.shaftLength || 
-                           product.tags.find(tag => ['short', 'long', 'extra-long'].includes(tag));
-        if (!shaftLength || !filters.shaftLengths.includes(shaftLength)) {
+        // Check if product has shaft length variants
+        const productShaftLengths = product.variants
+          .filter(v => v.option1Name === 'Shaft Length' && v.option1Value)
+          .map(v => {
+            // Normalize shaft length values for filtering
+            const value = v.option1Value.toLowerCase();
+            if (value.includes('15') || value.includes('short')) return '15"';
+            if (value.includes('20') || value.includes('long')) return '20"';
+            if (value.includes('25') || value.includes('extra')) return '25"';
+            return value;
+          });
+        
+        const hasMatchingShaft = productShaftLengths.some(length => 
+          filters.shaftLengths.includes(length)
+        );
+        
+        if (!hasMatchingShaft) {
+          return false;
+        }
+      }
+
+      // Cylinders filter
+      if (filters.cylinders.length > 0) {
+        // Check if product has cylinder count in specs or tags
+        let productCylinders: string | null = null;
+        
+        // First check specs for cylinder count
+        if (product.specs?.cylinders) {
+          productCylinders = product.specs.cylinders.toString();
+        } else if (product.specs?.Cylinders) {
+          productCylinders = product.specs.Cylinders.toString();
+        }
+        
+        // If not in specs, check tags for cylinder information
+        if (!productCylinders) {
+          const cylinderTag = product.tags.find(tag => 
+            tag.toLowerCase().includes('cylinder') || 
+            /^\d+\s*cyl/i.test(tag)
+          );
+          
+          if (cylinderTag) {
+            const match = cylinderTag.match(/(\d+)/);
+            if (match) {
+              productCylinders = match[1];
+            }
+          }
+        }
+        
+        // Default assumption based on horsepower ranges if no explicit data
+        if (!productCylinders) {
+          if (product.horsepower <= 30) {
+            productCylinders = '1';
+          } else if (product.horsepower <= 60) {
+            productCylinders = '2';
+          } else {
+            productCylinders = '3';
+          }
+        }
+        
+        if (!filters.cylinders.includes(productCylinders)) {
           return false;
         }
       }
@@ -191,6 +271,72 @@ export default function InventoryPageClient() {
     return allProducts.filter(product => compareList.includes(product.id));
   }, [allProducts, compareList]);
 
+  // Calculate dynamic filter ranges from actual inventory
+  const dynamicRanges = useMemo(() => {
+    if (allProducts.length === 0) {
+      return {
+        priceRange: { min: 0, max: 100000 },
+        horsepowerRange: { min: 0, max: 500 },
+        availableBrands: [],
+        availableShaftLengths: []
+      };
+    }
+
+    // Get unique brands
+    const brandsSet = new Set<string>();
+    let minPrice = Infinity;
+    let maxPrice = 0;
+    let minHP = Infinity;
+    let maxHP = 0;
+    const shaftLengthsSet = new Set<string>();
+
+    allProducts.forEach(product => {
+      // Brands
+      if (product.brand) {
+        brandsSet.add(product.brand);
+      }
+
+      // Price range
+      product.variants.forEach(variant => {
+        if (variant.price) {
+          minPrice = Math.min(minPrice, variant.price);
+          maxPrice = Math.max(maxPrice, variant.price);
+        }
+
+        // Shaft lengths
+        if (variant.option1Name === 'Shaft Length' && variant.option1Value) {
+          const value = variant.option1Value.toLowerCase();
+          if (value.includes('20') || value.includes('short')) {
+            shaftLengthsSet.add('short');
+          } else if (value.includes('25') || value.includes('long')) {
+            shaftLengthsSet.add('long');
+          } else if (value.includes('30') || value.includes('extra')) {
+            shaftLengthsSet.add('extra-long');
+          }
+        }
+      });
+
+      // Horsepower range
+      if (product.horsepower) {
+        minHP = Math.min(minHP, product.horsepower);
+        maxHP = Math.max(maxHP, product.horsepower);
+      }
+    });
+
+    return {
+      priceRange: { 
+        min: minPrice === Infinity ? 0 : Math.floor(minPrice), 
+        max: maxPrice === 0 ? 100000 : Math.ceil(maxPrice) 
+      },
+      horsepowerRange: { 
+        min: minHP === Infinity ? 0 : Math.floor(minHP), 
+        max: maxHP === 0 ? 500 : Math.ceil(maxHP) 
+      },
+      availableBrands: Array.from(brandsSet).sort(),
+      availableShaftLengths: Array.from(shaftLengthsSet).sort()
+    };
+  }, [allProducts]);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile Filter Page */}
@@ -198,7 +344,11 @@ export default function InventoryPageClient() {
         <div className="fixed inset-0 z-50 lg:hidden bg-white">
           <FilterSidebar 
             isMobile={true} 
-            onClose={() => setShowMobileFilters(false)} 
+            onClose={() => setShowMobileFilters(false)}
+            availableBrands={dynamicRanges.availableBrands}
+            priceRange={dynamicRanges.priceRange}
+            horsepowerRange={dynamicRanges.horsepowerRange}
+            availableShaftLengths={dynamicRanges.availableShaftLengths}
           />
         </div>
       )}
@@ -255,7 +405,12 @@ export default function InventoryPageClient() {
         <div className="flex gap-6">
           {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
-            <FilterSidebar />
+            <FilterSidebar 
+              availableBrands={dynamicRanges.availableBrands}
+              priceRange={dynamicRanges.priceRange}
+              horsepowerRange={dynamicRanges.horsepowerRange}
+              availableShaftLengths={dynamicRanges.availableShaftLengths}
+            />
           </aside>
 
           {/* Vertical Line Separator */}

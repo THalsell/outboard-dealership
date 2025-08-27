@@ -2,13 +2,18 @@
 
 import { useFilter } from '@/contexts/FilterContext';
 
-import { FilterParams } from '@/lib/utils/filters';
+interface URLFilters {
+  hp?: string;
+  brand?: string;
+  condition?: string;
+  status?: string;
+}
 
 interface InventoryHeaderProps {
   totalResults: number;
   onShowMobileFilters: () => void;
   loading?: boolean;
-  urlFilters?: FilterParams;
+  urlFilters?: URLFilters;
 }
 
 export default function InventoryHeader({ 

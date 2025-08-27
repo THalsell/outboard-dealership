@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN;
-const SHOPIFY_STOREFRONT_ACCESS_TOKEN = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+import { storefrontClient } from '@/lib/shopify';
 
 interface CartItem {
   id: string;
@@ -15,7 +13,7 @@ interface CartItem {
 
 export async function POST(request: NextRequest) {
   try {
-    if (!SHOPIFY_STORE_DOMAIN || !SHOPIFY_STOREFRONT_ACCESS_TOKEN) {
+    if (!storefrontClient.domain || !storefrontClient.storefrontAccessToken) {
       return NextResponse.json(
         { error: 'Missing Shopify configuration' },
         { status: 500 }
@@ -38,7 +36,7 @@ export async function POST(request: NextRequest) {
         throw new Error(`Product ${item.name} is missing variant ID. Cannot create checkout.`);
       }
       return {
-        merchandiseId: `gid://shopify/ProductVariant/${item.variantId}`,
+        merchandiseId: item.variantId, // Already includes gid://shopify/ProductVariant/ prefix
         quantity: item.quantity
       };
     });
@@ -90,11 +88,11 @@ export async function POST(request: NextRequest) {
     };
 
     const response = await fetch(
-      `https://${SHOPIFY_STORE_DOMAIN}/api/2024-10/graphql.json`,
+      `https://${storefrontClient.domain}/api/${storefrontClient.apiVersion}/graphql.json`,
       {
         method: 'POST',
         headers: {
-          'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+          'X-Shopify-Storefront-Access-Token': storefrontClient.storefrontAccessToken,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({

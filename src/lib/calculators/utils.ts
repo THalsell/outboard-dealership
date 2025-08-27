@@ -13,12 +13,13 @@ import {
   PerformanceInputs,
   PerformanceResult
 } from '@/types/models/calculator';
-import { allMotors } from '@/lib/data/motors';
+import { Product } from '@/lib/data/products';
 
 // Motor Selection Calculator
 export function calculateMotorRecommendation(
   boatSpecs: BoatSpecs, 
-  usageProfile: UsageProfile
+  usageProfile: UsageProfile,
+  availableProducts: Product[] = []
 ): MotorRecommendation {
   // Base horsepower calculation using boat weight and length
   const baseHP = Math.round((boatSpecs.weight + (boatSpecs.passengers * 150)) / 20);
@@ -68,23 +69,33 @@ export function calculateMotorRecommendation(
   reasoning.push(`${usageProfile.primaryUse} usage adjustment: ${(usageMultipliers[usageProfile.primaryUse] - 1) * 100 > 0 ? '+' : ''}${Math.round((usageMultipliers[usageProfile.primaryUse] - 1) * 100)}%`);
   reasoning.push(`${usageProfile.maxSpeed} performance preference: ${(speedMultipliers[usageProfile.maxSpeed] - 1) * 100 > 0 ? '+' : ''}${Math.round((speedMultipliers[usageProfile.maxSpeed] - 1) * 100)}%`);
 
-  // Find suitable motors
-  const suitableMotors = allMotors
-    .filter(motor => motor.horsepower >= minHP && motor.horsepower <= maxHP)
-    .map(motor => {
+  // Find suitable motors from Shopify products
+  const suitableMotors = availableProducts
+    .filter(product => 
+      product.published && 
+      product.horsepower >= minHP && 
+      product.horsepower <= maxHP &&
+      product.type === 'Outboard Motor'
+    )
+    .map(product => {
       // Calculate efficiency estimate (rough approximation)
-      const efficiency = Math.max(1, 6 - (motor.horsepower / 100));
+      const efficiency = Math.max(1, 6 - (product.horsepower / 100));
       
       // Calculate suitability score based on how close to recommended HP
-      const hpDiff = Math.abs(motor.horsepower - recommendedHP);
+      const hpDiff = Math.abs(product.horsepower - recommendedHP);
       const suitabilityScore = Math.max(1, 10 - (hpDiff / recommendedHP * 10));
 
+      // Get the default variant price
+      const price = product.variants[0]?.price || 0;
+      const comparePrice = product.variants[0]?.compareAtPrice || price;
+      const displayPrice = comparePrice > price ? price : comparePrice;
+
       return {
-        motorId: motor.id,
-        brand: motor.brand,
-        model: motor.model,
-        horsepower: motor.horsepower,
-        price: motor.salePrice || motor.price,
+        motorId: product.id,
+        brand: product.brand,
+        model: product.title,
+        horsepower: product.horsepower,
+        price: displayPrice,
         efficiency,
         suitabilityScore: Math.round(suitabilityScore * 10) / 10
       };

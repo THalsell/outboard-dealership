@@ -127,7 +127,7 @@ export default function CartDrawer() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">{item.name}</h3>
                     <p className="text-sm text-gray-600 capitalize">
-                      {item.type}
+                      {item.productType}
                     </p>
                     <p className="text-lg font-bold text-blue-600">
                       ${item.price.toLocaleString()}

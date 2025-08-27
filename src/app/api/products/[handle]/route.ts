@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
-import { fetchProducts } from '@/lib/shopify';
+import { fetchProduct } from '@/lib/shopify';
 import { Product } from '@/lib/data/products';
 
-// Transform GraphQL product to our Product type
-function transformGraphQLProduct(graphqlProduct: any): Product {
+// Transform detailed GraphQL product to our Product type
+function transformDetailedGraphQLProduct(graphqlProduct: any): Product {
+  if (!graphqlProduct) {
+    throw new Error('Product not found');
+  }
+
   // Extract horsepower from title
   let horsepower = 0;
   const hpMatch = graphqlProduct.title.match(/(\d+(?:\.\d+)?)\s*HP/i);
@@ -30,24 +34,26 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
   // Extract brand from title or use a fallback
   const brand = graphqlProduct.title.split(' ')[0] || 'Unknown';
 
-  // Get main image
+  // Get all images
   const images = graphqlProduct.images?.edges?.map((edge: any, index: number) => ({
     src: edge.node.url,
     position: index + 1,
     alt: edge.node.altText || graphqlProduct.title,
   })) || [];
 
-  // Get variant info
+  // Get all variants with detailed info
   const variants = graphqlProduct.variants?.edges?.map((edge: any) => {
     const variant = edge.node;
     return {
       id: variant.id,
       sku: variant.sku || '',
-      option1Name: 'Shaft Length', // Assume shaft length for outboards
+      option1Name: graphqlProduct.options?.[0]?.name || 'Shaft Length',
       option1Value: variant.title !== 'Default Title' ? variant.title : undefined,
+      option2Name: graphqlProduct.options?.[1]?.name,
+      option2Value: undefined, // Would need to parse from variant title
       price: parseFloat(variant.price?.amount || '0'),
       compareAtPrice: variant.compareAtPrice ? parseFloat(variant.compareAtPrice.amount) : parseFloat(variant.price?.amount || '0'),
-      weight: 0, // GraphQL doesn't return weight in basic query
+      weight: 0, // Could be populated from metafields
       weightUnit: 'kg',
       inventory: variant.quantityAvailable || 0,
       available: variant.availableForSale && variant.quantityAvailable > 0,
@@ -64,6 +70,17 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
     max: prices.length > 0 ? Math.max(...prices) : 0,
   };
 
+  // Extract specs from metafields
+  const specs: Record<string, string> = {};
+  if (graphqlProduct.metafields?.edges) {
+    graphqlProduct.metafields.edges.forEach((edge: any) => {
+      const metafield = edge.node;
+      if (metafield.namespace === 'specs' || metafield.namespace === 'custom') {
+        specs[metafield.key] = metafield.value;
+      }
+    });
+  }
+
   return {
     id: graphqlProduct.id,
     handle: graphqlProduct.handle,
@@ -72,13 +89,13 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
     vendor: brand,
     brand: brand,
     type: 'Outboard Motor',
-    tags: [], // GraphQL basic query doesn't include tags
+    tags: [], // Could be added to GraphQL query if needed
     category: 'outboard',
     powerCategory,
     horsepower,
-    published: true, // Products returned by Storefront API are published
+    published: true,
     images,
-    specs: {}, // Could be populated from metafields in future
+    specs,
     variants,
     priceRange,
     inStock: variants.some(v => v.inventory > 0),
@@ -86,27 +103,38 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
   };
 }
 
-export async function GET(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { handle: string } }
+) {
   try {
-    const { searchParams } = new URL(request.url);
-    const query = searchParams.get('query') || '';
-    const limit = parseInt(searchParams.get('limit') || '50');
+    const { handle } = params;
 
-    // Fetch products using GraphQL Storefront API
-    const graphqlProducts = await fetchProducts(query, limit);
+    if (!handle) {
+      return NextResponse.json(
+        { error: 'Product handle is required' },
+        { status: 400 }
+      );
+    }
 
-    if (!graphqlProducts) {
-      throw new Error('Failed to fetch products from Shopify');
+    // Fetch product using GraphQL Storefront API
+    const graphqlProduct = await fetchProduct(handle);
+
+    if (!graphqlProduct) {
+      return NextResponse.json(
+        { error: 'Product not found' },
+        { status: 404 }
+      );
     }
 
     // Transform to our Product type
-    const products = graphqlProducts.map(transformGraphQLProduct);
+    const product = transformDetailedGraphQLProduct(graphqlProduct);
     
-    return NextResponse.json(products);
+    return NextResponse.json(product);
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('Error fetching product:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch products' },
+      { error: 'Failed to fetch product' },
       { status: 500 }
     );
   }

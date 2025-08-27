@@ -193,12 +193,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                 addItem({
                   id: product.id,
                   productId: product.id,
+                  variantId: defaultVariant?.id,
                   productType: 'motor',
                   name: product.title,
                   price: price,
                   quantity: 1,
                   image: mainImage,
-                  type: 'motor',
                 });
                 setTimeout(() => {
                   setIsAdding(false);

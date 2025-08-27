@@ -36,7 +36,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       price: price,
       quantity: 1,
       image: product.images[0]?.src || '/placeholder-motor.svg',
-      type: 'motor',
     });
 
     setTimeout(() => {

@@ -1,35 +1,14 @@
-import { shopifyApi } from '@shopify/shopify-api';
-import { ApiVersion } from '@shopify/shopify-api';
-
-// Initialize Shopify API
-const shopify = shopifyApi({
-  apiKey: process.env.SHOPIFY_API_KEY,
-  apiSecretKey: process.env.SHOPIFY_API_SECRET,
-  scopes: ['read_products', 'write_products', 'read_inventory'],
-  hostName: process.env.SHOPIFY_APP_URL,
-  apiVersion: ApiVersion.January24,
-});
-
-// Admin API client for backend operations
-export const getShopifyAdminClient = () => {
-  const client = new shopify.clients.Rest({
-    session: {
-      shop: process.env.SHOPIFY_STORE_DOMAIN,
-      accessToken: process.env.SHOPIFY_ADMIN_ACCESS_TOKEN,
-    },
-  });
-  return client;
-};
+// Shopify configuration without SDK dependency
 
 // Storefront API client for public data
 export const storefrontClient = {
-  domain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
-  storefrontAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+  domain: process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN as string,
+  storefrontAccessToken: process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN as string,
   apiVersion: '2024-01',
 };
 
 // Helper function to fetch products from Storefront API
-export async function fetchProducts(query = '', first = 20) {
+export async function fetchProducts(query: string = '', first: number = 20): Promise<unknown[]> {
   const graphqlQuery = `
     query getProducts($first: Int!, $query: String) {
       products(first: $first, query: $query) {
@@ -88,7 +67,7 @@ export async function fetchProducts(query = '', first = 20) {
     }
 
     const data = await response.json();
-    return data.data.products.edges.map(edge => edge.node);
+    return data.data.products.edges.map((edge: { node: unknown }) => edge.node);
   } catch (error) {
     console.error('Error fetching products:', error);
     return [];
@@ -96,7 +75,7 @@ export async function fetchProducts(query = '', first = 20) {
 }
 
 // Helper function to fetch a single product by handle
-export async function fetchProduct(handle) {
+export async function fetchProduct(handle: string): Promise<unknown> {
   const graphqlQuery = `
     query getProduct($handle: String!) {
       product(handle: $handle) {
@@ -185,7 +164,7 @@ export async function fetchProduct(handle) {
 }
 
 // Helper function to create checkout
-export async function createCheckout(lineItems = []) {
+export async function createCheckout(lineItems: unknown[] = []): Promise<unknown> {
   const graphqlQuery = `
     mutation checkoutCreate($input: CheckoutCreateInput!) {
       checkoutCreate(input: $input) {
@@ -256,4 +235,4 @@ export async function createCheckout(lineItems = []) {
   }
 }
 
-export default shopify;
+// Export functions for use in API routes

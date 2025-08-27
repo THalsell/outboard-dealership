@@ -41,18 +41,6 @@ export default function EnhancedHeader() {
       ]
     },
     {
-      name: 'Parts',
-      href: '/parts',
-      dropdown: [
-        { name: 'Browse Categories', href: '/parts/categories', description: 'All parts categories' },
-        { name: 'Part Finder', href: '/parts/finder', description: 'Find parts by model' },
-        { name: 'Propellers', href: '/parts/propellers', description: 'Props for all brands' },
-        { name: 'Oil & Lubricants', href: '/parts/oil', description: 'Marine grade oils' },
-        { name: 'Accessories', href: '/parts/accessories', description: 'Boat accessories' },
-        { name: 'Electronics', href: '/parts/electronics', description: 'Marine electronics' },
-      ]
-    },
-    {
       name: 'Financing',
       href: '/financing',
       dropdown: [
@@ -114,7 +102,7 @@ export default function EnhancedHeader() {
                 <span className="xs:hidden">Call</span>
               </a>
               <span className="hidden sm:inline">|</span>
-              <span className="hidden md:inline flex items-center gap-1">
+              <span className="hidden md:inline items-center gap-1">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
