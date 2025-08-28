@@ -9,6 +9,12 @@ interface FilterState {
   minHorsepower: number;
   maxHorsepower: number;
   shaftLengths: string[];
+  driveTypes: string[];
+  fuelDelivery: string[];
+  fuelTank: string[];
+  starting: string[];
+  steering: string[];
+  trimTilt: string[];
   conditions: string[];
   cylinders: string[];
   inStockOnly: boolean;
@@ -36,6 +42,12 @@ const getDefaultFilters = (maxPrice = 100000, maxHorsepower = 500): FilterState 
   minHorsepower: 0,
   maxHorsepower,
   shaftLengths: [],
+  driveTypes: [],
+  fuelDelivery: [],
+  fuelTank: [],
+  starting: [],
+  steering: [],
+  trimTilt: [],
   conditions: [],
   cylinders: [],
   inStockOnly: false,

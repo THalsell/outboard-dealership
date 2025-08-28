@@ -21,12 +21,18 @@ export default function FilterSidebar({
   availableShaftLengths = ['15"', '20"', '25"']
 }: FilterSidebarProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
-  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'cylinders', 'shaft']);
+  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'cylinders', 'shaft', 'drive', 'fuel', 'tank', 'starting', 'steering', 'trimtilt']);
 
   const brands = availableBrands;
   const shaftLengths = availableShaftLengths;
   const conditions = ['new', 'used', 'overstock', 'scratch-dent'];
   const cylinders = ['1', '2', '3'];
+  const driveTypes = ['jet', 'prop'];
+  const fuelDeliveryTypes = ['carburetor', 'efi', 'propane'];
+  const fuelTankTypes = ['internal', 'external'];
+  const startingTypes = ['manual', 'electric'];
+  const steeringTypes = ['remote', 'tiller'];
+  const trimTiltTypes = ['manual', 'power-tilt', 'power-trim-tilt'];
 
   // Debug logging
   console.log('Available shaft lengths:', availableShaftLengths);
@@ -67,6 +73,48 @@ export default function FilterSidebar({
       ? filters.cylinders.filter(c => c !== cylinder)
       : [...filters.cylinders, cylinder];
     updateFilter('cylinders', newCylinders);
+  };
+
+  const handleDriveTypeToggle = (driveType: string) => {
+    const newDriveTypes = filters.driveTypes.includes(driveType)
+      ? filters.driveTypes.filter(d => d !== driveType)
+      : [...filters.driveTypes, driveType];
+    updateFilter('driveTypes', newDriveTypes);
+  };
+
+  const handleFuelDeliveryToggle = (fuelType: string) => {
+    const newFuelDelivery = filters.fuelDelivery.includes(fuelType)
+      ? filters.fuelDelivery.filter(f => f !== fuelType)
+      : [...filters.fuelDelivery, fuelType];
+    updateFilter('fuelDelivery', newFuelDelivery);
+  };
+
+  const handleFuelTankToggle = (tankType: string) => {
+    const newFuelTank = filters.fuelTank.includes(tankType)
+      ? filters.fuelTank.filter(t => t !== tankType)
+      : [...filters.fuelTank, tankType];
+    updateFilter('fuelTank', newFuelTank);
+  };
+
+  const handleStartingToggle = (startType: string) => {
+    const newStarting = filters.starting.includes(startType)
+      ? filters.starting.filter(s => s !== startType)
+      : [...filters.starting, startType];
+    updateFilter('starting', newStarting);
+  };
+
+  const handleSteeringToggle = (steeringType: string) => {
+    const newSteering = filters.steering.includes(steeringType)
+      ? filters.steering.filter(s => s !== steeringType)
+      : [...filters.steering, steeringType];
+    updateFilter('steering', newSteering);
+  };
+
+  const handleTrimTiltToggle = (trimTiltType: string) => {
+    const newTrimTilt = filters.trimTilt.includes(trimTiltType)
+      ? filters.trimTilt.filter(t => t !== trimTiltType)
+      : [...filters.trimTilt, trimTiltType];
+    updateFilter('trimTilt', newTrimTilt);
   };
 
   return (
@@ -404,7 +452,7 @@ export default function FilterSidebar({
         </div>
 
         {/* Shaft Length */}
-        <div className="py-4">
+        <div className="py-4 border-b border-gray-200">
           <button
             onClick={() => toggleSection('shaft')}
             className="flex items-center justify-between w-full text-left"
@@ -433,6 +481,220 @@ export default function FilterSidebar({
                     {length === '15"' ? '15" (Short)' :
                      length === '20"' ? '20" (Long)' :
                      length === '25"' ? '25" (Extra Long)' : length}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Drive Type */}
+        <div className="py-4 border-b border-gray-200">
+          <button
+            onClick={() => toggleSection('drive')}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h3 className="text-base font-semibold text-charcoal">Drive Type</h3>
+            <svg 
+              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('drive') ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {expandedSections.includes('drive') && (
+            <div className="mt-3 space-y-2">
+              {driveTypes.map((driveType) => (
+                <label key={driveType} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={filters.driveTypes.includes(driveType)}
+                    onChange={() => handleDriveTypeToggle(driveType)}
+                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
+                  />
+                  <span className="text-sm text-gray-700 capitalize">
+                    {driveType === 'jet' ? 'Jet Drive' : 'Propeller'}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Fuel Delivery */}
+        <div className="py-4 border-b border-gray-200">
+          <button
+            onClick={() => toggleSection('fuel')}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h3 className="text-base font-semibold text-charcoal">Fuel Delivery</h3>
+            <svg 
+              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('fuel') ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {expandedSections.includes('fuel') && (
+            <div className="mt-3 space-y-2">
+              {fuelDeliveryTypes.map((fuelType) => (
+                <label key={fuelType} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={filters.fuelDelivery.includes(fuelType)}
+                    onChange={() => handleFuelDeliveryToggle(fuelType)}
+                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
+                  />
+                  <span className="text-sm text-gray-700 capitalize">
+                    {fuelType === 'carburetor' ? 'Carburetor' :
+                     fuelType === 'efi' ? 'EFI (Electronic Fuel Injection)' :
+                     'Propane'}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Fuel Tank */}
+        <div className="py-4 border-b border-gray-200">
+          <button
+            onClick={() => toggleSection('tank')}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h3 className="text-base font-semibold text-charcoal">Fuel Tank</h3>
+            <svg 
+              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('tank') ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {expandedSections.includes('tank') && (
+            <div className="mt-3 space-y-2">
+              {fuelTankTypes.map((tankType) => (
+                <label key={tankType} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={filters.fuelTank.includes(tankType)}
+                    onChange={() => handleFuelTankToggle(tankType)}
+                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
+                  />
+                  <span className="text-sm text-gray-700 capitalize">
+                    {tankType === 'internal' ? 'Internal Tank' : 'External Tank'}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Starting Method */}
+        <div className="py-4 border-b border-gray-200">
+          <button
+            onClick={() => toggleSection('starting')}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h3 className="text-base font-semibold text-charcoal">Starting Method</h3>
+            <svg 
+              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('starting') ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {expandedSections.includes('starting') && (
+            <div className="mt-3 space-y-2">
+              {startingTypes.map((startType) => (
+                <label key={startType} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={filters.starting.includes(startType)}
+                    onChange={() => handleStartingToggle(startType)}
+                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
+                  />
+                  <span className="text-sm text-gray-700 capitalize">
+                    {startType === 'manual' ? 'Manual (Pull Start)' : 'Electric Start'}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Steering */}
+        <div className="py-4 border-b border-gray-200">
+          <button
+            onClick={() => toggleSection('steering')}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h3 className="text-base font-semibold text-charcoal">Steering</h3>
+            <svg 
+              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('steering') ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {expandedSections.includes('steering') && (
+            <div className="mt-3 space-y-2">
+              {steeringTypes.map((steeringType) => (
+                <label key={steeringType} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={filters.steering.includes(steeringType)}
+                    onChange={() => handleSteeringToggle(steeringType)}
+                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
+                  />
+                  <span className="text-sm text-gray-700 capitalize">
+                    {steeringType === 'remote' ? 'Remote Steering' : 'Tiller Handle'}
+                  </span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Trim & Tilt */}
+        <div className="py-4">
+          <button
+            onClick={() => toggleSection('trimtilt')}
+            className="flex items-center justify-between w-full text-left"
+          >
+            <h3 className="text-base font-semibold text-charcoal">Trim & Tilt</h3>
+            <svg 
+              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('trimtilt') ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {expandedSections.includes('trimtilt') && (
+            <div className="mt-3 space-y-2">
+              {trimTiltTypes.map((trimTiltType) => (
+                <label key={trimTiltType} className="flex items-center gap-3 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={filters.trimTilt.includes(trimTiltType)}
+                    onChange={() => handleTrimTiltToggle(trimTiltType)}
+                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
+                  />
+                  <span className="text-sm text-gray-700 capitalize">
+                    {trimTiltType === 'manual' ? 'Manual Tilt' :
+                     trimTiltType === 'power-tilt' ? 'Power Tilt' :
+                     'Power Trim & Tilt'}
                   </span>
                 </label>
               ))}

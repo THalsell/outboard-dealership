@@ -34,12 +34,26 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
                 }
               }
             }
-            variants(first: 1) {
+            variants(first: 100) {
               edges {
                 node {
                   id
+                  title
+                  sku
                   availableForSale
                   quantityAvailable
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
+                  selectedOptions {
+                    name
+                    value
+                  }
                 }
               }
             }

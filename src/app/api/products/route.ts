@@ -40,11 +40,36 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
   // Get variant info
   const variants = graphqlProduct.variants?.edges?.map((edge: any) => {
     const variant = edge.node;
+    
+    // Extract shaft length from selectedOptions
+    let option1Name = 'Shaft Length';
+    let option1Value = undefined;
+    
+    if (variant.selectedOptions && variant.selectedOptions.length > 0) {
+      // Look for shaft length option
+      const shaftOption = variant.selectedOptions.find((opt: any) => 
+        opt.name.toLowerCase().includes('shaft') || 
+        opt.name.toLowerCase().includes('length')
+      );
+      
+      if (shaftOption) {
+        option1Name = shaftOption.name;
+        option1Value = shaftOption.value;
+      } else if (variant.selectedOptions[0]) {
+        // Use first option if no shaft length found
+        option1Name = variant.selectedOptions[0].name;
+        option1Value = variant.selectedOptions[0].value;
+      }
+    } else if (variant.title !== 'Default Title') {
+      // Fallback to variant title
+      option1Value = variant.title;
+    }
+    
     return {
       id: variant.id,
       sku: variant.sku || '',
-      option1Name: 'Shaft Length', // Assume shaft length for outboards
-      option1Value: variant.title !== 'Default Title' ? variant.title : undefined,
+      option1Name,
+      option1Value,
       price: parseFloat(variant.price?.amount || '0'),
       compareAtPrice: variant.compareAtPrice ? parseFloat(variant.compareAtPrice.amount) : parseFloat(variant.price?.amount || '0'),
       weight: 0, // GraphQL doesn't return weight in basic query

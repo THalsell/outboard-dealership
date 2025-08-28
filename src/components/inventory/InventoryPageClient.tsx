@@ -117,19 +117,231 @@ export default function InventoryPageClient() {
         }
       }
 
+      // Trim & Tilt filter
+      if (filters.trimTilt.length > 0) {
+        // Check if product has trim & tilt information
+        let productTrimTiltType: string | null = null;
+        
+        // Check product tags for trim & tilt type
+        const manualTiltTags = ['manual-tilt', 'manual tilt', 'manual-trim', 'manual trim', 'no-power-tilt'];
+        const powerTiltTags = ['power-tilt', 'power tilt', 'electric-tilt', 'electric tilt', 'hydraulic-tilt'];
+        const powerTrimTiltTags = ['power-trim-tilt', 'power trim tilt', 'power-trim-and-tilt', 'trim-and-tilt', 'ptt'];
+        
+        const hasManualTiltTag = product.tags.some(tag => 
+          manualTiltTags.includes(tag.toLowerCase())
+        );
+        const hasPowerTiltTag = product.tags.some(tag => 
+          powerTiltTags.includes(tag.toLowerCase())
+        );
+        const hasPowerTrimTiltTag = product.tags.some(tag => 
+          powerTrimTiltTags.includes(tag.toLowerCase())
+        );
+        
+        if (hasPowerTrimTiltTag) {
+          productTrimTiltType = 'power-trim-tilt';
+        } else if (hasPowerTiltTag) {
+          productTrimTiltType = 'power-tilt';
+        } else if (hasManualTiltTag) {
+          productTrimTiltType = 'manual';
+        } else {
+          // Default based on horsepower
+          if (product.horsepower >= 75) {
+            productTrimTiltType = 'power-trim-tilt';
+          } else if (product.horsepower >= 40) {
+            productTrimTiltType = 'power-tilt';
+          } else {
+            productTrimTiltType = 'manual';
+          }
+        }
+        
+        if (!filters.trimTilt.includes(productTrimTiltType)) {
+          return false;
+        }
+      }
+
+      // Steering filter
+      if (filters.steering.length > 0) {
+        // Check if product has steering information
+        let productSteeringType: string | null = null;
+        
+        // Check product tags for steering type
+        const remoteTags = ['remote-steering', 'remote steering', 'remote-control', 'remote control', 'console-steering'];
+        const tillerTags = ['tiller', 'tiller-handle', 'tiller handle', 'tiller-steering', 'tiller steering', 'hand-control'];
+        
+        const hasRemoteTag = product.tags.some(tag => 
+          remoteTags.includes(tag.toLowerCase())
+        );
+        const hasTillerTag = product.tags.some(tag => 
+          tillerTags.includes(tag.toLowerCase())
+        );
+        
+        if (hasRemoteTag) {
+          productSteeringType = 'remote';
+        } else if (hasTillerTag) {
+          productSteeringType = 'tiller';
+        } else {
+          // Default based on horsepower - smaller motors usually tiller, larger remote
+          productSteeringType = product.horsepower <= 40 ? 'tiller' : 'remote';
+        }
+        
+        if (!filters.steering.includes(productSteeringType)) {
+          return false;
+        }
+      }
+
+      // Starting method filter
+      if (filters.starting.length > 0) {
+        // Check if product has starting method information
+        let productStartType: string | null = null;
+        
+        // Check product tags for starting method
+        const manualTags = ['manual-start', 'manual start', 'pull-start', 'pull start', 'recoil-start', 'recoil start'];
+        const electricTags = ['electric-start', 'electric start', 'e-start', 'power-start', 'push-button-start', 'key-start'];
+        
+        const hasManualTag = product.tags.some(tag => 
+          manualTags.includes(tag.toLowerCase())
+        );
+        const hasElectricTag = product.tags.some(tag => 
+          electricTags.includes(tag.toLowerCase())
+        );
+        
+        if (hasManualTag) {
+          productStartType = 'manual';
+        } else if (hasElectricTag) {
+          productStartType = 'electric';
+        } else {
+          // Default based on horsepower - smaller motors usually manual, larger electric
+          productStartType = product.horsepower <= 25 ? 'manual' : 'electric';
+        }
+        
+        if (!filters.starting.includes(productStartType)) {
+          return false;
+        }
+      }
+
+      // Fuel tank filter
+      if (filters.fuelTank.length > 0) {
+        // Check if product has fuel tank information
+        let productTankType: string | null = null;
+        
+        // Check product tags for tank type
+        const internalTags = ['internal-tank', 'internal tank', 'built-in tank', 'integrated tank'];
+        const externalTags = ['external-tank', 'external tank', 'portable tank', 'remote tank'];
+        
+        const hasInternalTag = product.tags.some(tag => 
+          internalTags.includes(tag.toLowerCase())
+        );
+        const hasExternalTag = product.tags.some(tag => 
+          externalTags.includes(tag.toLowerCase())
+        );
+        
+        if (hasInternalTag) {
+          productTankType = 'internal';
+        } else if (hasExternalTag) {
+          productTankType = 'external';
+        } else {
+          // Default to external for smaller motors, internal for larger
+          productTankType = product.horsepower <= 30 ? 'external' : 'internal';
+        }
+        
+        if (!filters.fuelTank.includes(productTankType)) {
+          return false;
+        }
+      }
+
+      // Fuel delivery filter
+      if (filters.fuelDelivery.length > 0) {
+        // Check if product has fuel delivery information
+        let productFuelType: string | null = null;
+        
+        // Check product tags for fuel type
+        const carbTags = ['carburetor', 'carb', 'carbureted'];
+        const efiTags = ['efi', 'fuel-injection', 'electronic-fuel-injection', 'fuel injection'];
+        const propaneTags = ['propane', 'lpg', 'liquefied-petroleum-gas'];
+        
+        const hasCarbTag = product.tags.some(tag => 
+          carbTags.includes(tag.toLowerCase())
+        );
+        const hasEfiTag = product.tags.some(tag => 
+          efiTags.includes(tag.toLowerCase())
+        );
+        const hasPropaneTag = product.tags.some(tag => 
+          propaneTags.includes(tag.toLowerCase())
+        );
+        
+        if (hasCarbTag) {
+          productFuelType = 'carburetor';
+        } else if (hasEfiTag) {
+          productFuelType = 'efi';
+        } else if (hasPropaneTag) {
+          productFuelType = 'propane';
+        } else {
+          // Default to carburetor if not specified
+          productFuelType = 'carburetor';
+        }
+        
+        if (!filters.fuelDelivery.includes(productFuelType)) {
+          return false;
+        }
+      }
+
+      // Drive type filter
+      if (filters.driveTypes.length > 0) {
+        // Check if product has drive type information
+        let productDriveType: string | null = null;
+        
+        // Check product tags for drive type
+        const jetTags = ['jet', 'jet-drive', 'jetdrive'];
+        const propTags = ['prop', 'propeller', 'prop-drive'];
+        
+        const hasJetTag = product.tags.some(tag => 
+          jetTags.includes(tag.toLowerCase())
+        );
+        const hasPropTag = product.tags.some(tag => 
+          propTags.includes(tag.toLowerCase())
+        );
+        
+        if (hasJetTag) {
+          productDriveType = 'jet';
+        } else if (hasPropTag) {
+          productDriveType = 'prop';
+        } else {
+          // Default to prop if not specified
+          productDriveType = 'prop';
+        }
+        
+        if (!filters.driveTypes.includes(productDriveType)) {
+          return false;
+        }
+      }
+
       // Shaft length filter
       if (filters.shaftLengths.length > 0) {
         // Check if product has shaft length variants
         const productShaftLengths = product.variants
-          .filter(v => v.option1Name === 'Shaft Length' && v.option1Value)
+          .filter(v => {
+            // Look for shaft length in option name
+            const optionName = v.option1Name?.toLowerCase() || '';
+            return (optionName.includes('shaft') || optionName.includes('length')) && v.option1Value;
+          })
           .map(v => {
             // Normalize shaft length values for filtering
             const value = v.option1Value.toLowerCase();
             if (value.includes('15') || value.includes('short')) return '15"';
             if (value.includes('20') || value.includes('long')) return '20"';
             if (value.includes('25') || value.includes('extra')) return '25"';
-            return value;
-          });
+            // Handle exact matches
+            if (value === '15"' || value === '15') return '15"';
+            if (value === '20"' || value === '20') return '20"';
+            if (value === '25"' || value === '25') return '25"';
+            return null;
+          })
+          .filter(length => length !== null);
+        
+        // If no shaft lengths found on product, skip filtering
+        if (productShaftLengths.length === 0) {
+          return true; // Don't filter out products without shaft length options
+        }
         
         const hasMatchingShaft = productShaftLengths.some(length => 
           filters.shaftLengths.includes(length)
@@ -260,7 +472,7 @@ export default function InventoryPageClient() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters.brands, filters.minPrice, filters.maxPrice, filters.minHorsepower, filters.maxHorsepower, filters.shaftLengths, filters.conditions, filters.inStockOnly, filters.onSaleOnly, filters.searchQuery, filters.sortBy]);
+  }, [filters.brands, filters.minPrice, filters.maxPrice, filters.minHorsepower, filters.maxHorsepower, filters.shaftLengths, filters.driveTypes, filters.fuelDelivery, filters.fuelTank, filters.starting, filters.steering, filters.trimTilt, filters.conditions, filters.cylinders, filters.inStockOnly, filters.onSaleOnly, filters.searchQuery, filters.sortBy]);
 
   // Reset to page 1 when results per page changes
   useEffect(() => {
@@ -304,14 +516,23 @@ export default function InventoryPageClient() {
         }
 
         // Shaft lengths
-        if (variant.option1Name === 'Shaft Length' && variant.option1Value) {
+        const optionName = variant.option1Name?.toLowerCase() || '';
+        if ((optionName.includes('shaft') || optionName.includes('length')) && variant.option1Value) {
           const value = variant.option1Value.toLowerCase();
-          if (value.includes('20') || value.includes('short')) {
-            shaftLengthsSet.add('short');
-          } else if (value.includes('25') || value.includes('long')) {
-            shaftLengthsSet.add('long');
-          } else if (value.includes('30') || value.includes('extra')) {
-            shaftLengthsSet.add('extra-long');
+          if (value.includes('15') || value.includes('short')) {
+            shaftLengthsSet.add('15"');
+          } else if (value.includes('20') || value.includes('long')) {
+            shaftLengthsSet.add('20"');
+          } else if (value.includes('25') || value.includes('extra')) {
+            shaftLengthsSet.add('25"');
+          }
+          // Handle exact matches
+          else if (value === '15"' || value === '15') {
+            shaftLengthsSet.add('15"');
+          } else if (value === '20"' || value === '20') {
+            shaftLengthsSet.add('20"');
+          } else if (value === '25"' || value === '25') {
+            shaftLengthsSet.add('25"');
           }
         }
       });
