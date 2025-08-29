@@ -37,6 +37,22 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
     alt: edge.node.altText || graphqlProduct.title,
   })) || [];
 
+  // Extract specifications from metafields
+  const specs: Record<string, string> = {};
+  if (graphqlProduct.metafields && Array.isArray(graphqlProduct.metafields)) {
+    console.log('Metafields found:', graphqlProduct.metafields.length);
+    graphqlProduct.metafields.forEach((metafield: any) => {
+      if (metafield && metafield.value && metafield.key) {
+        // Create a key with namespace.key format for better organization
+        const fullKey = metafield.namespace ? `${metafield.namespace}.${metafield.key}` : metafield.key;
+        specs[fullKey] = metafield.value;
+        console.log(`Added metafield: ${fullKey} = ${metafield.value}`);
+      }
+    });
+  } else {
+    console.log('No metafields found for product:', graphqlProduct.title);
+  }
+
   // Get variant info
   const variants = graphqlProduct.variants?.edges?.map((edge: any) => {
     const variant = edge.node;
@@ -103,7 +119,7 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
     horsepower,
     published: true, // Products returned by Storefront API are published
     images,
-    specs: {}, // Could be populated from metafields in future
+    specs, // Now populated from metafields
     variants,
     priceRange,
     inStock: variants.some(v => v.inventory > 0),

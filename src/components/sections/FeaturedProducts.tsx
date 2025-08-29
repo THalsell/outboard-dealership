@@ -17,7 +17,7 @@ export default function FeaturedProducts() {
           throw new Error('Failed to fetch products');
         }
         const allProducts = await response.json();
-        const featured = allProducts.slice(0, 8);
+        const featured = allProducts.slice(0, 4);
         setProducts(featured);
       } catch (error) {
         console.error('Error loading featured products:', error);
@@ -50,7 +50,7 @@ export default function FeaturedProducts() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 8).map((product) => (
+            {products.slice(0, 4).map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

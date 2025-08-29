@@ -44,8 +44,6 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/inventory/new" className="text-xs text-gray-400 hover:text-white">New Motors</Link></li>
               <li><Link href="/inventory/used" className="text-xs text-gray-400 hover:text-white">Used Motors</Link></li>
-              <li><Link href="/inventory/trade-in" className="text-xs text-gray-400 hover:text-white">Trade-In Program</Link></li>
-              <li><Link href="/financing/calculator" className="text-xs text-gray-400 hover:text-white">Financing Calculator</Link></li>
               <li><Link href="/learn/guides" className="text-xs text-gray-400 hover:text-white">Buying Guides</Link></li>
             </ul>
           </div>

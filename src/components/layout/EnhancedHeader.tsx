@@ -16,7 +16,7 @@ export default function EnhancedHeader() {
 
   const navigation = [
     {
-      name: 'Inventory',
+      name: 'Outboard Motors',
       href: '/inventory',
       dropdown: [
         { name: 'All Motors', href: '/inventory', description: 'Browse all motors' },
@@ -24,13 +24,6 @@ export default function EnhancedHeader() {
         { name: 'Used Motors', href: '/inventory?condition=used', description: 'Certified pre-owned' },
         { name: 'On Sale', href: '/inventory?status=sale', description: 'Special offers' },
         { name: 'Overstock', href: '/inventory?status=overstock', description: 'Great deals on overstock items' },
-        { name: 'Compare Models', href: '/inventory/compare', description: 'Side-by-side comparison' },
-        { name: 'Trade-In', href: '/inventory/trade-in', description: 'Get a quote for your motor' },
-        { name: '', href: '', description: 'divider' }, // Divider
-        { name: 'Small (2.5-30 HP)', href: '/inventory?hp=2.5-30', description: 'Perfect for small boats' },
-        { name: 'Mid-Range (40-90 HP)', href: '/inventory?hp=40-90', description: 'Ideal for most boats' },
-        { name: 'High Power (100-300 HP)', href: '/inventory?hp=100-300', description: 'Power for larger boats' },
-        { name: 'Elite (350+ HP)', href: '/inventory?hp=350+', description: 'Maximum performance' },
         { name: '', href: '', description: 'divider' }, // Divider
         { name: 'Yamaha', href: '/inventory?brand=yamaha', description: 'Browse Yamaha motors' },
         { name: 'Mercury', href: '/inventory?brand=mercury', description: 'Browse Mercury motors' },
@@ -41,11 +34,18 @@ export default function EnhancedHeader() {
       ]
     },
     {
+      name: 'Parts & Accessories',
+      href: '/parts'
+    },
+    {
+      name: 'Compare',
+      href: '/inventory/compare'
+    },
+    {
       name: 'Financing',
       href: '/financing',
       dropdown: [
         { name: 'Apply Now', href: '/financing/application', description: 'Quick application' },
-        { name: 'Calculator', href: '/financing/calculator', description: 'Estimate payments' },
         { name: 'Check Status', href: '/financing/status', description: 'Application status' },
         { name: 'Special Offers', href: '/financing/offers', description: 'Current promotions' },
       ]
@@ -56,13 +56,7 @@ export default function EnhancedHeader() {
       dropdown: [
         { name: 'Buying Guides', href: '/learn/guides', description: 'How to choose the perfect motor' },
         { name: 'FAQs', href: '/learn/faqs', description: 'Common questions answered' },
-        { name: 'Videos', href: '/learn/videos', description: 'Tutorials & reviews' },
-        { name: 'Blog', href: '/learn/blog', description: 'Tips & news' },
       ]
-    },
-    {
-      name: 'Calculators',
-      href: '/calculators'
     },
   ];
 
@@ -157,81 +151,78 @@ export default function EnhancedHeader() {
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && activeDropdown === item.name && (
-                    <div className="absolute top-full left-0 mt-1 w-96 bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-50">
-                      <div className="grid grid-cols-2 gap-1">
-                        {/* Column 1: Condition & Status */}
-                        <div className="border-r border-gray-200 pr-3">
-                          <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
-                            Shop by Condition
+                    <div className={`absolute top-full left-0 mt-1 ${item.name === 'Outboard Motors' ? 'w-96' : 'w-72'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-50`}>
+                      {item.name === 'Outboard Motors' ? (
+                        // Special layout for Inventory dropdown
+                        <div className="grid grid-cols-2 gap-1">
+                          {/* Column 1: Condition & Status */}
+                          <div className="border-r border-gray-200 pr-3">
+                            <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
+                              Shop by Condition
+                            </div>
+                            <Link href="/inventory" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">All Motors</div>
+                            </Link>
+                            <Link href="/inventory?condition=new" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">New Motors</div>
+                            </Link>
+                            <Link href="/inventory?condition=used" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Used Motors</div>
+                            </Link>
+                            <Link href="/inventory?status=sale" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">On Sale</div>
+                            </Link>
+                            <Link href="/inventory?status=overstock" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Overstock</div>
+                            </Link>
+                            
                           </div>
-                          <Link href="/inventory" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">All Motors</div>
-                          </Link>
-                          <Link href="/inventory?condition=new" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">New Motors</div>
-                          </Link>
-                          <Link href="/inventory?condition=used" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Used Motors</div>
-                          </Link>
-                          <Link href="/inventory?status=sale" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">On Sale</div>
-                          </Link>
-                          <Link href="/inventory?status=overstock" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Overstock</div>
-                          </Link>
                           
-                          <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2 mt-3">
-                            Other
+                          {/* Column 2: Brands */}
+                          <div className="pl-3">
+                            <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
+                              Shop by Brand
+                            </div>
+                            <Link href="/inventory?brand=yamaha" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Yamaha</div>
+                            </Link>
+                            <Link href="/inventory?brand=mercury" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Mercury</div>
+                            </Link>
+                            <Link href="/inventory?brand=honda" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Honda</div>
+                            </Link>
+                            <Link href="/inventory?brand=suzuki" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Suzuki</div>
+                            </Link>
+                            <Link href="/inventory?brand=tohatsu" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Tohatsu</div>
+                            </Link>
+                            <Link href="/inventory?brand=freedom" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Freedom</div>
+                            </Link>
                           </div>
-                          <Link href="/inventory/compare" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Compare Models</div>
-                          </Link>
-                          <Link href="/inventory/trade-in" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Trade-In</div>
-                          </Link>
                         </div>
-                        
-                        {/* Column 2: Horsepower & Brands */}
-                        <div className="pl-3">
-                          <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
-                            Shop by Power
-                          </div>
-                          <Link href="/inventory?hp=2.5-30" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Small (2.5-30 HP)</div>
-                          </Link>
-                          <Link href="/inventory?hp=40-90" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Mid (40-90 HP)</div>
-                          </Link>
-                          <Link href="/inventory?hp=100-300" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">High (100-300 HP)</div>
-                          </Link>
-                          <Link href="/inventory?hp=350+" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Elite (350+ HP)</div>
-                          </Link>
-                          
-                          <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2 mt-3">
-                            All Brands
-                          </div>
-                          <Link href="/inventory?brand=yamaha" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Yamaha</div>
-                          </Link>
-                          <Link href="/inventory?brand=mercury" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Mercury</div>
-                          </Link>
-                          <Link href="/inventory?brand=honda" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Honda</div>
-                          </Link>
-                          <Link href="/inventory?brand=suzuki" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Suzuki</div>
-                          </Link>
-                          <Link href="/inventory?brand=tohatsu" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Tohatsu</div>
-                          </Link>
-                          <Link href="/inventory?brand=freedom" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                            <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Freedom</div>
-                          </Link>
+                      ) : (
+                        // Simple list layout for other dropdowns
+                        <div className="py-1">
+                          {item.dropdown.map((subItem, index) => {
+                            if (subItem.description === 'divider') {
+                              return <div key={index} className="border-t border-gray-200 my-2" />;
+                            }
+                            return (
+                              <Link
+                                key={subItem.name}
+                                href={subItem.href}
+                                className="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition-colors group"
+                              >
+                                <div className="font-medium text-gray-900 group-hover:text-blue-600">{subItem.name}</div>
+                                <div className="text-sm text-gray-500 group-hover:text-blue-500 mt-1">{subItem.description}</div>
+                              </Link>
+                            );
+                          })}
                         </div>
-                      </div>
+                      )}
                     </div>
                   )}
                 </div>

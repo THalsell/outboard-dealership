@@ -326,6 +326,7 @@ export default function InventoryPageClient() {
           })
           .map(v => {
             // Normalize shaft length values for filtering
+            if (!v.option1Value) return null;
             const value = v.option1Value.toLowerCase();
             if (value.includes('15') || value.includes('short')) return '15"';
             if (value.includes('20') || value.includes('long')) return '20"';
@@ -348,49 +349,6 @@ export default function InventoryPageClient() {
         );
         
         if (!hasMatchingShaft) {
-          return false;
-        }
-      }
-
-      // Cylinders filter
-      if (filters.cylinders.length > 0) {
-        // Check if product has cylinder count in specs or tags
-        let productCylinders: string | null = null;
-        
-        // First check specs for cylinder count
-        if (product.specs?.cylinders) {
-          productCylinders = product.specs.cylinders.toString();
-        } else if (product.specs?.Cylinders) {
-          productCylinders = product.specs.Cylinders.toString();
-        }
-        
-        // If not in specs, check tags for cylinder information
-        if (!productCylinders) {
-          const cylinderTag = product.tags.find(tag => 
-            tag.toLowerCase().includes('cylinder') || 
-            /^\d+\s*cyl/i.test(tag)
-          );
-          
-          if (cylinderTag) {
-            const match = cylinderTag.match(/(\d+)/);
-            if (match) {
-              productCylinders = match[1];
-            }
-          }
-        }
-        
-        // Default assumption based on horsepower ranges if no explicit data
-        if (!productCylinders) {
-          if (product.horsepower <= 30) {
-            productCylinders = '1';
-          } else if (product.horsepower <= 60) {
-            productCylinders = '2';
-          } else {
-            productCylinders = '3';
-          }
-        }
-        
-        if (!filters.cylinders.includes(productCylinders)) {
           return false;
         }
       }
@@ -472,16 +430,13 @@ export default function InventoryPageClient() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [filters.brands, filters.minPrice, filters.maxPrice, filters.minHorsepower, filters.maxHorsepower, filters.shaftLengths, filters.driveTypes, filters.fuelDelivery, filters.fuelTank, filters.starting, filters.steering, filters.trimTilt, filters.conditions, filters.cylinders, filters.inStockOnly, filters.onSaleOnly, filters.searchQuery, filters.sortBy]);
+  }, [filters.brands, filters.minPrice, filters.maxPrice, filters.minHorsepower, filters.maxHorsepower, filters.shaftLengths, filters.driveTypes, filters.fuelDelivery, filters.fuelTank, filters.starting, filters.steering, filters.trimTilt, filters.conditions, filters.inStockOnly, filters.onSaleOnly, filters.searchQuery, filters.sortBy]);
 
   // Reset to page 1 when results per page changes
   useEffect(() => {
     setCurrentPage(1);
   }, [filters.resultsPerPage]);
 
-  const compareProducts = useMemo(() => {
-    return allProducts.filter(product => compareList.includes(product.id));
-  }, [allProducts, compareList]);
 
   // Calculate dynamic filter ranges from actual inventory
   const dynamicRanges = useMemo(() => {

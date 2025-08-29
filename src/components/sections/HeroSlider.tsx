@@ -17,14 +17,6 @@ export default function HeroSlider() {
       link: "/inventory"
     },
     {
-      title: "Trade-In Program",
-      subtitle: "Get Top Dollar",
-      description: "Trade in your old motor and upgrade to the latest models with our competitive trade-in values.",
-      image: "/mercury.jpeg",
-      cta: "Get Quote",
-      link: "/inventory/trade-in"
-    },
-    {
       title: "0% Financing Available",
       subtitle: "On Select Models",
       description: "Take advantage of our special financing offers on qualifying purchases.",

@@ -76,71 +76,59 @@ export default function FAQsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-light-gray">
-      <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-slate-800">
+      <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-deep-blue mb-4">
-              Frequently Asked Questions
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Frequently asked questions
             </h1>
-            <p className="text-lg text-charcoal">
-              Find answers to common questions about outboard motors, maintenance, and more.
-            </p>
           </div>
 
-          {/* General FAQs */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-deep-blue mb-6">General Questions</h2>
-            <div className="space-y-4">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md">
-                  <button
-                    onClick={() => toggleFaq(index)}
-                    className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-light-gray hover:bg-opacity-50 transition-colors"
-                  >
-                    <h3 className="font-semibold text-deep-blue">{faq.question}</h3>
-                    <svg
-                      className={`w-5 h-5 transform transition-transform ${
-                        openFaq === index ? 'rotate-180' : ''
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </button>
-                  {openFaq === index && (
-                    <div className="px-6 pb-4">
-                      <p className="text-charcoal leading-relaxed">{faq.answer}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+          {/* FAQ Items */}
+          <div className="space-y-1">
+            {faqs.map((faq, index) => (
+              <div key={index} className="border-b border-slate-600">
+                <button
+                  onClick={() => toggleFaq(index)}
+                  className="w-full px-6 py-6 text-left flex justify-between items-center hover:bg-slate-700/50 transition-colors"
+                >
+                  <h3 className="text-lg font-medium text-white pr-8">{faq.question}</h3>
+                  <div className="flex-shrink-0">
+                    {openFaq === index ? (
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                      </svg>
+                    ) : (
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                      </svg>
+                    )}
+                  </div>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-6">
+                    <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
 
           {/* Manufacturer FAQs */}
-          <div>
-            <h2 className="text-2xl font-bold text-deep-blue mb-6">Manufacturer FAQs</h2>
-            <p className="text-charcoal mb-6">
-              For brand-specific questions and technical support, visit these manufacturer FAQ pages:
-            </p>
-            <div className="grid gap-4 md:grid-cols-2">
+          <div className="mt-20">
+            <h2 className="text-2xl font-bold text-white mb-8 text-center">Manufacturer Support</h2>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {manufacturerFaqs.map((manufacturer, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                  <h3 className="font-bold text-deep-blue mb-2">{manufacturer.brand}</h3>
-                  <p className="text-charcoal text-sm mb-4">{manufacturer.description}</p>
+                <div key={index} className="bg-slate-700 rounded-lg p-6 hover:bg-slate-600 transition-colors">
+                  <h3 className="font-bold text-white mb-2">{manufacturer.brand}</h3>
+                  <p className="text-gray-300 text-sm mb-4">{manufacturer.description}</p>
                   <a
                     href={manufacturer.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center text-teal hover:text-deep-blue font-medium transition-colors"
+                    className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors"
                   >
                     Visit {manufacturer.brand} FAQs
                     <svg
@@ -162,24 +150,6 @@ export default function FAQsPage() {
             </div>
           </div>
 
-          {/* Contact Section */}
-          <div className="mt-12 bg-white rounded-lg p-8 text-center shadow-md">
-            <h2 className="text-2xl font-bold text-deep-blue mb-4">
-              Still Have Questions?
-            </h2>
-            <p className="text-charcoal mb-6">
-              Can&#39;t find what you&#39;re looking for? Our expert team is here to help.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="tel:9312434555"
-                className="bg-deep-blue text-white px-6 py-3 rounded-lg hover:bg-teal transition-colors font-medium"
-              >
-                Call (931) 243-4555
-              </a>
-              
-            </div>
-          </div>
         </div>
       </div>
     </div>

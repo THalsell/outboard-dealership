@@ -16,7 +16,6 @@ interface FilterState {
   steering: string[];
   trimTilt: string[];
   conditions: string[];
-  cylinders: string[];
   inStockOnly: boolean;
   onSaleOnly: boolean;
   sortBy: string;
@@ -49,7 +48,6 @@ const getDefaultFilters = (maxPrice = 100000, maxHorsepower = 500): FilterState 
   steering: [],
   trimTilt: [],
   conditions: [],
-  cylinders: [],
   inStockOnly: false,
   onSaleOnly: false,
   sortBy: 'featured',

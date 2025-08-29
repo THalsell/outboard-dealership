@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'Outboard Motor Buying Guide | Expert Tips & Advice',
@@ -34,7 +35,7 @@ export default function BuyingGuidePage() {
             <h2 className="text-xl font-semibold text-navy mb-4">Quick Navigation</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               <a href="#horsepower" className="text-deep-blue hover:underline">Horsepower Selection</a>
-              <a href="#motor-types" className="text-deep-blue hover:underline">Motor Types</a>
+              <a href="#shaft-length" className="text-deep-blue hover:underline">Shaft Length</a>
               <a href="#features" className="text-deep-blue hover:underline">Key Features</a>
               <a href="#brands" className="text-deep-blue hover:underline">Brand Comparison</a>
               <a href="#maintenance" className="text-deep-blue hover:underline">Maintenance</a>
@@ -89,69 +90,87 @@ export default function BuyingGuidePage() {
             </div>
           </section>
 
-          {/* Motor Types */}
-          <section id="motor-types" className="bg-white rounded-lg shadow-sm border p-8 mb-8">
-            <h2 className="text-2xl font-bold text-navy mb-6">Outboard Motor Types</h2>
+          {/* Shaft Length Measurement */}
+          <section id="shaft-length" className="bg-white rounded-lg shadow-sm border p-8 mb-8">
+            <h2 className="text-2xl font-bold text-navy mb-6">Measuring for Correct Shaft Length</h2>
             
-            <div className="space-y-6">
-              <div className="border-l-4 border-deep-blue pl-6">
-                <h3 className="text-xl font-semibold text-navy mb-3">2-Stroke vs 4-Stroke</h3>
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">2-Stroke Motors</h4>
-                    <div className="mb-3">
-                      <span className="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium mr-2">Pros:</span>
-                      <ul className="text-gray-700 text-sm mt-1">
-                        <li>• Lighter weight</li>
-                        <li>• Less expensive</li>
-                        <li>• Quick acceleration</li>
-                        <li>• Simpler maintenance</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <span className="inline-block bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium mr-2">Cons:</span>
-                      <ul className="text-gray-700 text-sm mt-1">
-                        <li>• Higher fuel consumption</li>
-                        <li>• More emissions</li>
-                        <li>• Louder operation</li>
-                      </ul>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">4-Stroke Motors</h4>
-                    <div className="mb-3">
-                      <span className="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium mr-2">Pros:</span>
-                      <ul className="text-gray-700 text-sm mt-1">
-                        <li>• Better fuel efficiency</li>
-                        <li>• Quieter operation</li>
-                        <li>• Lower emissions</li>
-                        <li>• Smoother idle</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <span className="inline-block bg-red-100 text-red-800 px-2 py-1 rounded text-sm font-medium mr-2">Cons:</span>
-                      <ul className="text-gray-700 text-sm mt-1">
-                        <li>• Heavier weight</li>
-                        <li>• Higher initial cost</li>
-                        <li>• More complex maintenance</li>
-                      </ul>
-                    </div>
-                  </div>
+            <div className="mb-6">
+              <p className="text-gray-700 mb-4">
+                Selecting the correct shaft length is critical for optimal performance and preventing damage to your motor. 
+                An incorrectly sized shaft can cause cavitation, poor performance, and even engine damage.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <h3 className="text-lg font-semibold text-navy mb-3">How to Measure</h3>
+                <ol className="space-y-3 text-gray-700">
+                  <li>
+                    <strong>1. Position Your Boat:</strong> Make sure your boat is on a level surface or properly supported on a trailer.
+                  </li>
+                  <li>
+                    <strong>2. Locate the Transom:</strong> Find the vertical back wall of your boat where the motor mounts.
+                  </li>
+                  <li>
+                    <strong>3. Measure from Top to Bottom:</strong> Using a tape measure, measure from the top of the transom (where the motor bracket sits) straight down to the bottom of the hull.
+                  </li>
+                  <li>
+                    <strong>4. Account for Angle:</strong> If your transom has an angle, measure along the transom face, not diagonally.
+                  </li>
+                </ol>
+
+                <div className="bg-cream p-4 rounded-lg mt-4">
+                  <h4 className="font-semibold text-navy mb-2">Standard Shaft Lengths</h4>
+                  <ul className="space-y-1 text-sm text-gray-700">
+                    <li>• <strong>Short (S):</strong> 15&quot; - For transoms 15-16&quot;</li>
+                    <li>• <strong>Long (L):</strong> 20&quot; - For transoms 19-21&quot;</li>
+                    <li>• <strong>Extra Long (XL):</strong> 25&quot; - For transoms 24-26&quot;</li>
+                    <li>• <strong>Ultra Long (XXL):</strong> 30&quot; - For transoms 29-31&quot;</li>
+                  </ul>
                 </div>
               </div>
 
-              <div className="border-l-4 border-deep-blue pl-6">
-                <h3 className="text-xl font-semibold text-navy mb-3">Direct Injection Technology</h3>
-                <p className="text-gray-700 mb-3">
-                  Modern direct injection outboards offer the best of both worlds, providing excellent fuel 
-                  efficiency and clean burning performance with strong acceleration.
+              <div>
+                <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden bg-gray-50">
+                  <Image
+                    src="/shaft.jpg"
+                    alt="How to measure outboard motor shaft length on boat transom"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-contain"
+                  />
+                </div>
+                <p className="text-sm text-gray-600 mt-2 text-center">
+                  Visual guide for measuring transom height
                 </p>
-                <ul className="text-gray-700">
-                  <li>• Precise fuel delivery</li>
-                  <li>• Improved fuel economy</li>
-                  <li>• Reduced emissions</li>
-                  <li>• Better cold-start performance</li>
+              </div>
+            </div>
+
+            <div className="bg-golden-beige/20 border border-golden-beige rounded-lg p-4">
+              <p className="text-navy font-medium">
+                <strong>Important:</strong> The anti-ventilation plate on your outboard should be level with or slightly below the bottom of the boat when properly mounted. 
+                If you&apos;re between sizes, it&apos;s generally better to go with the longer shaft to ensure the propeller stays submerged in choppy water.
+              </p>
+            </div>
+
+            <div className="mt-6 grid md:grid-cols-2 gap-4">
+              <div className="bg-cream p-4 rounded-lg">
+                <h4 className="font-semibold text-navy mb-2">Common Mistakes to Avoid</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Measuring with the boat on an uneven surface</li>
+                  <li>• Not accounting for transom modifications or jack plates</li>
+                  <li>• Confusing shaft length with overall motor height</li>
+                  <li>• Ignoring manufacturer recommendations</li>
+                </ul>
+              </div>
+
+              <div className="bg-cream p-4 rounded-lg">
+                <h4 className="font-semibold text-navy mb-2">When to Consider Jack Plates</h4>
+                <ul className="space-y-1 text-sm text-gray-700">
+                  <li>• Fine-tuning motor height for performance</li>
+                  <li>• Shallow water operation needs</li>
+                  <li>• Compensating for non-standard transom heights</li>
+                  <li>• Improving hole shot and top-end speed</li>
                 </ul>
               </div>
             </div>

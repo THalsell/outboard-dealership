@@ -21,12 +21,11 @@ export default function FilterSidebar({
   availableShaftLengths = ['15"', '20"', '25"']
 }: FilterSidebarProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
-  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'cylinders', 'shaft', 'drive', 'fuel', 'tank', 'starting', 'steering', 'trimtilt']);
+  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'shaft', 'drive', 'fuel', 'tank', 'starting', 'steering', 'trimtilt']);
 
   const brands = availableBrands;
   const shaftLengths = availableShaftLengths;
   const conditions = ['new', 'used', 'overstock', 'scratch-dent'];
-  const cylinders = ['1', '2', '3'];
   const driveTypes = ['jet', 'prop'];
   const fuelDeliveryTypes = ['carburetor', 'efi', 'propane'];
   const fuelTankTypes = ['internal', 'external'];
@@ -68,12 +67,6 @@ export default function FilterSidebar({
     updateFilter('conditions', newConditions);
   };
 
-  const handleCylinderToggle = (cylinder: string) => {
-    const newCylinders = filters.cylinders.includes(cylinder)
-      ? filters.cylinders.filter(c => c !== cylinder)
-      : [...filters.cylinders, cylinder];
-    updateFilter('cylinders', newCylinders);
-  };
 
   const handleDriveTypeToggle = (driveType: string) => {
     const newDriveTypes = filters.driveTypes.includes(driveType)
@@ -410,41 +403,6 @@ export default function FilterSidebar({
                   {condition === 'new' && (
                     <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">New</span>
                   )}
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Cylinders */}
-        <div className="py-4 border-b border-gray-200">
-          <button
-            onClick={() => toggleSection('cylinders')}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="text-base font-semibold text-charcoal">Cylinders</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('cylinders') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          {expandedSections.includes('cylinders') && (
-            <div className="mt-3 space-y-2">
-              {cylinders.map((cylinder) => (
-                <label key={cylinder} className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={filters.cylinders.includes(cylinder)}
-                    onChange={() => handleCylinderToggle(cylinder)}
-                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
-                  />
-                  <span className="text-sm text-gray-700">
-                    {cylinder} Cylinder{cylinder !== '1' ? 's' : ''}
-                  </span>
                 </label>
               ))}
             </div>

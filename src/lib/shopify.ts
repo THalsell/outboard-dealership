@@ -18,6 +18,9 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
             title
             handle
             description
+            vendor
+            productType
+            tags
             priceRange {
               minVariantPrice {
                 amount
@@ -57,6 +60,38 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
                 }
               }
             }
+            metafields(identifiers: [
+              {namespace: "motor", key: "horsepower"},
+              {namespace: "motor", key: "manufacturer"},
+              {namespace: "motor", key: "model_number"},
+              {namespace: "engine", key: "displacement"},
+              {namespace: "engine", key: "cylinders"},
+              {namespace: "engine", key: "stroke_type"},
+              {namespace: "engine", key: "engine_type"},
+              {namespace: "engine", key: "cooling"},
+              {namespace: "engine", key: "ignition"},
+              {namespace: "physical", key: "weight_lbs"},
+              {namespace: "physical", key: "shaft_length"},
+              {namespace: "mechanical", key: "gear_ratio"},
+              {namespace: "mechanical", key: "propeller"},
+              {namespace: "mechanical", key: "tilt_positions"},
+              {namespace: "fuel", key: "tank_type"},
+              {namespace: "fuel", key: "tank_capacity"},
+              {namespace: "fuel", key: "runtime"},
+              {namespace: "fuel", key: "type"},
+              {namespace: "features", key: "throttle_control"},
+              {namespace: "features", key: "steering"},
+              {namespace: "features", key: "shift"},
+              {namespace: "features", key: "starting"},
+              {namespace: "compliance", key: "epa"},
+              {namespace: "compliance", key: "carb"},
+              {namespace: "compliance", key: "emissions"},
+              {namespace: "applications", key: "ideal_for"}
+            ]) {
+              namespace
+              key
+              value
+            }
           }
         }
       }
@@ -81,6 +116,13 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
     }
 
     const data = await response.json();
+    console.log('GraphQL Response:', JSON.stringify(data, null, 2));
+    
+    if (!data.data || !data.data.products) {
+      console.error('No products data found:', data);
+      return [];
+    }
+    
     return data.data.products.edges.map((edge: { node: unknown }) => edge.node);
   } catch (error) {
     console.error('Error fetching products:', error);
