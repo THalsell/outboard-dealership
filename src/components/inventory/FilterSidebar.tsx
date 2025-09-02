@@ -33,10 +33,6 @@ export default function FilterSidebar({
   const steeringTypes = ['remote', 'tiller'];
   const trimTiltTypes = ['manual', 'power-tilt', 'power-trim-tilt'];
 
-  // Debug logging
-  console.log('Available shaft lengths:', availableShaftLengths);
-  console.log('Shaft lengths variable:', shaftLengths);
-  console.log('Expanded sections:', expandedSections);
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev =>

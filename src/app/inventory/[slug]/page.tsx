@@ -3,16 +3,16 @@ import { notFound } from 'next/navigation';
 import ProductDetailClient from '@/components/product/ProductDetailClient';
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 // Fetch product data
 async function getProduct(slug: string) {
   try {
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? process.env.NEXT_PUBLIC_SITE_URL 
+      ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://outboard-dealership.com')
       : 'http://localhost:3000';
       
     const response = await fetch(`${baseUrl}/api/products`, {
@@ -49,15 +49,24 @@ async function getProduct(slug: string) {
       location: string;
       status: string;
       published: boolean;
-      specs: Record<string, any>;
-      variants: any[];
+      specs: Record<string, unknown>;
+      variants: unknown[];
       priceRange: { min: number; max: number };
       inStock: boolean;
       // add other fields as needed
     }
     const product = (products as Product[]).find((p) => p.handle === slug);
+
+    if (product) {
+      product.images = product.images.map((img: { src: string; position?: number; alt?: string }, idx: number) => ({
+        src: img.src,
+        position: typeof img.position === 'number' ? img.position : idx,
+        alt: img.alt ?? product.title ?? 'Product image',
+      })) as import('@/lib/data/products').ProductImage[];
+      return product as unknown as import('@/lib/data/products').Product;
+    }
     
-    return product;
+    return null;
   } catch (error) {
     console.error('Error fetching product:', error);
     return null;

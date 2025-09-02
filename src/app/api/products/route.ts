@@ -3,7 +3,44 @@ import { fetchProducts } from '@/lib/shopify';
 import { Product } from '@/lib/data/products';
 
 // Transform GraphQL product to our Product type
-function transformGraphQLProduct(graphqlProduct: any): Product {
+interface GraphQLProduct {
+  id: string;
+  handle: string;
+  title: string;
+  description?: string;
+  images?: {
+    edges: Array<{
+      node: {
+        url: string;
+        altText?: string;
+      };
+    }>;
+  };
+  metafields?: Array<{
+    namespace?: string;
+    key: string;
+    value: string;
+  }>;
+  variants?: {
+    edges: Array<{
+      node: {
+        id: string;
+        sku?: string;
+        title: string;
+        price?: { amount: string };
+        compareAtPrice?: { amount: string };
+        quantityAvailable?: number;
+        availableForSale?: boolean;
+        selectedOptions?: Array<{
+          name: string;
+          value: string;
+        }>;
+      };
+    }>;
+  };
+}
+
+function transformGraphQLProduct(graphqlProduct: GraphQLProduct): Product {
   // Extract horsepower from title
   let horsepower = 0;
   const hpMatch = graphqlProduct.title.match(/(\d+(?:\.\d+)?)\s*HP/i);
@@ -31,7 +68,7 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
   const brand = graphqlProduct.title.split(' ')[0] || 'Unknown';
 
   // Get main image
-  const images = graphqlProduct.images?.edges?.map((edge: any, index: number) => ({
+  const images = graphqlProduct.images?.edges?.map((edge: { node: { url: string; altText?: string } }, index: number) => ({
     src: edge.node.url,
     position: index + 1,
     alt: edge.node.altText || graphqlProduct.title,
@@ -40,21 +77,34 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
   // Extract specifications from metafields
   const specs: Record<string, string> = {};
   if (graphqlProduct.metafields && Array.isArray(graphqlProduct.metafields)) {
-    console.log('Metafields found:', graphqlProduct.metafields.length);
-    graphqlProduct.metafields.forEach((metafield: any) => {
+    graphqlProduct.metafields.forEach((metafield: { namespace?: string; key: string; value: string }) => {
       if (metafield && metafield.value && metafield.key) {
         // Create a key with namespace.key format for better organization
         const fullKey = metafield.namespace ? `${metafield.namespace}.${metafield.key}` : metafield.key;
         specs[fullKey] = metafield.value;
-        console.log(`Added metafield: ${fullKey} = ${metafield.value}`);
       }
     });
   } else {
-    console.log('No metafields found for product:', graphqlProduct.title);
   }
 
   // Get variant info
-  const variants = graphqlProduct.variants?.edges?.map((edge: any) => {
+  type VariantEdge = {
+    node: {
+      id: string;
+      sku?: string;
+      title: string;
+      price?: { amount: string };
+      compareAtPrice?: { amount: string };
+      quantityAvailable?: number;
+      availableForSale?: boolean;
+      selectedOptions?: Array<{
+        name: string;
+        value: string;
+      }>;
+    };
+  };
+
+  const variants = graphqlProduct.variants?.edges?.map((edge: VariantEdge) => {
     const variant = edge.node;
     
     // Extract shaft length from selectedOptions
@@ -63,7 +113,7 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
     
     if (variant.selectedOptions && variant.selectedOptions.length > 0) {
       // Look for shaft length option
-      const shaftOption = variant.selectedOptions.find((opt: any) => 
+      const shaftOption = variant.selectedOptions.find((opt) => 
         opt.name.toLowerCase().includes('shaft') || 
         opt.name.toLowerCase().includes('length')
       );
@@ -91,7 +141,7 @@ function transformGraphQLProduct(graphqlProduct: any): Product {
       weight: 0, // GraphQL doesn't return weight in basic query
       weightUnit: 'kg',
       inventory: variant.quantityAvailable || 0,
-      available: variant.availableForSale && variant.quantityAvailable > 0,
+      available: !!(variant.availableForSale && (variant.quantityAvailable ?? 0) > 0),
       taxable: true,
       requiresShipping: true,
       costPerItem: parseFloat(variant.price?.amount || '0') * 0.7,
@@ -134,7 +184,7 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get('limit') || '50');
 
     // Fetch products using GraphQL Storefront API
-    const graphqlProducts = await fetchProducts(query, limit);
+    const graphqlProducts = await fetchProducts(query, limit) as GraphQLProduct[];
 
     if (!graphqlProducts) {
       throw new Error('Failed to fetch products from Shopify');

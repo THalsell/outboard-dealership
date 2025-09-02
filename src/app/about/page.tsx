@@ -16,7 +16,7 @@ export default function AboutPage() {
             <h2 className="text-2xl font-semibold text-deep-blue mb-4">Our Story</h2>
             <p className="text-charcoal mb-4">
               For over 20 years, Clay Powersports has been the premier destination for outboard motors
-              in Middle Tennessee. What started as a small family business has grown into the region's
+              in Middle Tennessee. What started as a small family business has grown into the region&#39;s
               most trusted marine dealership.
             </p>
             <p className="text-charcoal mb-4">
@@ -46,7 +46,7 @@ export default function AboutPage() {
             <div className="text-center">
               <div className="text-4xl mb-4">🏆</div>
               <h3 className="font-semibold text-charcoal mb-2">Award Winning Service</h3>
-              <p className="text-charcoal">Recognized as Tennessee's top marine dealership 3 years running</p>
+              <p className="text-charcoal">Recognized as Tennessee&#39;s top marine dealership 3 years running</p>
             </div>
             <div className="text-center">
               <div className="text-4xl mb-4">🔧</div>
@@ -56,7 +56,7 @@ export default function AboutPage() {
             <div className="text-center">
               <div className="text-4xl mb-4">💰</div>
               <h3 className="font-semibold text-charcoal mb-2">Best Price Guarantee</h3>
-              <p className="text-charcoal">We'll match any competitor's advertised price</p>
+              <p className="text-charcoal">We&#39;ll match any competitor&#39;s advertised price</p>
             </div>
           </div>
         </div>

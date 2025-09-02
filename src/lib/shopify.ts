@@ -116,7 +116,6 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
     }
 
     const data = await response.json();
-    console.log('GraphQL Response:', JSON.stringify(data, null, 2));
     
     if (!data.data || !data.data.products) {
       console.error('No products data found:', data);

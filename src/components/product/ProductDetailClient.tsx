@@ -241,7 +241,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         className="sr-only"
                       />
                       <span className="text-gray-900">
-                        {variant.option1Value || variant.title}
+                        {variant.option1Value || `Variant ${index + 1}`}
                       </span>
                       {variant.price && variant.price !== price && (
                         <span className="text-deep-blue font-semibold">

@@ -43,7 +43,7 @@ export default function PartsPageClient() {
   const [loading, setLoading] = useState(true);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [sortBy, setSortBy] = useState('featured');
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  // Removed unused viewMode state
 
   // Load products from Shopify API
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function PartsPageClient() {
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let filtered = [...allProducts];
+    const filtered = [...allProducts];
 
     // Apply sorting
     const sortOption = sortOptions.find(option => option.value === sortBy);
@@ -153,14 +153,10 @@ export default function PartsPageClient() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">No parts found</h3>
-              <p className="text-gray-600">We're currently updating our parts inventory. Please check back soon.</p>
+              <p className="text-gray-600">We&apos;re currently updating our parts inventory. Please check back soon.</p>
             </div>
           ) : (
-            <div className={`${
-              viewMode === 'grid' 
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
-                : 'space-y-4'
-            }`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

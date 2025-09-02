@@ -4,6 +4,7 @@ import "./globals.css";
 import EnhancedHeader from "@/components/layout/EnhancedHeader";
 import Footer from "@/components/layout/Footer";
 import AppProviders from "@/providers/AppProviders";
+import { getAllSearchQueries } from "@/lib/seo/ai-keywords";
 
 const bebasNeue = Bebas_Neue({ 
   subsets: ["latin"],
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     default: "Outboard Motors Dealership - Premium Marine Motors & Service"
   },
   description: "Your trusted source for new and used outboard motors. Honda, Yamaha, Mercury, Freedom, Suzuki, Tohatsu authorized dealer. Expert service, parts, and financing available.",
-  keywords: ["outboard motors", "marine engines", "boat motors", "Honda", "Yamaha", "Mercury", "Freedom", "Suzuki", "Tohatsu", "boat parts", "marine service", "boat repair", "outboard service", "marine dealer"],
+  keywords: getAllSearchQueries().slice(0, 200), // Include comprehensive AI keywords
   authors: [{ name: "Outboard Motors Dealership" }],
   creator: "Outboard Motors Dealership",
   publisher: "Outboard Motors Dealership",

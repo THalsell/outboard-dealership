@@ -25,6 +25,25 @@ export default function ProductCard({ product }: ProductCardProps) {
   const hasDiscount = comparePrice > price;
   const mainImage = product.images[0]?.src || '/placeholder-motor.svg';
 
+  // Generate structured data for this product card
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.title,
+    "image": mainImage,
+    "brand": {
+      "@type": "Brand",
+      "name": product.brand
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": price.toFixed(2),
+      "priceCurrency": "USD",
+      "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "url": `https://outboard-dealership.com/inventory/${product.handle}`
+    }
+  };
+
   return (
     <article 
       className={`bg-white rounded-xl border transition-all duration-200 overflow-hidden group h-full flex flex-col relative ${
@@ -32,9 +51,15 @@ export default function ProductCard({ product }: ProductCardProps) {
           ? 'border-deep-blue shadow-lg ring-2 ring-deep-blue/20' 
           : 'border-border-gray hover:shadow-hover'
       }`}
+      itemScope
+      itemType="https://schema.org/Product"
       role="article"
       aria-labelledby={`product-title-${product.id}`}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
 
       {/* Compare Checkbox - Top Left */}
       <div className="absolute top-2 left-2 z-20">
@@ -85,6 +110,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <Image
             src={mainImage}
             alt={product.title}
+            itemProp="image"
             fill
             className={`object-contain transition-transform duration-200 ${imageHover ? 'scale-[1.02]' : 'scale-100'}`}
             unoptimized={mainImage.startsWith('https://') || mainImage.startsWith('/placeholder')}
@@ -102,8 +128,8 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Content Section */}
       <div className="flex-1 flex flex-col p-5 relative z-10">
         {/* Brand */}
-        <div className="text-xs text-professional-gray font-medium tracking-wider uppercase mb-2">
-          {product.brand}
+        <div className="text-xs text-professional-gray font-medium tracking-wider uppercase mb-2" itemProp="brand" itemScope itemType="https://schema.org/Brand">
+          <span itemProp="name">{product.brand}</span>
         </div>
 
         {/* Title */}
@@ -111,6 +137,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <h3 
             id={`product-title-${product.id}`}
             className="text-base font-semibold text-charcoal hover:text-deep-blue transition-colors mb-3 line-clamp-2 leading-tight"
+            itemProp="name"
           >
             {product.title}
           </h3>
@@ -148,8 +175,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="mb-3">
             {hasDiscount ? (
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-charcoal">
-                  ${price.toLocaleString()}
+                <span className="text-2xl font-bold text-charcoal" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                  <meta itemProp="priceCurrency" content="USD" />
+                  <span itemProp="price" content={price.toString()}>${price.toLocaleString()}</span>
                 </span>
                 <span className="text-sm text-gray-500 line-through">
                   ${comparePrice.toLocaleString()}

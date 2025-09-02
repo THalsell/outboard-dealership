@@ -1,13 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFilter } from '@/contexts/FilterContext';
 import { Product } from '@/lib/data/products';
 import Image from 'next/image';
 import Link from 'next/link';
 
 // Reusable modal component
-const AddMotorModal = ({ show, onClose, onAdd, products, searchQuery, setSearchQuery }) => {
+type AddMotorModalProps = {
+  show: boolean;
+  onClose: () => void;
+  onAdd: (product: Product) => void;
+  products: Product[];
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const AddMotorModal: React.FC<AddMotorModalProps> = ({ show, onClose, onAdd, products, searchQuery, setSearchQuery }) => {
   if (!show) return null;
   
   return (
@@ -64,7 +73,12 @@ const AddMotorModal = ({ show, onClose, onAdd, products, searchQuery, setSearchQ
 };
 
 // Status badge component
-const StatusBadge = ({ condition, type = 'condition' }) => {
+type StatusBadgeProps = {
+  condition: string | boolean | undefined;
+  type?: 'condition' | 'stock';
+};
+
+const StatusBadge: React.FC<StatusBadgeProps> = ({ condition, type = 'condition' }) => {
   const getStyle = () => {
     if (type === 'condition') {
       return condition === 'new' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800';
@@ -215,9 +229,6 @@ export default function ComparePage() {
     }
   });
 
-  // Debug: log what specs are available
-  console.log('Available specs:', Array.from(allSpecs));
-  console.log('Sample product specs:', selectedProducts[0]?.specs);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -285,11 +296,11 @@ export default function ComparePage() {
                   <td colSpan={selectedProducts.length + 1} className="p-3 font-semibold text-charcoal">Basic Information</td>
                 </tr>
                 {[
-                  { key: 'horsepower', label: 'Horsepower', render: (p) => `${p.horsepower} HP` },
-                  { key: 'brand', label: 'Brand', render: (p) => p.brand },
-                  { key: 'condition', label: 'Condition', render: (p) => <StatusBadge condition={p.condition} /> },
-                  { key: 'inStock', label: 'Stock Status', render: (p) => <StatusBadge condition={p.inStock} type="stock" /> },
-                  { key: 'powerCategory', label: 'Power Category', render: (p) => p.powerCategory }
+                  { key: 'horsepower', label: 'Horsepower', render: (p: Product) => `${p.horsepower} HP` },
+                  { key: 'brand', label: 'Brand', render: (p: Product) => p.brand },
+                  { key: 'condition', label: 'Condition', render: (p: Product) => <StatusBadge condition={p.condition} /> },
+                  { key: 'inStock', label: 'Stock Status', render: (p: Product) => <StatusBadge condition={p.inStock} type="stock" /> },
+                  { key: 'powerCategory', label: 'Power Category', render: (p: Product) => p.powerCategory }
                 ].map(({ key, label, render }) => (
                   <tr key={key} className="border-b">
                     <td className="p-4 font-medium text-gray-600">{label}</td>

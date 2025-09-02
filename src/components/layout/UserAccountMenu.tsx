@@ -78,7 +78,7 @@ export default function UserAccountMenu() {
               <div className="border-t pt-2">
                 <button
                   onClick={() => {
-                    setIsLoggedIn(false);
+                    // TODO: Implement sign out logic here
                     setIsOpen(false);
                   }}
                   className="flex items-center gap-3 px-4 py-2 w-full hover:bg-gray-50 transition-colors text-left text-red-600"

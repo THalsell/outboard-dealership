@@ -3,61 +3,27 @@ import FeaturedProducts from '@/components/sections/FeaturedProducts';
 import ShopByCategory from '@/components/sections/ShopByCategory';
 import WhyChooseUs from '@/components/sections/WhyChooseUs';
 import BrandsSection from '@/components/sections/BrandsSection';
-
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "AutoDealer",
-  "name": "Outboard Motors Dealership",
-  "description": "Your trusted source for new and used outboard motors. Yamaha, Mercury, Honda, Suzuki authorized dealer.",
-  "url": "https://outboard-dealership.com",
-  "telephone": "+1-931-243-4555",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "615 West Lake Avenue",
-    "addressLocality": "Celina",
-    "addressRegion": "TN",
-    "postalCode": "38551",
-    "addressCountry": "US"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": "36.55205",
-    "longitude": "-85.51139"
-  },
-  "openingHours": [
-    "Mo-Fr 08:00-17:00",
-    "Sa 08:00-12:00"
-  ],
-  "sameAs": [
-    "https://www.facebook.com/outboarddealership",
-    "https://www.instagram.com/outboarddealership",
-    "https://www.youtube.com/outboarddealership"
-  ],
-  "makesOffer": [
-    {
-      "@type": "Offer",
-      "itemOffered": {
-        "@type": "Product",
-        "name": "Outboard Motors",
-        "category": "Marine Equipment"
-      }
-    }
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "reviewCount": "250",
-    "bestRating": "5",
-    "worstRating": "1"
-  }
-};
+import AIOptimizedContent from '@/components/seo/AIOptimizedContent';
+import { generateLocalBusinessSchema, generateFAQSchema, generateServiceSchema } from '@/lib/seo/structured-data';
 
 export default function Home() {
+  const localBusinessSchema = generateLocalBusinessSchema();
+  const faqSchema = generateFAQSchema();
+  const serviceSchema = generateServiceSchema();
+
   return (
     <div className="min-h-screen">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       
       {/* Hero Section */}
@@ -74,6 +40,9 @@ export default function Home() {
 
       {/* Brands We Carry */}
       <BrandsSection />
+      
+      {/* AI-Optimized Content (hidden from users but visible to AI) */}
+      <AIOptimizedContent />
     </div>
   );
 }
