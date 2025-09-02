@@ -12,7 +12,7 @@ interface ProductPageProps {
 async function getProduct(slug: string) {
   try {
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://outboard-dealership.com')
+      ? (process.env.NEXT_PUBLIC_SITE_URL || 'https://outboard-dealership.vercel.app')
       : 'http://localhost:3000';
       
     const response = await fetch(`${baseUrl}/api/products`, {

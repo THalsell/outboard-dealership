@@ -57,7 +57,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/api/'],
       },
     ],
-    sitemap: 'https://outboard-dealership.com/sitemap.xml',
-    host: 'https://outboard-dealership.com',
+    sitemap: 'https://outboard-dealership.vercel.app/sitemap.xml',
+    host: 'https://outboard-dealership.vercel.app',
   };
 }

@@ -285,24 +285,24 @@ export function generateLocalBusinessSchema() {
   return {
     "@context": "https://schema.org",
     "@type": ["BoatDealer", "Store", "LocalBusiness"],
-    "@id": "https://outboard-dealership.com/#organization",
+    "@id": "https://outboard-dealership.vercel.app/#organization",
     "name": "Outboard Motors Dealership",
     "alternateName": "Clay Powersports Marine",
     "description": "Authorized dealer for Honda, Yamaha, Mercury, Freedom, Suzuki, and Tohatsu outboard motors. Expert service, parts, and financing available.",
-    "url": "https://outboard-dealership.com",
+    "url": "https://outboard-dealership.vercel.app",
     "logo": {
       "@type": "ImageObject",
-      "url": "https://outboard-dealership.com/logo.png",
+      "url": "https://outboard-dealership.vercel.app/logo.png",
       "width": 600,
       "height": 200
     },
     "image": [
-      "https://outboard-dealership.com/storefront.jpg",
-      "https://outboard-dealership.com/showroom.jpg"
+      "https://outboard-dealership.vercel.app/storefront.jpg",
+      "https://outboard-dealership.vercel.app/showroom.jpg"
     ],
     "telephone": "+1-931-243-4555",
     "faxNumber": "+1-931-243-4556",
-    "email": "info@outboard-dealership.com",
+    "email": "info@outboard-dealership.vercel.app",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "615 West Lake Avenue",
@@ -433,7 +433,7 @@ export function generateLocalBusinessSchema() {
     ],
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://outboard-dealership.com/search?q={search_term_string}",
+      "target": "https://outboard-dealership.vercel.app/search?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };

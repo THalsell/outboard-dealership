@@ -36,14 +36,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Outboard Motors Dealership" }],
   creator: "Outboard Motors Dealership",
   publisher: "Outboard Motors Dealership",
-  metadataBase: new URL("https://outboard-dealership.com"),
+  metadataBase: new URL("https://outboard-dealership.vercel.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://outboard-dealership.com",
+    url: "https://outboard-dealership.vercel.app",
     siteName: "Outboard Motors Dealership",
     title: "Outboard Motors Dealership - Premium Marine Motors & Service",
     description: "Your trusted source for new and used outboard motors. Yamaha, Mercury, Honda, Suzuki authorized dealer. Expert service, parts, and financing available.",
