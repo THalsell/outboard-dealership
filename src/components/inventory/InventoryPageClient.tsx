@@ -57,6 +57,8 @@ export default function InventoryPageClient() {
           throw new Error('Failed to fetch products');
         }
         const fetchedProducts = await response.json();
+        console.log('Fetched products count:', fetchedProducts.length);
+        console.log('Sample product:', fetchedProducts[0]);
         setAllProducts(fetchedProducts);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -72,7 +74,9 @@ export default function InventoryPageClient() {
   // Filter and sort products
   const filteredProducts = useMemo(() => {
     // Start with all published products (including out of stock)
+    console.log('All products before filtering:', allProducts.length);
     let filtered = allProducts.filter(product => product.published);
+    console.log('Published products:', filtered.length);
     
     // Apply filters
     filtered = filtered.filter((product) => {
