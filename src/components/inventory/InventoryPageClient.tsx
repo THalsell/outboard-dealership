@@ -73,10 +73,10 @@ export default function InventoryPageClient() {
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    // Start with all published products (including out of stock)
+    // Start with all products (remove published filter for debugging)
     console.log('All products before filtering:', allProducts.length);
-    let filtered = allProducts.filter(product => product.published);
-    console.log('Published products:', filtered.length);
+    let filtered = [...allProducts]; // Show ALL products for now
+    console.log('Products after removing published filter:', filtered.length);
     
     // Apply filters
     filtered = filtered.filter((product) => {
