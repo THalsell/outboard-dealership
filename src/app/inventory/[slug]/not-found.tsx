@@ -18,7 +18,7 @@ export default function ProductNotFound() {
         <div className="space-y-4">
           <Link
             href="/inventory"
-            className="block w-full bg-deep-blue text-white py-3 px-6 rounded-lg font-semibold hover:bg-deep-blue/90 transition-colors"
+            className="block w-full bg-deep-blue text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#0a3a6e] transition-colors"
           >
             Browse All Motors
           </Link>

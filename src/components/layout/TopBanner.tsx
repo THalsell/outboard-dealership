@@ -12,21 +12,51 @@ export default function TopBanner() {
   const [searchQuery, setSearchQuery] = useState('');
   return (
     <>
-      <div className="bg-gray-900 text-white py-6">
-        <div className="w-full px-4 flex justify-between items-center text-sm sm:text-base">
-          <div className="flex items-center gap-4 sm:gap-8">
-            <a href="tel:9312434555" className="hover:text-blue-400 flex items-center gap-2">
-              <Image src="/phone.svg" alt="Phone" width={20} height={20} className="w-4 h-4 sm:w-5 sm:h-5 filter brightness-0 invert" />
-              <span>(931) 243-4555</span>
+      <div className="bg-gray-900 text-white py-3 sm:py-4">
+        {/* Mobile Layout */}
+        <div className="sm:hidden">
+          <div className="flex justify-between items-center px-3 mb-2">
+            <a href="tel:9312434555" className="hover:text-blue-400 flex items-center gap-1 text-sm">
+              <Image src="/phone.svg" alt="Phone" width={16} height={16} className="w-4 h-4 filter brightness-0 invert flex-shrink-0" />
+              <span className="whitespace-nowrap">(931) 243-4555</span>
             </a>
-            <span className="text-gray-400">|</span>
             <div className="flex items-center gap-2">
-              <Image src="/clock.svg" alt="Hours" width={20} height={20} className="w-4 h-4 sm:w-5 sm:h-5 filter brightness-0 invert" />
-              <span>Mon-Fri: 8AM-5PM, Sat: 8AM-12PM, Sun: Closed</span>
+              <UserAccountMenu />
+              <button
+                onClick={() => setCartOpen(true)}
+                className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative"
+                aria-label={`Shopping cart with ${itemCount} items`}
+              >
+                <Image src="/shopping.svg" alt="Shopping Cart" width={20} height={20} className="w-5 h-5 filter brightness-0 invert" />
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {itemCount}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            {/* Search Bar */}
+          <div className="px-3 text-xs text-gray-300 text-center">
+            <Image src="/clock.svg" alt="Hours" width={14} height={14} className="w-3 h-3 inline mr-1 filter brightness-0 invert" />
+            Mon-Fri: 8-5, Sat: 8-12, Sun: Closed
+          </div>
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="hidden sm:flex w-full px-4 justify-between items-center text-sm lg:text-base">
+          <div className="flex items-center gap-2 lg:gap-4">
+            <a href="tel:9312434555" className="hover:text-blue-400 flex items-center gap-2">
+              <Image src="/phone.svg" alt="Phone" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 filter brightness-0 invert flex-shrink-0" />
+              <span className="whitespace-nowrap">(931) 243-4555</span>
+            </a>
+            <span className="text-gray-400 hidden md:inline">|</span>
+            <div className="hidden md:flex items-center gap-2">
+              <Image src="/clock.svg" alt="Hours" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 filter brightness-0 invert flex-shrink-0" />
+              <span className="text-sm lg:text-base">Mon-Fri: 8AM-5PM, Sat: 8AM-12PM, Sun: Closed</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 lg:gap-4">
+            {/* Search Bar - Hidden on small screens */}
             <form 
               onSubmit={(e) => {
                 e.preventDefault();
@@ -45,7 +75,7 @@ export default function TopBanner() {
                   }
                 }
               }}
-              className="relative"
+              className="relative hidden lg:block"
             >
               <div className="relative">
                 <Image 
@@ -60,12 +90,12 @@ export default function TopBanner() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search motors..."
-                  className="w-48 pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:border-gray-500"
+                  className="w-40 xl:w-48 pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:border-gray-500"
                 />
               </div>
             </form>
             
-            <Link href="/learn/faqs" className="hover:text-blue-400">
+            <Link href="/learn/faqs" className="hover:text-blue-400 hidden md:inline">
               Help
             </Link>
             <UserAccountMenu />
@@ -74,7 +104,7 @@ export default function TopBanner() {
               className="p-2 hover:bg-gray-700 rounded-lg transition-colors relative"
               aria-label={`Shopping cart with ${itemCount} items`}
             >
-              <Image src="/shopping.svg" alt="Shopping Cart" width={20} height={20} className="w-4 h-4 sm:w-5 sm:h-5 filter brightness-0 invert" />
+              <Image src="/shopping.svg" alt="Shopping Cart" width={20} height={20} className="w-5 h-5 filter brightness-0 invert" />
               {itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {itemCount}

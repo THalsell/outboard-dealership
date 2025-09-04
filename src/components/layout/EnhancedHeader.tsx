@@ -82,8 +82,8 @@ export default function EnhancedHeader() {
       <header className="bg-white shadow-md sticky top-0 z-50">
         <TopBanner />
 
-        {/* Logo Section */}
-        <div className="container mx-auto px-4 py-6">
+        {/* Logo Section with Mobile Menu Button */}
+        <div className="container mx-auto px-4 py-3 relative">
           <Link href="/" className="flex justify-center">
             <Image
               src="/logo.png"
@@ -91,14 +91,31 @@ export default function EnhancedHeader() {
               width={500}
               height={150}
               className=
-              "w-96 h-20 sm:w-[48rem] sm:h-24 object-contain"
+              "w-80 h-16 sm:w-96 sm:h-20 object-contain"
             />
           </Link>
+          
+          {/* Mobile Menu Button - Positioned in Logo Section */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
         </div>
 
         {/* Main Navigation */}
         <nav className="container mx-auto px-4 border-t">
-          <div className="flex justify-center items-center py-4">
+          <div className="flex justify-center items-center py-2">
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-6">
               {navigation.map((item) => (
@@ -199,25 +216,6 @@ export default function EnhancedHeader() {
                 </div>
               ))}
             </div>
-
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden absolute right-4">
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-                aria-expanded={mobileMenuOpen}
-                aria-controls="mobile-menu"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  {mobileMenuOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-            </div>
           </div>
 
           {/* Mobile Menu */}
@@ -263,7 +261,7 @@ export default function EnhancedHeader() {
                 ))}
                 <Link
                   href="/inventory?condition=new"
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium text-center mt-4"
+                  className="bg-deep-blue text-white px-6 py-3 rounded-lg hover:bg-[#0a3a6e] transition-colors font-medium text-center mt-4"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Shop New Motors

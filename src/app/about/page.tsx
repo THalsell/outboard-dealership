@@ -68,7 +68,7 @@ export default function AboutPage() {
           </p>
           <Link
             href="/inventory"
-            className="inline-block bg-deep-blue text-white px-8 py-3 rounded-lg hover:bg-teal transition-colors"
+            className="inline-block bg-deep-blue text-white px-8 py-3 rounded-lg hover:bg-[#0a3a6e] transition-colors"
           >
             Browse Our Inventory
           </Link>

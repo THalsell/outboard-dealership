@@ -94,7 +94,7 @@ export default function UserAccountMenu() {
                 <p className="text-gray-700 mb-3">Welcome! Sign in to access your account</p>
                 <a
                   href={`${SHOPIFY_STORE_URL}/account/login`}
-                  className="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium mb-2"
+                  className="block w-full bg-deep-blue text-white text-center py-2 rounded-lg hover:bg-[#0a3a6e] transition-colors font-medium mb-2"
                   onClick={() => setIsOpen(false)}
                 >
                   Sign In

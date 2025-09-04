@@ -83,7 +83,7 @@ export default function NewsletterSignup({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-teal hover:bg-teal/90 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-deep-blue hover:bg-[#0a3a6e] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? '...' : 'Subscribe'}
             </button>
@@ -172,7 +172,7 @@ export default function NewsletterSignup({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-3 bg-deep-blue hover:bg-deep-blue/90 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 bg-deep-blue hover:bg-[#0a3a6e] text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Subscribing...' : 'Subscribe to Newsletter'}
         </button>

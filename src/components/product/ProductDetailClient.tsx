@@ -351,11 +351,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 disabled={!product.inStock || isAdding || !selectedVariant?.available}
                 className={classNames(
                   product.inStock && selectedVariant?.available && !isAdding
-                    ? 'bg-black hover:bg-gray-800 shadow-lg hover:shadow-xl'
+                    ? 'bg-deep-blue hover:bg-[#0a3a6e] shadow-lg hover:shadow-xl'
                     : isAdding
                     ? 'bg-green-600 shadow-lg'
                     : 'bg-gray-300 cursor-not-allowed',
-                  'w-full flex items-center justify-center px-8 py-4 text-lg font-semibold text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2'
+                  'w-full flex items-center justify-center px-8 py-4 text-lg font-semibold text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-deep-blue focus:ring-offset-2'
                 )}
               >
                 {isAdding ? '✓ Added to Cart' : !product.inStock ? 'Out of Stock' : 'Add to Cart'}
@@ -510,7 +510,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <p className="text-lg font-bold text-gray-900 mb-4">
                   ${relatedItem.price.toLocaleString()}
                 </p>
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-3 px-4 rounded-lg transition-colors">
+                <button className="w-full bg-deep-blue hover:bg-[#0a3a6e] text-white text-sm font-medium py-3 px-4 rounded-lg transition-colors">
                   View Details
                 </button>
               </div>

@@ -231,7 +231,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 isAdding 
                   ? 'bg-green-600 text-white' 
                   : product.inStock 
-                    ? 'bg-black hover:bg-gray-800 text-white' 
+                    ? 'bg-deep-blue hover:bg-[#0a3a6e] text-white' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
               aria-describedby={`product-price-${product.id}`}

@@ -199,7 +199,7 @@ export default function ComparePage() {
             </p>
             
             <div className="flex gap-4 justify-center">
-              <Link href="/inventory" className="bg-deep-blue text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-all">
+              <Link href="/inventory" className="bg-deep-blue text-white px-6 py-3 rounded-lg hover:bg-[#0a3a6e] transition-all">
                 Browse Motors
               </Link>
               <button onClick={() => setShowAddMotor(true)} className="border border-gray-300 px-6 py-3 rounded-lg hover:bg-gray-50">
@@ -343,7 +343,7 @@ export default function ComparePage() {
                     <td key={`${product.id}-action`} className="p-4 text-center">
                       <Link
                         href={`/inventory/${product.handle}`}
-                        className="inline-block bg-deep-blue text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all"
+                        className="inline-block bg-deep-blue text-white px-4 py-2 rounded-lg hover:bg-[#0a3a6e] transition-all"
                       >
                         View Details
                       </Link>

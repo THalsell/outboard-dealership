@@ -55,15 +55,6 @@ export default function FeaturedProducts() {
             ))}
           </div>
         )}
-        
-        <div className="text-center mt-12">
-          <Link
-            href="/inventory"
-            className="inline-block bg-deep-blue text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-teal transition-colors"
-          >
-            View All Inventory
-          </Link>
-        </div>
       </div>
     </section>
   );

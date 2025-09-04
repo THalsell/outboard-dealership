@@ -34,7 +34,7 @@ export default function HeroSlider() {
   }, [heroSlides.length]);
 
   return (
-    <section className="relative h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden">
+    <section className="relative h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden">
       {heroSlides.map((slide, index) => (
         <div
           key={index}
@@ -46,7 +46,7 @@ export default function HeroSlider() {
             src={slide.image}
             alt={slide.title}
             fill
-            className="object-cover"
+            className="object-cover object-center sm:object-[center_20%] lg:object-[center_15%]"
             priority={index === 0}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30" />
@@ -64,7 +64,7 @@ export default function HeroSlider() {
                 </p>
                 <Link
                   href={slide.link}
-                  className="inline-block bg-deep-blue text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal transition-colors"
+                  className="inline-block bg-deep-blue text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#0a3a6e] transition-colors"
                 >
                   {slide.cta}
                 </Link>

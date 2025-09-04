@@ -104,7 +104,7 @@ export default function CartDrawer() {
               <p className="text-gray-600 mb-4">Your cart is empty</p>
               <Link
                 href="/inventory"
-                className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-block bg-deep-blue text-white px-6 py-2 rounded-lg hover:bg-[#0a3a6e] transition-colors"
                 onClick={() => setIsOpen(false)}
               >
                 Start Shopping
@@ -185,7 +185,7 @@ export default function CartDrawer() {
               <button
                 onClick={handleCheckout}
                 disabled={isCheckingOut || items.length === 0}
-                className="block w-full bg-blue-600 text-white text-center py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                className="block w-full bg-deep-blue text-white text-center py-3 rounded-lg hover:bg-[#0a3a6e] transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isCheckingOut ? 'Creating Checkout...' : 'Proceed to Checkout'}
               </button>

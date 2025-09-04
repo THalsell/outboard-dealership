@@ -668,7 +668,7 @@ export default function FilterSidebar({
           </button>
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-3 bg-deep-blue text-white rounded-lg font-medium hover:bg-deep-blue/90 transition-colors"
+            className="flex-1 px-4 py-3 bg-deep-blue text-white rounded-lg font-medium hover:bg-[#0a3a6e] transition-colors"
           >
             Apply Filters
           </button>
