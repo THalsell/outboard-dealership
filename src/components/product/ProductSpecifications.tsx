@@ -144,12 +144,16 @@ export default function ProductSpecifications({
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-      <div className="divide-y divide-gray-200">
+    <div className="p-6">
+      <div className="space-y-0">
         {Object.entries(allSpecs).map(([key, value], index) => (
-          <div key={index} className="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <dt className="font-medium text-gray-900">{key}</dt>
-            <dd className="text-gray-700">{value}</dd>
+          <div key={index} className={`py-3 flex items-center border-b border-gray-200 last:border-b-0 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+            <span className="text-base font-medium text-gray-900 flex-1 text-center border-r border-gray-200 pr-4">
+              {key}
+            </span>
+            <span className="text-base text-gray-700 flex-1 text-center pl-4">
+              {value}
+            </span>
           </div>
         ))}
       </div>

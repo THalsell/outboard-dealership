@@ -1,17 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
-import { useCart } from '@/contexts/CartContext';
-import SearchModal from './SearchModal';
-import CartDrawer from './CartDrawer';
-import UserAccountMenu from './UserAccountMenu';
+import TopBanner from './TopBanner';
 
 export default function EnhancedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const { itemCount, setIsOpen: setCartOpen } = useCart();
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navigation = [
@@ -84,50 +80,25 @@ export default function EnhancedHeader() {
   return (
     <>
       <header className="bg-white shadow-md sticky top-0 z-50">
-        {/* Top Bar */}
-        <div className="bg-gray-900 text-white py-2">
-          <div className="container mx-auto px-4 flex justify-between items-center text-xs sm:text-sm">
-            <div className="flex items-center gap-2 sm:gap-4">
-              <a href="tel:9312434555" className="hover:text-blue-400 flex items-center gap-1">
-                <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span className="hidden xs:inline">(931) 243-4555</span>
-                <span className="xs:hidden">Call</span>
-              </a>
-              <span className="hidden sm:inline">|</span>
-              <span className="hidden md:inline items-center gap-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Mon-Fri: 8AM-5PM, Sat: 8AM-12PM, Sun: Closed
-              </span>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-4">
-              <Link href="/learn/faqs" className="hover:text-blue-400 hidden sm:inline">
-                Help
-              </Link>
-            </div>
-          </div>
+        <TopBanner />
+
+        {/* Logo Section */}
+        <div className="container mx-auto px-4 py-6">
+          <Link href="/" className="flex justify-center">
+            <Image
+              src="/logo.png"
+              alt="Outboard Motor Sales Logo"
+              width={500}
+              height={150}
+              className=
+              "w-96 h-20 sm:w-[48rem] sm:h-24 object-contain"
+            />
+          </Link>
         </div>
 
         {/* Main Navigation */}
-        <nav className="container mx-auto px-4">
-          <div className="flex justify-between items-center py-4">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg">
-                OM
-              </div>
-              <div className="hidden sm:block">
-                <div className="text-lg sm:text-xl font-bold text-gray-900">Outboard Motors</div>
-                <div className="text-xs text-gray-600">Premium Marine Dealership</div>
-              </div>
-              <div className="sm:hidden">
-                <div className="text-base font-bold text-gray-900">OM Dealership</div>
-              </div>
-            </Link>
-
+        <nav className="container mx-auto px-4 border-t">
+          <div className="flex justify-center items-center py-4">
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-6">
               {navigation.map((item) => (
@@ -229,44 +200,8 @@ export default function EnhancedHeader() {
               ))}
             </div>
 
-            {/* Right Side Actions */}
-            <div className="flex items-center gap-4">
-              {/* Search Button */}
-              <button
-                onClick={() => setSearchOpen(true)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label="Open search modal"
-              >
-                <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-
-              {/* User Account */}
-              <UserAccountMenu />
-
-              {/* Cart Button */}
-              <button
-                onClick={() => setCartOpen(true)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500"
-                aria-label={`Shopping cart with ${itemCount} items`}
-                aria-describedby="cart-count"
-              >
-                <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                {itemCount > 0 && (
-                  <span 
-                    id="cart-count"
-                    className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold"
-                    aria-hidden="true"
-                  >
-                    {itemCount}
-                  </span>
-                )}
-              </button>
-
-              {/* Mobile Menu Button */}
+            {/* Mobile Menu Button */}
+            <div className="lg:hidden absolute right-4">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -339,11 +274,8 @@ export default function EnhancedHeader() {
         </nav>
       </header>
 
-      {/* Search Modal */}
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
 
       {/* Cart Drawer */}
-      <CartDrawer />
     </>
   );
 }

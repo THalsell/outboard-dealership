@@ -27,7 +27,7 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
                 currencyCode
               }
             }
-            images(first: 1) {
+            images(first: 10) {
               edges {
                 node {
                   url

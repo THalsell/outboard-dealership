@@ -107,7 +107,7 @@ export default function FilterSidebar({
   };
 
   return (
-    <div className={`${isMobile ? 'h-full overflow-y-auto bg-white' : ''}`}>
+    <div className={`${isMobile ? 'h-full overflow-y-auto bg-white p-4' : ''}`}>
       {/* Header */}
       <div className="pb-4 border-b border-gray-200">
         <div className="flex justify-between items-center">
@@ -225,7 +225,7 @@ export default function FilterSidebar({
           </button>
           {expandedSections.includes('price') && (
             <div className="mt-3 space-y-4">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
                   <input
@@ -233,7 +233,7 @@ export default function FilterSidebar({
                     placeholder="Min"
                     value={filters.minPrice || ''}
                     onChange={(e) => updateFilter('minPrice', Number(e.target.value))}
-                    className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
+                    className="w-full pl-7 pr-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
                   />
                 </div>
                 <div className="relative">
@@ -243,7 +243,7 @@ export default function FilterSidebar({
                     placeholder="Max"
                     value={filters.maxPrice === priceRange.max ? '' : filters.maxPrice}
                     onChange={(e) => updateFilter('maxPrice', Number(e.target.value) || priceRange.max)}
-                    className="w-full pl-7 pr-3 py-2 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
+                    className="w-full pl-7 pr-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
                   />
                 </div>
               </div>
@@ -307,20 +307,20 @@ export default function FilterSidebar({
           </button>
           {expandedSections.includes('horsepower') && (
             <div className="mt-3 space-y-4">
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <input
                   type="number"
                   placeholder="Min HP"
                   value={filters.minHorsepower || ''}
                   onChange={(e) => updateFilter('minHorsepower', Number(e.target.value))}
-                  className="px-3 py-2 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
+                  className="px-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
                 />
                 <input
                   type="number"
                   placeholder="Max HP"
                   value={filters.maxHorsepower === horsepowerRange.max ? '' : filters.maxHorsepower}
                   onChange={(e) => updateFilter('maxHorsepower', Number(e.target.value) || horsepowerRange.max)}
-                  className="px-3 py-2 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
+                  className="px-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
                 />
               </div>
               <div className="space-y-1">

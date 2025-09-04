@@ -127,16 +127,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Content Section */}
       <div className="flex-1 flex flex-col p-5 relative z-10">
-        {/* Brand */}
-        <div className="text-xs text-professional-gray font-medium tracking-wider uppercase mb-2" itemProp="brand" itemScope itemType="https://schema.org/Brand">
-          <span itemProp="name">{product.brand}</span>
-        </div>
 
         {/* Title */}
         <Link href={`/inventory/${product.handle}`}>
           <h3 
             id={`product-title-${product.id}`}
-            className="text-base font-semibold text-charcoal hover:text-deep-blue transition-colors mb-3 line-clamp-2 leading-tight"
+            className="text-lg font-semibold text-charcoal hover:text-gray-600 transition-colors mb-3 line-clamp-2 leading-tight"
             itemProp="name"
           >
             {product.title}
@@ -175,7 +171,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div className="mb-3">
             {hasDiscount ? (
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-charcoal" itemProp="offers" itemScope itemType="https://schema.org/Offer">
+                <span className="text-xl font-bold text-charcoal" itemProp="offers" itemScope itemType="https://schema.org/Offer">
                   <meta itemProp="priceCurrency" content="USD" />
                   <span itemProp="price" content={price.toString()}>${price.toLocaleString()}</span>
                 </span>
@@ -189,11 +185,11 @@ export default function ProductCard({ product }: ProductCardProps) {
                 )}
               </div>
             ) : product.priceRange.min !== product.priceRange.max ? (
-              <span className="text-xl font-bold text-charcoal">
+              <span className="text-lg font-bold text-charcoal">
                 ${product.priceRange.min.toLocaleString()} - ${product.priceRange.max.toLocaleString()}
               </span>
             ) : (
-              <span className="text-2xl font-bold text-charcoal">
+              <span className="text-xl font-bold text-charcoal">
                 ${price.toLocaleString()}
               </span>
             )}
@@ -202,10 +198,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Stock Status */}
           <div className="mb-3">
             {product.inStock ? (
-              <span className="text-xs text-green-600 font-medium flex items-center gap-1">
-                <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
+              <span className="text-xs text-green-600 font-medium">
                 In Stock {defaultVariant?.inventory && `(${defaultVariant.inventory} available)`}
               </span>
             ) : (
@@ -234,11 +227,11 @@ export default function ProductCard({ product }: ProductCardProps) {
                 }, 500);
               }}
               disabled={!product.inStock || isAdding}
-              className={`flex-1 py-2.5 px-4 rounded font-medium text-sm transition-all ${
+              className={`flex-1 py-2.5 px-4 font-medium text-sm transition-all ${
                 isAdding 
                   ? 'bg-green-600 text-white' 
                   : product.inStock 
-                    ? 'bg-deep-blue hover:bg-deep-blue/80 text-white' 
+                    ? 'bg-black hover:bg-gray-800 text-white' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
               aria-describedby={`product-price-${product.id}`}
