@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter, Roboto } from "next/font/google";
+import { Bebas_Neue, Roboto } from "next/font/google";
 import "./globals.css";
 import EnhancedHeader from "@/components/layout/EnhancedHeader";
 import Footer from "@/components/layout/Footer";
@@ -11,12 +11,6 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
   display: "swap",
   variable: "--font-bebas-neue"
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter"
 });
 
 const roboto = Roboto({
@@ -89,7 +83,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bebasNeue.variable} ${inter.variable} ${roboto.variable} antialiased flex flex-col min-h-screen`}>
+      <body className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen`} suppressHydrationWarning={true}>
         <AppProviders>
           <EnhancedHeader />
           <main className="flex-grow">

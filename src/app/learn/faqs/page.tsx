@@ -10,8 +10,32 @@ interface FAQ {
 
 const faqs: FAQ[] = [
   {
+    question: "Where is Outboard Motor Sales located?",
+    answer: "Outboard Motor Sales is located at 615 West Lake Avenue, Celina, TN 38551, where we share our facility with Clay Powersports. We are your local authorized outboard motor dealer, serving customers throughout the region with our full-service dealership offering new and used outboard motors, parts, service, and financing. Call us at (931) 243-4555 or visit our showroom to see our inventory."
+  },
+  {
+    question: "What areas do you serve for outboard motor sales and service?",
+    answer: "We proudly serve customers throughout Tennessee and Kentucky, including the Dale Hollow Lake area. Located just a few miles from Dale Hollow Lake, we're perfectly positioned to serve boaters on this popular fishing destination. Our service technicians provide on-site outboard motor service and support throughout the region. Whether you're looking for a new Yamaha, Mercury, Honda, Suzuki, Tohatsu, or Freedom outboard, we deliver and service motors throughout the Dale Hollow Lake area and surrounding communities."
+  },
+  {
+    question: "Do you offer outboard motor installation services?",
+    answer: "Yes! Our certified technicians provide professional outboard motor installation at our facility. Customers bring their boats to our location at 615 West Lake Avenue, Celina, TN for expert installation. Professional installation ensures proper setup, rigging, and warranty compliance for your new or used outboard motor."
+  },
+  {
+    question: "What financing options are available for outboard motors?",
+    answer: "We offer competitive financing options for new and used outboard motors through multiple lenders. Our financing team can help you find the best rates and terms for your budget. We also accept trade-ins to reduce your total cost. Apply online or visit our dealership to discuss financing options."
+  },
+  {
     question: "What horsepower outboard motor do I need for my boat?",
     answer: "The horsepower you need depends on your boat's size, weight, and intended use. Check your boat's capacity plate for the maximum recommended horsepower. Generally, pontoon boats need 25-90 HP, small fishing boats need 25-60 HP, and larger boats may need 100+ HP. Consider factors like the number of passengers, gear weight, and desired performance."
+  },
+  {
+    question: "What brands of outboard motors do you carry?",
+    answer: "We are an authorized dealer for Honda, Yamaha, Mercury, Suzuki, Tohatsu, and Freedom outboard motors. Our inventory includes both new and certified pre-owned motors in various horsepower ranges. We also stock genuine parts and accessories for all major outboard motor brands."
+  },
+  {
+    question: "Do you service all brands of outboard motors?",
+    answer: "Our certified marine technicians service all major brands of outboard motors, including Honda, Yamaha, Mercury, Suzuki, Tohatsu, and Freedom. We provide routine maintenance, repairs, winterization, and warranty service. Our service department uses genuine OEM parts and follows manufacturer specifications."
   },
   {
     question: "What's the difference between a short shaft and long shaft outboard?",
@@ -22,16 +46,16 @@ const faqs: FAQ[] = [
     answer: "Most manufacturers recommend servicing every 100 hours of operation or annually, whichever comes first. This typically includes changing engine oil, gear oil, spark plugs, fuel filter, and checking the cooling system. More frequent service may be needed for saltwater use or harsh conditions."
   },
   {
-    question: "Can I install an outboard motor myself?",
-    answer: "While basic installation is possible for experienced DIYers, we recommend professional installation for safety and warranty reasons. Proper installation involves correct mounting height, steering and throttle connections, fuel system setup, and initial break-in procedures. Our certified technicians ensure everything is done correctly."
+    question: "Do you offer outboard motor trade-ins?",
+    answer: "Yes, we accept trade-ins on all brands and models of outboard motors. Our experienced appraisers will evaluate your current motor and provide a fair trade-in value toward your new purchase. Trade-ins can significantly reduce the cost of upgrading to a newer, more efficient outboard motor."
   },
   {
     question: "What's the difference between 2-stroke and 4-stroke outboards?",
     answer: "2-stroke engines are lighter, more powerful per displacement, and less expensive. 4-stroke engines are more fuel-efficient, quieter, produce fewer emissions, and don't require oil mixing. Most new outboards are 4-stroke due to environmental regulations and improved technology."
   },
   {
-    question: "How do I winterize my outboard motor?",
-    answer: "Winterization typically includes: running fuel stabilizer through the system, fogging the engine cylinders, changing engine oil and gear oil, removing the propeller, and storing in a dry location. For detailed procedures, consult your owner's manual or bring it to our service department."
+    question: "Do you have outboard motors on sale or special pricing?",
+    answer: "We regularly offer special pricing on new and used outboard motors, especially during boat show season and end-of-model-year clearances. Check our inventory for current sale prices and promotional financing offers. Sign up for our newsletter to be notified of special deals and seasonal promotions."
   }
 ];
 

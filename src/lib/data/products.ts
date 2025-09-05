@@ -29,6 +29,7 @@ export interface ProductImage {
 export interface Product {
   id: string;
   handle: string;
+  slug: string;
   title: string;
   description: string;
   vendor: string;

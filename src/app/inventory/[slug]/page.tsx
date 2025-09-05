@@ -5,6 +5,12 @@ import { notFound } from 'next/navigation';
 import ProductDetailClient from '@/components/product/ProductDetailClient';
 import { Product } from '@/lib/data/products';
 
+interface ProductImage {
+  src: string;
+  position?: number;
+  alt?: string;
+}
+
 interface ProductPageProps {
   params: Promise<{
     slug: string;
@@ -35,13 +41,17 @@ export default function ProductPage({ params }: ProductPageProps) {
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
-        
-        const products = await response.json();
-        const foundProduct = products.find((p: Product) => p.handle === slug);
-        
+        const products: Product[] = await response.json();
+        const foundProduct = products.find((p) => p.slug === slug);
+
         if (foundProduct) {
+          foundProduct.images = foundProduct.images.map((img: ProductImage, idx: number) => ({
+            src: img.src,
+            position: typeof img.position === 'number' ? img.position : idx,
+            alt: img.alt ?? foundProduct.title ?? 'Product image',
+          }));
           // Ensure images have proper structure
-          foundProduct.images = foundProduct.images.map((img: any, idx: number) => ({
+          foundProduct.images = foundProduct.images.map((img: { src: string; position?: number; alt?: string }, idx: number) => ({
             src: img.src,
             position: typeof img.position === 'number' ? img.position : idx,
             alt: img.alt ?? foundProduct.title ?? 'Product image',

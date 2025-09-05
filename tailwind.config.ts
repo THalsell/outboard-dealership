@@ -19,11 +19,10 @@ const config: Config = {
       },
       fontFamily: {
         'bebas-neue': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
-        'inter': ['var(--font-inter)', 'system-ui', 'sans-serif'],
         'roboto': ['var(--font-roboto)', 'system-ui', 'sans-serif'],
         'heading': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
         'body': ['var(--font-roboto)', 'system-ui', 'sans-serif'],
-        'ui': ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        'ui': ['var(--font-roboto)', 'system-ui', 'sans-serif'],
         sans: ['var(--font-roboto)', 'system-ui', 'sans-serif'],
       },
       fontSize: {

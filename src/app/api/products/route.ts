@@ -158,6 +158,7 @@ function transformGraphQLProduct(graphqlProduct: GraphQLProduct): Product {
   return {
     id: graphqlProduct.id,
     handle: graphqlProduct.handle,
+    slug: graphqlProduct.handle, // Added slug property
     title: graphqlProduct.title,
     description: graphqlProduct.description || '',
     vendor: brand,

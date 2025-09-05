@@ -8,25 +8,51 @@ import TopBanner from './TopBanner';
 export default function EnhancedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileDropdowns, setMobileDropdowns] = useState<string[]>([]);
+  const [mobileNestedDropdowns, setMobileNestedDropdowns] = useState<string[]>([]);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navigation = [
     {
       name: 'Outboard Motors',
-      href: '/inventory',
+      href: '#',
       dropdown: [
         { name: 'All Motors', href: '/inventory', description: 'Browse all motors' },
         { name: 'New Motors', href: '/inventory?condition=new', description: 'Latest models in stock' },
         { name: 'Used Motors', href: '/inventory?condition=used', description: 'Certified pre-owned' },
         { name: 'On Sale', href: '/inventory?status=sale', description: 'Special offers' },
         { name: 'Overstock', href: '/inventory?status=overstock', description: 'Great deals on overstock items' },
-        { name: '', href: '', description: 'divider' }, // Divider
-        { name: 'Yamaha', href: '/inventory?brand=yamaha', description: 'Browse Yamaha motors' },
-        { name: 'Mercury', href: '/inventory?brand=mercury', description: 'Browse Mercury motors' },
-        { name: 'Honda', href: '/inventory?brand=honda', description: 'Browse Honda motors' },
-        { name: 'Suzuki', href: '/inventory?brand=suzuki', description: 'Browse Suzuki motors' },
-        { name: 'Tohatsu', href: '/inventory?brand=tohatsu', description: 'Browse Tohatsu motors' },
-        { name: 'Freedom', href: '/inventory?brand=freedom', description: 'Browse Freedom motors' },
+        { 
+          name: 'Brands', 
+          href: '#', 
+          description: 'Browse by brand',
+          isNested: true,
+          brands: [
+            { name: 'Yamaha', href: '/inventory?brand=yamaha', description: 'Browse Yamaha motors' },
+            { name: 'Mercury', href: '/inventory?brand=mercury', description: 'Browse Mercury motors' },
+            { name: 'Honda', href: '/inventory?brand=honda', description: 'Browse Honda motors' },
+            { name: 'Suzuki', href: '/inventory?brand=suzuki', description: 'Browse Suzuki motors' },
+            { name: 'Tohatsu', href: '/inventory?brand=tohatsu', description: 'Browse Tohatsu motors' },
+            { name: 'Freedom', href: '/inventory?brand=freedom', description: 'Browse Freedom motors' },
+          ]
+        },
+      ]
+    },
+    {
+      name: 'Financing',
+      href: '#',
+      dropdown: [
+        { name: 'Apply Now', href: '/financing/application', description: 'Quick application' },
+        { name: 'Check Status', href: '/financing/status', description: 'Application status' },
+        { name: 'Special Offers', href: '/financing/offers', description: 'Current promotions' },
+      ]
+    },
+    {
+      name: 'Learn',
+      href: '#',
+      dropdown: [
+        { name: 'Buying Guides', href: '/learn/guides', description: 'How to choose the perfect motor' },
+        { name: 'FAQs', href: '/learn/faqs', description: 'Common questions answered' },
       ]
     },
     {
@@ -36,23 +62,6 @@ export default function EnhancedHeader() {
     {
       name: 'Compare',
       href: '/inventory/compare'
-    },
-    {
-      name: 'Financing',
-      href: '/financing',
-      dropdown: [
-        { name: 'Apply Now', href: '/financing/application', description: 'Quick application' },
-        { name: 'Check Status', href: '/financing/status', description: 'Application status' },
-        { name: 'Special Offers', href: '/financing/offers', description: 'Current promotions' },
-      ]
-    },
-    {
-      name: 'Learn',
-      href: '/learn',
-      dropdown: [
-        { name: 'Buying Guides', href: '/learn/guides', description: 'How to choose the perfect motor' },
-        { name: 'FAQs', href: '/learn/faqs', description: 'Common questions answered' },
-      ]
     },
   ];
 
@@ -69,6 +78,22 @@ export default function EnhancedHeader() {
     }, 150);
   };
 
+  const toggleMobileDropdown = (name: string) => {
+    setMobileDropdowns(prev => 
+      prev.includes(name) 
+        ? prev.filter(item => item !== name)
+        : [...prev, name]
+    );
+  };
+
+  const toggleMobileNestedDropdown = (name: string) => {
+    setMobileNestedDropdowns(prev => 
+      prev.includes(name) 
+        ? prev.filter(item => item !== name)
+        : [...prev, name]
+    );
+  };
+
   useEffect(() => {
     return () => {
       if (dropdownTimeoutRef.current) {
@@ -82,23 +107,12 @@ export default function EnhancedHeader() {
       <header className="bg-white shadow-md sticky top-0 z-50">
         <TopBanner />
 
-        {/* Logo Section with Mobile Menu Button */}
-        <div className="container mx-auto px-4 py-3 relative">
-          <Link href="/" className="flex justify-center">
-            <Image
-              src="/logo.png"
-              alt="Outboard Motor Sales Logo"
-              width={500}
-              height={150}
-              className=
-              "w-80 h-16 sm:w-96 sm:h-20 object-contain"
-            />
-          </Link>
-          
-          {/* Mobile Menu Button - Positioned in Logo Section */}
+        {/* Logo Section with Mobile Menu */}
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          {/* Hamburger Menu - Left side on mobile */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
@@ -111,10 +125,24 @@ export default function EnhancedHeader() {
               )}
             </svg>
           </button>
+
+          {/* Logo - Center */}
+          <Link href="/" className="flex-1 flex justify-center lg:justify-center">
+            <Image
+              src="/logo.png"
+              alt="Outboard Motor Sales Logo"
+              width={500}
+              height={150}
+              className="w-[400px] h-16 sm:w-[600px] lg:w-[700px] sm:h-20 object-contain"
+            />
+          </Link>
+
+          {/* Spacer for balance on mobile */}
+          <div className="lg:hidden w-10"></div>
         </div>
 
         {/* Main Navigation */}
-        <nav className="container mx-auto px-4 border-t">
+        <nav className="container mx-auto px-4">
           <div className="flex justify-center items-center py-2">
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-6">
@@ -125,17 +153,30 @@ export default function EnhancedHeader() {
                   onMouseEnter={() => handleMouseEnter(item.name)}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <Link
-                    href={item.href}
-                    className="text-gray-700 hover:text-blue-600 font-medium transition-colors py-2 flex items-center gap-1"
-                  >
-                    {item.name}
-                    {item.dropdown && (
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    )}
-                  </Link>
+                  {item.href === '#' ? (
+                    <span
+                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1 cursor-pointer"
+                    >
+                      {item.name}
+                      {item.dropdown && (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      )}
+                    </span>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1"
+                    >
+                      {item.name}
+                      {item.dropdown && (
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      )}
+                    </Link>
+                  )}
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && activeDropdown === item.name && (
@@ -143,25 +184,31 @@ export default function EnhancedHeader() {
                       {item.name === 'Outboard Motors' ? (
                         // Special layout for Inventory dropdown
                         <div className="grid grid-cols-2 gap-1">
-                          {/* Column 1: Condition & Status */}
+                          {/* Column 1: Condition & Availability */}
                           <div className="border-r border-gray-200 pr-3">
                             <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
-                              Shop by Condition
+                              Browse Motors
                             </div>
-                            <Link href="/inventory" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">All Motors</div>
+                            <Link href="/inventory" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">All Motors</div>
                             </Link>
-                            <Link href="/inventory?condition=new" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">New Motors</div>
+                            <div className="px-3 py-1 text-xs font-medium text-gray-400 uppercase tracking-wider mt-3 mb-1">
+                              By Condition
+                            </div>
+                            <Link href="/inventory?condition=new" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">New Motors</div>
                             </Link>
-                            <Link href="/inventory?condition=used" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Used Motors</div>
+                            <Link href="/inventory?condition=used" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">Used Motors</div>
                             </Link>
-                            <Link href="/inventory?status=sale" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">On Sale</div>
+                            <div className="px-3 py-1 text-xs font-medium text-gray-400 uppercase tracking-wider mt-3 mb-1">
+                              Special Deals
+                            </div>
+                            <Link href="/inventory?status=sale" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">On Sale</div>
                             </Link>
-                            <Link href="/inventory?status=overstock" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Overstock</div>
+                            <Link href="/inventory?status=overstock" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">Overstock</div>
                             </Link>
                             
                           </div>
@@ -171,24 +218,11 @@ export default function EnhancedHeader() {
                             <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
                               Shop by Brand
                             </div>
-                            <Link href="/inventory?brand=yamaha" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Yamaha</div>
-                            </Link>
-                            <Link href="/inventory?brand=mercury" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Mercury</div>
-                            </Link>
-                            <Link href="/inventory?brand=honda" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Honda</div>
-                            </Link>
-                            <Link href="/inventory?brand=suzuki" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Suzuki</div>
-                            </Link>
-                            <Link href="/inventory?brand=tohatsu" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Tohatsu</div>
-                            </Link>
-                            <Link href="/inventory?brand=freedom" className="block px-3 py-2 hover:bg-blue-50 hover:text-blue-600 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-blue-600 text-sm">Freedom</div>
-                            </Link>
+                            {item.dropdown.find(subItem => subItem.isNested)?.brands?.map((brand: { name: string; href: string }) => (
+                              <Link key={brand.name} href={brand.href} className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                                <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">{brand.name}</div>
+                              </Link>
+                            ))}
                           </div>
                         </div>
                       ) : (
@@ -202,10 +236,10 @@ export default function EnhancedHeader() {
                               <Link
                                 key={subItem.name}
                                 href={subItem.href}
-                                className="block px-4 py-3 hover:bg-blue-50 hover:text-blue-600 transition-colors group"
+                                className="block px-4 py-3 hover:text-gray-900 transition-colors group"
                               >
-                                <div className="font-medium text-gray-900 group-hover:text-blue-600">{subItem.name}</div>
-                                <div className="text-sm text-gray-500 group-hover:text-blue-500 mt-1">{subItem.description}</div>
+                                <div className="font-medium text-gray-900 group-hover:text-gray-900">{subItem.name}</div>
+                                <div className="text-sm text-gray-500 group-hover:text-gray-700 mt-1">{subItem.description}</div>
                               </Link>
                             );
                           })}
@@ -226,29 +260,130 @@ export default function EnhancedHeader() {
               role="navigation"
               aria-label="Mobile navigation"
             >
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
                 {navigation.map((item) => (
                   <div key={item.name}>
-                    <Link
-                      href={item.href}
-                      className="block text-gray-700 hover:text-blue-600 font-medium py-2 px-4 hover:bg-gray-50 rounded-lg"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                    {item.dropdown && (
-                      <div className="ml-4 mt-1">
+                    <div className="flex items-center justify-between">
+                      {item.href === '#' ? (
+                        <span
+                          className="flex-1 text-gray-700 hover:text-gray-900 font-medium py-3 px-4 cursor-pointer"
+                          onClick={() => {
+                            if (item.dropdown) {
+                              toggleMobileDropdown(item.name);
+                            }
+                          }}
+                        >
+                          {item.name}
+                        </span>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className="flex-1 text-gray-700 hover:text-gray-900 font-medium py-3 px-4"
+                          onClick={() => {
+                            if (!item.dropdown) {
+                              setMobileMenuOpen(false);
+                            }
+                          }}
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                      {item.dropdown && item.href !== '#' && (
+                        <button
+                          onClick={() => toggleMobileDropdown(item.name)}
+                          className="p-3 transition-colors"
+                          aria-label={`Toggle ${item.name} submenu`}
+                        >
+                          <svg 
+                            className={`w-5 h-5 text-gray-500 transition-transform ${
+                              mobileDropdowns.includes(item.name) ? 'rotate-180' : ''
+                            }`} 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
+                      {item.dropdown && item.href === '#' && (
+                        <button
+                          onClick={() => toggleMobileDropdown(item.name)}
+                          className="p-3 transition-colors"
+                          aria-label={`Toggle ${item.name} submenu`}
+                        >
+                          <svg 
+                            className={`w-5 h-5 text-gray-500 transition-transform ${
+                              mobileDropdowns.includes(item.name) ? 'rotate-180' : ''
+                            }`} 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    {item.dropdown && mobileDropdowns.includes(item.name) && (
+                      <div className="ml-4 mt-1 mb-2">
                         {item.dropdown.map((subItem, index) => {
                           // Handle dividers
                           if (subItem.description === 'divider') {
                             return <div key={index} className="border-t border-gray-200 my-2 mx-4" />;
                           }
                           
+                          // Handle nested dropdowns (like Brands)
+                          if (subItem.isNested && subItem.brands) {
+                            return (
+                              <div key={subItem.name}>
+                                <div className="flex items-center justify-between">
+                                  <span
+                                    className="flex-1 text-gray-600 hover:text-gray-900 py-2 px-4 text-sm cursor-pointer"
+                                    onClick={() => toggleMobileNestedDropdown(subItem.name)}
+                                  >
+                                    {subItem.name}
+                                  </span>
+                                  <button
+                                    onClick={() => toggleMobileNestedDropdown(subItem.name)}
+                                    className="p-2 transition-colors"
+                                    aria-label={`Toggle ${subItem.name} submenu`}
+                                  >
+                                    <svg 
+                                      className={`w-4 h-4 text-gray-500 transition-transform ${
+                                        mobileNestedDropdowns.includes(subItem.name) ? 'rotate-180' : ''
+                                      }`} 
+                                      fill="none" 
+                                      stroke="currentColor" 
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                  </button>
+                                </div>
+                                {mobileNestedDropdowns.includes(subItem.name) && (
+                                  <div className="ml-4 mt-1 mb-2">
+                                    {subItem.brands.map((brand: { name: string; href: string }) => (
+                                      <Link
+                                        key={brand.name}
+                                        href={brand.href}
+                                        className="block text-gray-500 hover:text-gray-900 py-2 px-4 text-xs"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                      >
+                                        {brand.name}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+                          
                           return (
                             <Link
                               key={subItem.name}
                               href={subItem.href}
-                              className="block text-gray-600 hover:text-blue-600 py-2 px-4 text-sm hover:bg-gray-50 rounded"
+                              className="block text-gray-600 hover:text-gray-900 py-2 px-4 text-sm"
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               {subItem.name}
@@ -259,13 +394,6 @@ export default function EnhancedHeader() {
                     )}
                   </div>
                 ))}
-                <Link
-                  href="/inventory?condition=new"
-                  className="bg-deep-blue text-white px-6 py-3 rounded-lg hover:bg-[#0a3a6e] transition-colors font-medium text-center mt-4"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Shop New Motors
-                </Link>
               </div>
             </div>
           )}
