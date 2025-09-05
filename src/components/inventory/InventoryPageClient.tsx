@@ -121,34 +121,43 @@ export default function InventoryPageClient() {
         }
       }
 
-      // Trim & Tilt filter
+      // Trim & Tilt filter - using metafields like specs system
       if (filters.trimTilt.length > 0) {
-        // Check if product has trim & tilt information
         let productTrimTiltType: string | null = null;
         
-        // Check product tags for trim & tilt type
-        const manualTiltTags = ['manual-tilt', 'manual tilt', 'manual-trim', 'manual trim', 'no-power-tilt'];
-        const powerTiltTags = ['power-tilt', 'power tilt', 'electric-tilt', 'electric tilt', 'hydraulic-tilt'];
-        const powerTrimTiltTags = ['power-trim-tilt', 'power trim tilt', 'power-trim-and-tilt', 'trim-and-tilt', 'ptt'];
+        // Check metafield first (same as specs system)
+        const trimTiltSpec = product.specs?.['Power Trim & Tilt'] || 
+                            product.specs?.['mechanical.power_trim_tilt'] || 
+                            product.specs?.['Tilt Positions'];
         
-        const hasManualTiltTag = product.tags.some(tag => 
-          manualTiltTags.includes(tag.toLowerCase())
-        );
-        const hasPowerTiltTag = product.tags.some(tag => 
-          powerTiltTags.includes(tag.toLowerCase())
-        );
-        const hasPowerTrimTiltTag = product.tags.some(tag => 
-          powerTrimTiltTags.includes(tag.toLowerCase())
-        );
+        if (trimTiltSpec) {
+          const specLower = trimTiltSpec.toLowerCase();
+          if (specLower.includes('power trim') && specLower.includes('tilt')) {
+            productTrimTiltType = 'power-trim-tilt';
+          } else if (specLower.includes('power') && specLower.includes('tilt')) {
+            productTrimTiltType = 'power-tilt';
+          } else if (specLower.includes('manual') || specLower.includes('6') || specLower.includes('5')) {
+            productTrimTiltType = 'manual';
+          }
+        }
         
-        if (hasPowerTrimTiltTag) {
-          productTrimTiltType = 'power-trim-tilt';
-        } else if (hasPowerTiltTag) {
-          productTrimTiltType = 'power-tilt';
-        } else if (hasManualTiltTag) {
-          productTrimTiltType = 'manual';
-        } else {
-          // Default based on horsepower
+        // Fallback to tags if no metafield
+        if (!productTrimTiltType) {
+          const manualTiltTags = ['manual-tilt', 'manual tilt', 'manual-trim', 'manual trim', 'no-power-tilt'];
+          const powerTiltTags = ['power-tilt', 'power tilt', 'electric-tilt', 'electric tilt', 'hydraulic-tilt'];
+          const powerTrimTiltTags = ['power-trim-tilt', 'power trim tilt', 'power-trim-and-tilt', 'trim-and-tilt', 'ptt'];
+          
+          if (product.tags.some(tag => powerTrimTiltTags.includes(tag.toLowerCase()))) {
+            productTrimTiltType = 'power-trim-tilt';
+          } else if (product.tags.some(tag => powerTiltTags.includes(tag.toLowerCase()))) {
+            productTrimTiltType = 'power-tilt';
+          } else if (product.tags.some(tag => manualTiltTags.includes(tag.toLowerCase()))) {
+            productTrimTiltType = 'manual';
+          }
+        }
+        
+        // Default based on horsepower if no data
+        if (!productTrimTiltType) {
           if (product.horsepower >= 75) {
             productTrimTiltType = 'power-trim-tilt';
           } else if (product.horsepower >= 40) {
@@ -163,28 +172,39 @@ export default function InventoryPageClient() {
         }
       }
 
-      // Steering filter
+      // Steering filter - using metafields like specs system
       if (filters.steering.length > 0) {
-        // Check if product has steering information
         let productSteeringType: string | null = null;
         
-        // Check product tags for steering type
-        const remoteTags = ['remote-steering', 'remote steering', 'remote-control', 'remote control', 'console-steering'];
-        const tillerTags = ['tiller', 'tiller-handle', 'tiller handle', 'tiller-steering', 'tiller steering', 'hand-control'];
+        // Check metafield first (same as specs system)
+        const steeringSpec = product.specs?.['Steering'] || 
+                            product.specs?.['features.steering'] ||
+                            product.specs?.['Steering Type'] ||
+                            product.specs?.['Control Type'];
         
-        const hasRemoteTag = product.tags.some(tag => 
-          remoteTags.includes(tag.toLowerCase())
-        );
-        const hasTillerTag = product.tags.some(tag => 
-          tillerTags.includes(tag.toLowerCase())
-        );
+        if (steeringSpec) {
+          const specLower = steeringSpec.toLowerCase();
+          if (specLower.includes('remote') || specLower.includes('console')) {
+            productSteeringType = 'remote';
+          } else if (specLower.includes('tiller') || specLower.includes('manual')) {
+            productSteeringType = 'tiller';
+          }
+        }
         
-        if (hasRemoteTag) {
-          productSteeringType = 'remote';
-        } else if (hasTillerTag) {
-          productSteeringType = 'tiller';
-        } else {
-          // Default based on horsepower - smaller motors usually tiller, larger remote
+        // Fallback to tags if no metafield
+        if (!productSteeringType) {
+          const remoteTags = ['remote-steering', 'remote steering', 'remote-control', 'remote control', 'console-steering'];
+          const tillerTags = ['tiller', 'tiller-handle', 'tiller handle', 'tiller-steering', 'tiller steering', 'hand-control'];
+          
+          if (product.tags.some(tag => remoteTags.includes(tag.toLowerCase()))) {
+            productSteeringType = 'remote';
+          } else if (product.tags.some(tag => tillerTags.includes(tag.toLowerCase()))) {
+            productSteeringType = 'tiller';
+          }
+        }
+        
+        // Default based on horsepower if no data
+        if (!productSteeringType) {
           productSteeringType = product.horsepower <= 40 ? 'tiller' : 'remote';
         }
         
@@ -193,28 +213,38 @@ export default function InventoryPageClient() {
         }
       }
 
-      // Starting method filter
+      // Starting method filter - using metafields like specs system
       if (filters.starting.length > 0) {
-        // Check if product has starting method information
         let productStartType: string | null = null;
         
-        // Check product tags for starting method
-        const manualTags = ['manual-start', 'manual start', 'pull-start', 'pull start', 'recoil-start', 'recoil start'];
-        const electricTags = ['electric-start', 'electric start', 'e-start', 'power-start', 'push-button-start', 'key-start'];
+        // Check metafield first (same as specs system)
+        const startingSpec = product.specs?.['Starting System'] || 
+                            product.specs?.['features.starting'] ||
+                            product.specs?.['Ignition'];
         
-        const hasManualTag = product.tags.some(tag => 
-          manualTags.includes(tag.toLowerCase())
-        );
-        const hasElectricTag = product.tags.some(tag => 
-          electricTags.includes(tag.toLowerCase())
-        );
+        if (startingSpec) {
+          const specLower = startingSpec.toLowerCase();
+          if (specLower.includes('electric') || specLower.includes('key') || specLower.includes('button')) {
+            productStartType = 'electric';
+          } else if (specLower.includes('manual') || specLower.includes('pull') || specLower.includes('recoil')) {
+            productStartType = 'manual';
+          }
+        }
         
-        if (hasManualTag) {
-          productStartType = 'manual';
-        } else if (hasElectricTag) {
-          productStartType = 'electric';
-        } else {
-          // Default based on horsepower - smaller motors usually manual, larger electric
+        // Fallback to tags if no metafield
+        if (!productStartType) {
+          const manualTags = ['manual-start', 'manual start', 'pull-start', 'pull start', 'recoil-start', 'recoil start'];
+          const electricTags = ['electric-start', 'electric start', 'e-start', 'power-start', 'push-button-start', 'key-start'];
+          
+          if (product.tags.some(tag => electricTags.includes(tag.toLowerCase()))) {
+            productStartType = 'electric';
+          } else if (product.tags.some(tag => manualTags.includes(tag.toLowerCase()))) {
+            productStartType = 'manual';
+          }
+        }
+        
+        // Default based on horsepower if no data
+        if (!productStartType) {
           productStartType = product.horsepower <= 25 ? 'manual' : 'electric';
         }
         
@@ -223,28 +253,37 @@ export default function InventoryPageClient() {
         }
       }
 
-      // Fuel tank filter
+      // Fuel tank filter - using metafields like specs system
       if (filters.fuelTank.length > 0) {
-        // Check if product has fuel tank information
         let productTankType: string | null = null;
         
-        // Check product tags for tank type
-        const internalTags = ['internal-tank', 'internal tank', 'built-in tank', 'integrated tank'];
-        const externalTags = ['external-tank', 'external tank', 'portable tank', 'remote tank'];
+        // Check metafield first (same as specs system)
+        const fuelTankSpec = product.specs?.['Fuel Tank Type'] || 
+                            product.specs?.['fuel.tank_type'];
         
-        const hasInternalTag = product.tags.some(tag => 
-          internalTags.includes(tag.toLowerCase())
-        );
-        const hasExternalTag = product.tags.some(tag => 
-          externalTags.includes(tag.toLowerCase())
-        );
+        if (fuelTankSpec) {
+          const specLower = fuelTankSpec.toLowerCase();
+          if (specLower.includes('internal') || specLower.includes('built-in') || specLower.includes('integrated')) {
+            productTankType = 'internal';
+          } else if (specLower.includes('external') || specLower.includes('portable') || specLower.includes('remote')) {
+            productTankType = 'external';
+          }
+        }
         
-        if (hasInternalTag) {
-          productTankType = 'internal';
-        } else if (hasExternalTag) {
-          productTankType = 'external';
-        } else {
-          // Default to external for smaller motors, internal for larger
+        // Fallback to tags if no metafield
+        if (!productTankType) {
+          const internalTags = ['internal-tank', 'internal tank', 'built-in tank', 'integrated tank'];
+          const externalTags = ['external-tank', 'external tank', 'portable tank', 'remote tank'];
+          
+          if (product.tags.some(tag => internalTags.includes(tag.toLowerCase()))) {
+            productTankType = 'internal';
+          } else if (product.tags.some(tag => externalTags.includes(tag.toLowerCase()))) {
+            productTankType = 'external';
+          }
+        }
+        
+        // Default based on horsepower if no data
+        if (!productTankType) {
           productTankType = product.horsepower <= 30 ? 'external' : 'internal';
         }
         
@@ -253,34 +292,43 @@ export default function InventoryPageClient() {
         }
       }
 
-      // Fuel delivery filter
+      // Fuel delivery filter - using metafields like specs system
       if (filters.fuelDelivery.length > 0) {
-        // Check if product has fuel delivery information
         let productFuelType: string | null = null;
         
-        // Check product tags for fuel type
-        const carbTags = ['carburetor', 'carb', 'carbureted'];
-        const efiTags = ['efi', 'fuel-injection', 'electronic-fuel-injection', 'fuel injection'];
-        const propaneTags = ['propane', 'lpg', 'liquefied-petroleum-gas'];
+        // Check metafield first (same as specs system)
+        const fuelDeliverySpec = product.specs?.['Fuel Induction System'] || 
+                                product.specs?.['fuel.induction_system'] ||
+                                product.specs?.['Fuel System'];
         
-        const hasCarbTag = product.tags.some(tag => 
-          carbTags.includes(tag.toLowerCase())
-        );
-        const hasEfiTag = product.tags.some(tag => 
-          efiTags.includes(tag.toLowerCase())
-        );
-        const hasPropaneTag = product.tags.some(tag => 
-          propaneTags.includes(tag.toLowerCase())
-        );
+        if (fuelDeliverySpec) {
+          const specLower = fuelDeliverySpec.toLowerCase();
+          if (specLower.includes('efi') || specLower.includes('injection') || specLower.includes('electronic')) {
+            productFuelType = 'efi';
+          } else if (specLower.includes('carburetor') || specLower.includes('carb')) {
+            productFuelType = 'carburetor';
+          } else if (specLower.includes('propane') || specLower.includes('lpg')) {
+            productFuelType = 'propane';
+          }
+        }
         
-        if (hasCarbTag) {
-          productFuelType = 'carburetor';
-        } else if (hasEfiTag) {
-          productFuelType = 'efi';
-        } else if (hasPropaneTag) {
-          productFuelType = 'propane';
-        } else {
-          // Default to carburetor if not specified
+        // Fallback to tags if no metafield
+        if (!productFuelType) {
+          const carbTags = ['carburetor', 'carb', 'carbureted'];
+          const efiTags = ['efi', 'fuel-injection', 'electronic-fuel-injection', 'fuel injection'];
+          const propaneTags = ['propane', 'lpg', 'liquefied-petroleum-gas'];
+          
+          if (product.tags.some(tag => efiTags.includes(tag.toLowerCase()))) {
+            productFuelType = 'efi';
+          } else if (product.tags.some(tag => carbTags.includes(tag.toLowerCase()))) {
+            productFuelType = 'carburetor';
+          } else if (product.tags.some(tag => propaneTags.includes(tag.toLowerCase()))) {
+            productFuelType = 'propane';
+          }
+        }
+        
+        // Default to carburetor if no data
+        if (!productFuelType) {
           productFuelType = 'carburetor';
         }
         
