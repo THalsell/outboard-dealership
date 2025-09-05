@@ -38,7 +38,7 @@ export default function TopBanner() {
           </div>
           <div className="px-3 text-xs text-gray-300 text-center">
             <Image src="/clock.svg" alt="Hours" width={14} height={14} className="w-3 h-3 inline mr-1 filter brightness-0 invert" />
-            Mon-Fri: 8-5, Sat: 8-12, Sun: Closed
+            Mon-Fri: 8-5 | Sat: 8-12 | Sun: Closed
           </div>
         </div>
 
@@ -52,7 +52,7 @@ export default function TopBanner() {
             <span className="text-gray-400 hidden md:inline">|</span>
             <div className="hidden md:flex items-center gap-2">
               <Image src="/clock.svg" alt="Hours" width={20} height={20} className="w-4 h-4 lg:w-5 lg:h-5 filter brightness-0 invert flex-shrink-0" />
-              <span className="text-sm lg:text-base">Mon-Fri: 8AM-5PM, Sat: 8AM-12PM, Sun: Closed</span>
+              <span className="text-sm lg:text-base">Mon-Fri: 8AM-5PM | Sat: 8AM-12PM | Sun: Closed</span>
             </div>
           </div>
           <div className="flex items-center gap-2 lg:gap-4">
