@@ -9,8 +9,8 @@ export default function WhyChooseUs() {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose Our Dealership?</h2>
             <div className="space-y-6">
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-deep-blue text-xl">✓</span>
+                <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center">
+                  <span className="text-deep-blue text-2xl font-bold">✓</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Authorized Dealer</h3>
@@ -18,8 +18,8 @@ export default function WhyChooseUs() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-deep-blue text-xl">✓</span>
+                <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center">
+                  <span className="text-deep-blue text-2xl font-bold">✓</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Large Inventory</h3>
@@ -27,8 +27,8 @@ export default function WhyChooseUs() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-deep-blue text-xl">✓</span>
+                <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center">
+                  <span className="text-deep-blue text-2xl font-bold">✓</span>
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold mb-2">Best Price Guarantee</h3>

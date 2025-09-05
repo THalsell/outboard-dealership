@@ -93,7 +93,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Sale Badge */}
       {hasDiscount && (
         <div className="absolute top-2 right-2 z-20">
-          <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+          <span className="text-red-600 text-xs font-bold">
             SALE
           </span>
         </div>
@@ -154,11 +154,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Tags */}
         {product.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
+          <div className="flex flex-wrap gap-2 mb-3">
             {product.tags.slice(0, 3).map((tag, i) => (
               <span 
                 key={i}
-                className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded"
+                className="text-xs text-blue-600 font-medium"
               >
                 {tag}
               </span>
@@ -179,7 +179,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                   ${comparePrice.toLocaleString()}
                 </span>
                 {Math.round(((comparePrice - price) / comparePrice) * 100) > 0 && (
-                  <span className="text-xs bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-semibold">
+                  <span className="text-xs text-red-600 font-bold">
                     {Math.round(((comparePrice - price) / comparePrice) * 100)}% OFF
                   </span>
                 )}

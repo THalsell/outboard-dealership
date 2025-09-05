@@ -112,7 +112,7 @@ export default function EnhancedHeader() {
           {/* Hamburger Menu - Left side on mobile */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 text-text-blue"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
@@ -155,7 +155,7 @@ export default function EnhancedHeader() {
                 >
                   {item.href === '#' ? (
                     <span
-                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1 cursor-pointer"
+                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1 cursor-pointer text-lg"
                     >
                       {item.name}
                       {item.dropdown && (
@@ -167,7 +167,7 @@ export default function EnhancedHeader() {
                   ) : (
                     <Link
                       href={item.href}
-                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1"
+                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1 text-lg"
                     >
                       {item.name}
                       {item.dropdown && (
@@ -186,41 +186,41 @@ export default function EnhancedHeader() {
                         <div className="grid grid-cols-2 gap-1">
                           {/* Column 1: Condition & Availability */}
                           <div className="border-r border-gray-200 pr-3">
-                            <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
+                            <div className="px-3 py-1 text-xs font-semibold text-gray-900 uppercase tracking-wider border-b border-gray-100 mb-2">
                               Browse Motors
                             </div>
                             <Link href="/inventory" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">All Motors</div>
+                              <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">All Motors</div>
                             </Link>
-                            <div className="px-3 py-1 text-xs font-medium text-gray-400 uppercase tracking-wider mt-3 mb-1">
+                            <div className="px-3 py-1 text-xs font-medium text-gray-900 uppercase tracking-wider mt-3 mb-1">
                               By Condition
                             </div>
                             <Link href="/inventory?condition=new" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">New Motors</div>
+                              <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">New Motors</div>
                             </Link>
                             <Link href="/inventory?condition=used" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">Used Motors</div>
+                              <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">Used Motors</div>
                             </Link>
-                            <div className="px-3 py-1 text-xs font-medium text-gray-400 uppercase tracking-wider mt-3 mb-1">
+                            <div className="px-3 py-1 text-xs font-medium text-gray-900 uppercase tracking-wider mt-3 mb-1">
                               Special Deals
                             </div>
                             <Link href="/inventory?status=sale" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">On Sale</div>
+                              <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">On Sale</div>
                             </Link>
                             <Link href="/inventory?status=overstock" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
-                              <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">Overstock</div>
+                              <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">Overstock</div>
                             </Link>
                             
                           </div>
                           
                           {/* Column 2: Brands */}
                           <div className="pl-3">
-                            <div className="px-3 py-1 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-100 mb-2">
+                            <div className="px-3 py-1 text-xs font-semibold text-gray-900 uppercase tracking-wider border-b border-gray-100 mb-2">
                               Shop by Brand
                             </div>
                             {item.dropdown.find(subItem => subItem.isNested)?.brands?.map((brand: { name: string; href: string }) => (
                               <Link key={brand.name} href={brand.href} className="block px-3 py-2 hover:text-gray-900 transition-colors group">
-                                <div className="font-medium text-gray-900 group-hover:text-gray-900 text-sm">{brand.name}</div>
+                                <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">{brand.name}</div>
                               </Link>
                             ))}
                           </div>

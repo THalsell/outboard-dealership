@@ -8,6 +8,7 @@
   --charcoal: #1e293b;
   --professional-gray: #64748b;
   --border-gray: #e2e8f0;
+  --text-blue: #1d293d;
 }
 
 @theme inline {
@@ -17,6 +18,7 @@
   --color-charcoal: var(--charcoal);
   --color-professional-gray: var(--professional-gray);
   --color-border-gray: var(--border-gray);
+  --color-text-blue: var(--text-blue);
   --font-sans: 'Roboto', system-ui, sans-serif;
 }
 
@@ -30,7 +32,7 @@ html {
 
 body {
   background: var(--light-gray);
-  color: var(--charcoal);
+  color: var(--text-blue);
   font-family: var(--font-roboto), system-ui, sans-serif;
   font-size: 16px;
   font-weight: 400;

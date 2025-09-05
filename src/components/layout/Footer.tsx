@@ -42,18 +42,18 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/inventory/new" className="text-xs text-gray-400 hover:text-white">New Motors</Link></li>
-              <li><Link href="/inventory/used" className="text-xs text-gray-400 hover:text-white">Used Motors</Link></li>
-              <li><Link href="/learn/guides" className="text-xs text-gray-400 hover:text-white">Buying Guides</Link></li>
+              <li><Link href="/inventory/new" className="text-xs text-gray-400 hover:text-blue-400">New Motors</Link></li>
+              <li><Link href="/inventory/used" className="text-xs text-gray-400 hover:text-blue-400">Used Motors</Link></li>
+              <li><Link href="/learn/guides" className="text-xs text-gray-400 hover:text-blue-400">Buying Guides</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-sm font-semibold mb-4">Information</h4>
             <ul className="space-y-2">
-              <li><Link href="/about" className="text-xs text-gray-400 hover:text-white">About Us</Link></li>
-              <li><Link href="/learn/faqs" className="text-xs text-gray-400 hover:text-white">FAQs</Link></li>
-              <li><a href="https://outboard-practice-store.myshopify.com/account" className="text-xs text-gray-400 hover:text-white">Order Tracking</a></li>
+              <li><Link href="/about" className="text-xs text-gray-400 hover:text-blue-400">About Us</Link></li>
+              <li><Link href="/learn/faqs" className="text-xs text-gray-400 hover:text-blue-400">FAQs</Link></li>
+              <li><a href="https://outboard-practice-store.myshopify.com/account" className="text-xs text-gray-400 hover:text-blue-400">Order Tracking</a></li>
             </ul>
           </div>
 
@@ -63,12 +63,12 @@ export default function Footer() {
               <p>615 West Lake Avenue</p>
               <p>Celina, TN 38551</p>
               <p className="mt-4">
-                <a href="tel:9312434555" className="hover:text-white">
+                <a href="tel:9312434555" className="hover:text-blue-400">
                   Phone: (931) 243-4555
                 </a>
               </p>
               <p>
-                <a href="mailto:info@claypowersports.com" className="hover:text-white">
+                <a href="mailto:info@claypowersports.com" className="hover:text-blue-400">
                   Email: info@claypowersports.com
                 </a>
               </p>
@@ -83,13 +83,13 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
           <p className="text-xs">&copy; {currentYear} Outboard Motors Dealership. All rights reserved.</p>
           <div className="mt-2 space-x-4 text-xs">
-            <a href="https://outboard-practice-store.myshopify.com/policies/privacy-policy" className="hover:text-white" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+            <a href="https://outboard-practice-store.myshopify.com/policies/privacy-policy" className="hover:text-blue-400" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
             <span>|</span>
-            <a href="https://outboard-practice-store.myshopify.com/policies/terms-of-service" className="hover:text-white" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+            <a href="https://outboard-practice-store.myshopify.com/policies/terms-of-service" className="hover:text-blue-400" target="_blank" rel="noopener noreferrer">Terms of Service</a>
             <span>|</span>
-            <a href="https://outboard-practice-store.myshopify.com/policies/refund-policy" className="hover:text-white" target="_blank" rel="noopener noreferrer">Refund Policy</a>
+            <a href="https://outboard-practice-store.myshopify.com/policies/refund-policy" className="hover:text-blue-400" target="_blank" rel="noopener noreferrer">Refund Policy</a>
             <span>|</span>
-            <Link href="/sitemap" className="hover:text-white">Sitemap</Link>
+            <Link href="/sitemap" className="hover:text-blue-400">Sitemap</Link>
           </div>
         </div>
       </div>

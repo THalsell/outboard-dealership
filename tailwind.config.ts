@@ -16,6 +16,7 @@ const config: Config = {
         'charcoal': '#1e293b',
         'professional-gray': '#64748b',
         'border-gray': '#e2e8f0',
+        'text-blue': '#1d293d',
       },
       fontFamily: {
         'bebas-neue': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
