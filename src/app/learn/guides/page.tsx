@@ -90,56 +90,56 @@ export default function BuyingGuidePage() {
               <div className="space-y-3">
                 <a 
                   href="#horsepower" 
-                  className="block w-14 h-14 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
+                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
                   title="Horsepower Selection"
                 >
                   <div className="text-center">
-                    <div className="text-xs font-bold">HP</div>
+                    <div className="text-xs font-bold leading-tight">HORSE<br />POWER</div>
                   </div>
                 </a>
                 <a 
                   href="#shaft-length" 
-                  className="block w-14 h-14 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
+                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
                   title="Shaft Length"
                 >
                   <div className="text-center">
-                    <div className="text-xs font-bold">SHAFT</div>
+                    <div className="text-xs font-bold leading-tight">SHAFT<br />LENGTH</div>
                   </div>
                 </a>
                 <a 
                   href="#features" 
-                  className="block w-14 h-14 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
+                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
                   title="Key Features"
                 >
                   <div className="text-center">
-                    <div className="text-xs font-bold">FEAT</div>
+                    <div className="text-xs font-bold leading-tight">KEY<br />FEATURES</div>
                   </div>
                 </a>
                 <a 
                   href="#brands" 
-                  className="block w-14 h-14 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
+                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
                   title="Brand Comparison"
                 >
                   <div className="text-center">
-                    <div className="text-xs font-bold">BRAND</div>
+                    <div className="text-xs font-bold leading-tight">BRAND<br />COMPARE</div>
                   </div>
                 </a>
                 <a 
                   href="#maintenance" 
-                  className="block w-14 h-14 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
+                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
                   title="Maintenance"
                 >
                   <div className="text-center">
-                    <div className="text-xs font-bold">MAINT</div>
+                    <div className="text-xs font-bold leading-tight">MAINTEN<br />ANCE</div>
                   </div>
                 </a>
                 <a 
                   href="#budget" 
-                  className="block w-14 h-14 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
+                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
                   title="Budget Planning"
                 >
                   <div className="text-center">
-                    <div className="text-xs font-bold">$$</div>
+                    <div className="text-xs font-bold leading-tight">BUDGET<br />PLANNING</div>
                   </div>
                 </a>
               </div>

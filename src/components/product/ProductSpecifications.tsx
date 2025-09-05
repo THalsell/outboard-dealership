@@ -90,17 +90,57 @@ export default function ProductSpecifications({
 
   return (
     <div className="p-6">
-      <div className="space-y-0">
-        {Object.entries(allSpecs).map(([key, value], index) => (
-          <div key={index} className={`py-3 flex items-center border-b border-gray-200 last:border-b-0 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-            <span className="text-base font-medium text-gray-900 flex-1 text-center border-r border-gray-200 pr-4">
-              {key}
-            </span>
-            <span className="text-base text-gray-700 flex-1 text-center pl-4">
-              {value}
-            </span>
+      <div className="space-y-6">
+        {/* Display specs organized by category like compare page */}
+        {specCategories.map((category) => {
+          const categorySpecs = category.specs.filter(spec => {
+            const value = getSpecValue(spec);
+            return value && value.trim() !== "" && value !== "N/A";
+          });
+          
+          if (categorySpecs.length === 0) return null;
+          
+          return (
+            <div key={category.title}>
+              <h3 className="text-lg font-bold text-gray-900 mb-3 text-center bg-gray-100 py-2 rounded">
+                {category.title}
+              </h3>
+              <div className="space-y-0">
+                {categorySpecs.map((spec, index) => (
+                  <div key={spec} className={`py-3 flex items-center border-b border-gray-200 last:border-b-0 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                    <span className="text-base font-medium text-gray-900 flex-1 text-center border-r border-gray-200 pr-4">
+                      {spec}
+                    </span>
+                    <span className="text-base text-gray-700 flex-1 text-center pl-4">
+                      {getSpecValue(spec)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+        
+        {/* Add tags as features if they exist */}
+        {product.tags && product.tags.length > 0 && (
+          <div>
+            <h3 className="text-lg font-bold text-gray-900 mb-3 text-center bg-gray-100 py-2 rounded">
+              Additional Features
+            </h3>
+            <div className="space-y-0">
+              {product.tags.map((tag, index) => (
+                <div key={index} className={`py-3 flex items-center border-b border-gray-200 last:border-b-0 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
+                  <span className="text-base font-medium text-gray-900 flex-1 text-center border-r border-gray-200 pr-4">
+                    Feature {index + 1}
+                  </span>
+                  <span className="text-base text-gray-700 flex-1 text-center pl-4">
+                    {tag}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

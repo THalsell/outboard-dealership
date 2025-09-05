@@ -8,6 +8,7 @@ interface GraphQLProduct {
   handle: string;
   title: string;
   description?: string;
+  tags?: string[];
   images?: {
     edges: Array<{
       node: {
@@ -228,7 +229,7 @@ function transformGraphQLProduct(graphqlProduct: GraphQLProduct): Product {
     vendor: brand,
     brand: brand,
     type: 'Outboard Motor',
-    tags: [], // GraphQL basic query doesn't include tags
+    tags: graphqlProduct.tags || [], // Now includes tags from GraphQL
     category: 'outboard',
     powerCategory,
     horsepower,
@@ -248,6 +249,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('query') || '';
     const limit = parseInt(searchParams.get('limit') || '50');
+    const status = searchParams.get('status'); // Get status filter
+    const condition = searchParams.get('condition'); // Get condition filter
 
     // Fetch products using GraphQL Storefront API
     const graphqlProducts = await fetchProducts(query, limit) as GraphQLProduct[];
@@ -257,7 +260,26 @@ export async function GET(request: Request) {
     }
 
     // Transform to our Product type
-    const products = graphqlProducts.map(transformGraphQLProduct);
+    let products = graphqlProducts.map(transformGraphQLProduct);
+    
+    // Apply filters
+    if (status === 'overstock') {
+      products = products.filter(product => 
+        product.tags.some(tag => tag.toLowerCase() === 'overstock')
+      );
+    }
+    
+    if (status === 'sale') {
+      products = products.filter(product => 
+        product.tags.some(tag => tag.toLowerCase().includes('sale'))
+      );
+    }
+    
+    if (condition) {
+      products = products.filter(product => 
+        product.condition?.toLowerCase() === condition.toLowerCase()
+      );
+    }
     
     return NextResponse.json(products);
   } catch (error) {

@@ -43,7 +43,6 @@ export default function EnhancedHeader() {
       href: '#',
       dropdown: [
         { name: 'Apply Now', href: '/financing/application', description: 'Quick application' },
-        { name: 'Check Status', href: '/financing/status', description: 'Application status' },
         { name: 'Special Offers', href: '/financing/offers', description: 'Current promotions' },
       ]
     },

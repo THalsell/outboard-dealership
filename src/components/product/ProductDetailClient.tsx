@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
-import ProductSpecifications from './ProductSpecifications';
 import { ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid';
 
 interface ProductDetailClientProps {
@@ -21,7 +20,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
-  const [activeTab, setActiveTab] = useState('highlights');
+  const [activeTab, setActiveTab] = useState('overview');
 
   const selectedVariant = product.variants[selectedVariantIndex];
   const price = selectedVariant?.price || 0;
@@ -51,76 +50,69 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     }, 500);
   };
 
-  // Extract highlights from Shopify metafields and computed values
-  const highlights = [
-    product.horsepower > 0 ? `${product.horsepower} HP Power Output` : null,
-    product.specs['engine.stroke_type'],
-    product.specs['physical.weight_lbs'] ? `${product.specs['physical.weight_lbs']} lbs Weight` : null,
-    product.specs['Physical.shaft_length'],
-    product.specs['features.starting'] ? `${product.specs['features.starting']} Start` : null,
-    product.specs['compliance.carb'],
-    product.specs['fuel.runtime'],
-  ].filter(Boolean);
+  // 3-tab structure combining specification categories
+  const tabCategories = [
+    {
+      id: 'overview',
+      title: 'Overview & Engine',
+      categories: [
+        {
+          title: 'Basic Information',
+          specs: ['Horsepower', 'Brand', 'Model', 'SKU', 'Type', 'Power Category', 'Condition', 'Stock Status']
+        },
+        {
+          title: 'Engine Specifications', 
+          specs: ['Displacement', 'Cylinders', 'Stroke Type', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
+        }
+      ]
+    },
+    {
+      id: 'technical',
+      title: 'Technical & Performance',
+      categories: [
+        {
+          title: 'Physical Dimensions & Weight',
+          specs: ['Weight', 'Shaft Length', 'Width (W)']
+        },
+        {
+          title: 'Performance & Mechanical',
+          specs: ['Gear Ratio', 'Propeller', 'Tilt Positions', 'Power Trim & Tilt']
+        },
+        {
+          title: 'Fuel & Lubrication',
+          specs: ['Fuel Tank Type', 'Fuel Type', 'Recommended Oil', 'Lubrication System']
+        }
+      ]
+    },
+    {
+      id: 'features',
+      title: 'Features & Service',
+      categories: [
+        {
+          title: 'Controls & Features',
+          specs: ['Throttle Control', 'Steering', 'Shift System', 'Control Type', 'Steering Type']
+        },
+        {
+          title: 'Warranty & Service',
+          specs: ['Warranty Period', 'Extended Warranty Available', 'Service Intervals']
+        }
+      ]
+    }
+  ];
 
-  // Extract features dynamically from Shopify metafields
-  const getFeatures = () => {
-    const features = [];
-    
-    // Engine features
-    if (product.specs['engine.stroke_type']) {
-      features.push(`${product.specs['engine.stroke_type']} Engine Technology`);
-    }
-    if (product.specs['engine.ignition']) {
-      features.push(product.specs['engine.ignition']);
-    }
-    if (product.specs['engine.displacement']) {
-      features.push(`${product.specs['engine.displacement']} Displacement`);
-    }
-    if (product.specs['engine.cylinders']) {
-      features.push(`${product.specs['engine.cylinders']} Cylinder${product.specs['engine.cylinders'] !== '1' ? 's' : ''}`);
-    }
-    
-    // Physical features
-    if (product.specs['physical.weight_lbs']) {
-      features.push(`Lightweight - Only ${product.specs['physical.weight_lbs']} lbs`);
-    }
-    if (product.specs['Physical.shaft_length']) {
-      features.push(`${product.specs['Physical.shaft_length']} Shaft Length`);
-    }
-    
-    // Operational features
-    if (product.specs['features.starting']) {
-      features.push(`${product.specs['features.starting']} Starting System`);
-    }
-    if (product.specs['features.steering']) {
-      features.push(`${product.specs['features.steering']} Steering Control`);
-    }
-    
-    // Fuel system features
-    if (product.specs['fuel.tank_type']) {
-      features.push(`${product.specs['fuel.tank_type']} Fuel Tank`);
-    }
-    if (product.specs['fuel.runtime']) {
-      features.push(`${product.specs['fuel.runtime']} Runtime Capacity`);
-    }
-    if (product.specs['fuel.type']) {
-      features.push(`Runs on ${product.specs['fuel.type']}`);
-    }
-    
-    // Mechanical features
-    if (product.specs['mechanical.propeller']) {
-      features.push(product.specs['mechanical.propeller']);
-    }
-    
-    // Compliance features
-    if (product.specs['compliance.carb']) {
-      features.push(`${product.specs['compliance.carb']} Environmental Rating`);
-    }
-    if (product.specs['compliance.epa']) {
-      features.push(`${product.specs['compliance.epa']} Certified`);
-    }
-    
-    return features;
+  // Get specification value function from compare page
+  const getSpecValue = (product: Product, key: string): string => {
+    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '-';
+    if (key === 'Brand') return product.brand || '-';
+    if (key === 'Model') return product.title || '-';
+    if (key === 'SKU') return product.variants[0]?.sku || '-';
+    if (key === 'Type') return product.type || '-';
+    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '-';
+    if (key === 'Condition') return (product.condition || 'new').charAt(0).toUpperCase() + (product.condition || 'new').slice(1);
+    if (key === 'Stock Status') return product.inStock ? 'In Stock' : 'Out of Stock';
+    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.specs?.['weight'] || product.specs?.['weight_lbs'] || '-';
+    if (key === 'Shaft Length') return product.variants[0]?.option1Name?.toLowerCase().includes('shaft') ? product.variants[0].option1Value || '-' : product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '-';
+    return product.specs?.[key] || product.specs?.[key.toLowerCase()] || product.specs?.[key.replace(/ /g, '_')] || product.specs?.[key.replace(/ /g, '_').toLowerCase()] || '-';
   };
 
   return (
@@ -144,7 +136,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <ChevronRightIcon className="h-4 w-4 text-gray-400 mx-2" />
             </div>
           </li>
-          <li className="text-sm font-medium text-gray-900">{product.title}</li>
+          <li className="text-sm font-medium text-deep-blue">{product.title}</li>
         </ol>
       </nav>
 
@@ -245,7 +237,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <div className="mt-10 lg:mt-0 lg:pl-24 lg:border-l lg:border-gray-200">
             {/* Product title and brand */}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">{product.title}</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-deep-blue sm:text-4xl lg:text-5xl">{product.title}</h1>
               
               {/* Reviews */}
               <div className="mt-4 flex items-center space-x-4">
@@ -269,7 +261,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {/* Price */}
             <div className="mb-8 p-6">
               <div className="flex items-center space-x-4">
-                <span className="text-4xl font-bold text-gray-900 lg:text-5xl">
+                <span className="text-4xl font-bold text-deep-blue lg:text-5xl">
                   ${price.toLocaleString()}
                 </span>
                 {hasDiscount && (
@@ -299,7 +291,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {/* Variants */}
             {product.variants.length > 1 && (
               <div className="mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className="text-lg font-semibold text-deep-blue mb-4">
                   {product.variants[0]?.option1Name || 'Configuration'}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -323,7 +315,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         disabled={!variant.available}
                         className="sr-only"
                       />
-                      <span className="text-gray-900">
+                      <span className="text-deep-blue">
                         {variant.option1Value || `Variant ${index + 1}`}
                       </span>
                       {variant.price && variant.price !== price && (
@@ -339,7 +331,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
             {/* Description */}
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Description</h3>
+              <h3 className="text-xl font-semibold text-deep-blue mb-3">Description</h3>
               <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
             </div>
 
@@ -367,89 +359,163 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </div>
         </div>
 
-        {/* Product Details Tabs */}
+        {/* Specifications Tabs */}
         <div className="mt-16">
           <div className="space-y-8">
             {/* Tabbed Product Information */}
             <div className="mb-8">
               {/* Tab Navigation */}
               <div className="border-b border-gray-200">
-                <nav className="-mb-px flex space-x-12 justify-center">
-                  {[
-                    { id: 'highlights', name: 'Product Highlights' },
-                    { id: 'features', name: 'Features' },
-                    { id: 'specs', name: 'Specifications' }
-                  ].map((tab) => (
+                <nav className="-mb-px flex justify-center space-x-12">
+                  {tabCategories.map((tab) => (
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       className={classNames(
                         activeTab === tab.id
-                          ? 'text-black'
-                          : 'text-black hover:text-gray-500',
-                        'whitespace-nowrap py-4 px-6 text-xl font-bold uppercase transition-colors'
+                          ? 'text-deep-blue border-deep-blue'
+                          : 'text-gray-600 border-transparent hover:text-gray-800 hover:border-gray-300',
+                        'whitespace-nowrap py-4 px-6 border-b-2 font-bold text-xl uppercase transition-colors'
                       )}
                     >
-                      {tab.name}
+                      {tab.title}
                     </button>
                   ))}
                 </nav>
               </div>
 
               {/* Tab Content */}
-              <div className="mt-6">
+              <div className="mt-8">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                {/* Highlights Tab */}
-                {activeTab === 'highlights' && (
-                  <div className="flex justify-center">
-                    <div className="p-6 w-full max-w-3xl">
-                      {highlights.length > 0 ? (
-                        <ul className="space-y-3">
-                        {highlights.map((highlight, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="h-5 w-5 text-gray-700 mr-3 mt-1 flex-shrink-0 font-bold">•</span>
-                            <span className="text-base text-gray-700 leading-relaxed font-medium">{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      ) : (
-                        <p className="text-gray-600 text-base text-center">Product highlights will be available soon.</p>
-                      )}
-                    </div>
-                  </div>
-                )}
+                  {tabCategories.map((tab) => (
+                    activeTab === tab.id && (
+                      <div key={tab.id} className="w-full">
+                        <div className="text-center mb-8">
+                          <h2 className="text-2xl font-bold text-deep-blue">{tab.title}</h2>
+                        </div>
+                            
+                            {/* Mobile: Single column layout */}
+                            <div className="lg:hidden overflow-x-auto">
+                              <table className="w-full">
+                                <thead>
+                                  <tr className="bg-slate-800">
+                                    <th className="text-left p-4 font-semibold text-white min-w-[200px]">
+                                      
+                                    </th>
+                                    <th className="text-left p-4 font-semibold text-white min-w-[250px]">
+                                      
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {tab.categories.map((category) => (
+                                    <React.Fragment key={category.title}>
+                                      <tr className="bg-slate-800">
+                                        <td colSpan={2} className="p-4 font-bold text-blue-400 text-lg text-center">
+                                          {category.title}
+                                        </td>
+                                      </tr>
+                                      {category.specs.map((spec, specIndex) => {
+                                        const value = getSpecValue(product, spec);
+                                        return (
+                                          <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
+                                            <td className="p-4 font-medium text-gray-300">
+                                              {spec}
+                                            </td>
+                                            <td className="p-4 text-white font-medium">
+                                              {value}
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                    </React.Fragment>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
 
-                {/* Features Tab */}
-                {activeTab === 'features' && (
-                  <div className="flex justify-center">
-                    <div className="p-6 w-full max-w-4xl">
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {getFeatures().map((feature, index) => (
-                        <li key={index} className="flex items-start">
-                          <span className="h-5 w-5 text-gray-700 mr-3 mt-1 flex-shrink-0 font-bold">•</span>
-                          <span className="text-base text-gray-700 leading-relaxed">{feature}</span>
-                        </li>
-                      ))}
-                      </ul>
-                    </div>
-                  </div>
-                )}
+                            {/* Desktop: Two separate tables with gap */}
+                            <div className="hidden lg:block">
+                              <div className="flex justify-between gap-12">
+                                {/* Left Table - Basic Information */}
+                                <div className="flex-1 bg-slate-700 rounded-lg overflow-hidden">
+                                  <div className="bg-slate-800 px-6 py-4">
+                                    <h3 className="text-lg font-bold text-white text-center">{tab.categories[0]?.title}</h3>
+                                  </div>
+                                  <div className="overflow-x-auto">
+                                    <table className="w-full">
+                                      <thead>
+                                        <tr className="bg-slate-800">
+                                          <th className="text-left p-4 font-semibold text-white">
+                                            
+                                          </th>
+                                          <th className="text-left p-4 font-semibold text-white">
+                                            
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {tab.categories[0]?.specs.map((spec, specIndex) => {
+                                          const value = getSpecValue(product, spec);
+                                          return (
+                                            <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
+                                              <td className="p-4 font-medium text-gray-300">
+                                                {spec}
+                                              </td>
+                                              <td className="p-4 text-white font-medium">
+                                                {value}
+                                              </td>
+                                            </tr>
+                                          );
+                                        })}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
 
-                {/* Specifications Tab */}
-                {activeTab === 'specs' && (
-                  <div className="flex justify-center">
-                    <div className="w-full max-w-4xl">
-                      <ProductSpecifications 
-                        product={product}
-                        selectedVariant={selectedVariant}
-                      />
-                    </div>
-                  </div>
-                )}
+                                {/* Right Table - Engine Specifications */}
+                                <div className="flex-1 bg-slate-700 rounded-lg overflow-hidden">
+                                  <div className="bg-slate-800 px-6 py-4">
+                                    <h3 className="text-lg font-bold text-white text-center">{tab.categories[1]?.title}</h3>
+                                  </div>
+                                  <div className="overflow-x-auto">
+                                    <table className="w-full">
+                                      <thead>
+                                        <tr className="bg-slate-800">
+                                          <th className="text-left p-4 font-semibold text-white">
+                                            
+                                          </th>
+                                          <th className="text-left p-4 font-semibold text-white">
+                                            
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {tab.categories[1]?.specs.map((spec, specIndex) => {
+                                          const value = getSpecValue(product, spec);
+                                          return (
+                                            <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
+                                              <td className="p-4 font-medium text-gray-300">
+                                                {spec}
+                                              </td>
+                                              <td className="p-4 text-white font-medium">
+                                                {value}
+                                              </td>
+                                            </tr>
+                                          );
+                                        })}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                      </div>
+                    )
+                  ))}
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -463,7 +529,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-white px-6 py-2 text-2xl font-bold text-gray-900">
+              <span className="bg-white px-6 py-2 text-2xl font-bold text-deep-blue">
                 You May Also Like
               </span>
             </div>
@@ -504,10 +570,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     className="object-contain p-4"
                   />
                 </div>
-                <h4 className="text-sm font-medium text-gray-900 mb-3 line-clamp-2 leading-tight">
+                <h4 className="text-sm font-medium text-deep-blue mb-3 line-clamp-2 leading-tight">
                   {relatedItem.title}
                 </h4>
-                <p className="text-lg font-bold text-gray-900 mb-4">
+                <p className="text-lg font-bold text-deep-blue mb-4">
                   ${relatedItem.price.toLocaleString()}
                 </p>
                 <button className="w-full bg-deep-blue hover:bg-[#0a3a6e] text-white text-sm font-medium py-3 px-4 rounded-lg transition-colors">
