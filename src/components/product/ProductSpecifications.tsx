@@ -7,123 +7,68 @@ interface ProductSpecificationsProps {
   selectedVariant?: ProductVariant;
 }
 
-interface SpecificationSection {
-  title: string;
-  specs: Record<string, string>;
-}
 
 export default function ProductSpecifications({
   product,
   selectedVariant,
 }: ProductSpecificationsProps) {
   // Helper function to get spec value with fallbacks
-  const getSpec = (keys: string[]): string => {
-    for (const key of keys) {
-      const value = product.specs?.[key];
-      if (value) return value;
-    }
-    return "";
+
+  const getSpecValue = (key: string): string => {
+    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '';
+    if (key === 'Brand') return product.brand || '';
+    if (key === 'Model') return product.title || '';
+    if (key === 'SKU') return selectedVariant?.sku || '';
+    if (key === 'Type') return product.type || '';
+    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '';
+    if (key === 'Condition') return (product.condition || 'new').charAt(0).toUpperCase() + (product.condition || 'new').slice(1);
+    if (key === 'Stock Status') return product.inStock ? 'In Stock' : 'Out of Stock';
+    if (key === 'Weight') return selectedVariant?.weight && selectedVariant.weight > 0 ? `${selectedVariant.weight} ${selectedVariant.weightUnit || 'lbs'}` : product.specs?.['weight'] || product.specs?.['weight_lbs'] || '';
+    if (key === 'Shaft Length') return selectedVariant?.option1Name?.toLowerCase().includes('shaft') ? selectedVariant.option1Value || '' : product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '';
+    return product.specs?.[key] || product.specs?.[key.toLowerCase()] || product.specs?.[key.replace(/ /g, '_')] || product.specs?.[key.replace(/ /g, '_').toLowerCase()] || '';
   };
 
-  // Organize specifications into logical sections
-  const sections: SpecificationSection[] = [
+  // Organize specifications to match compare page exactly
+  const specCategories = [
     {
-      title: "Engine Specifications",
-      specs: {
-        "Horsepower": product.horsepower > 0 ? `${product.horsepower} HP` : "",
-        "Displacement": getSpec(["displacement", "engine.displacement", "engine_displacement"]),
-        "Cylinders": getSpec(["cylinders", "engine.cylinders", "engine_cylinders"]),
-        "Stroke Type": getSpec(["stroke_type", "engine.stroke_type", "engine_stroke_type", "stroke"]),
-        "Engine Type": getSpec(["engine_type", "engine.engine_type", "engine.type"]),
-        "Cooling System": getSpec(["cooling", "cooling_system", "engine.cooling", "engine_cooling"]),
-        "Ignition": getSpec(["ignition", "ignition_system", "engine.ignition", "engine_ignition"]),
-      },
+      title: 'Basic Information',
+      specs: ['Horsepower', 'Brand', 'Model', 'SKU', 'Type', 'Power Category', 'Condition', 'Stock Status']
     },
     {
-      title: "Physical & Mechanical",
-      specs: {
-        "Weight": selectedVariant?.weight && selectedVariant.weight > 0 
-          ? `${selectedVariant.weight} ${selectedVariant.weightUnit || 'lbs'}` 
-          : getSpec(["weight", "weight_lbs", "physical.weight_lbs"]),
-        "Shaft Length": selectedVariant?.option1Name?.toLowerCase().includes('shaft') 
-          ? selectedVariant.option1Value || ""
-          : getSpec(["shaft_length", "physical.shaft_length", "Physical.shaft_length", "shaft"]),
-        "Gear Ratio": getSpec(["gear_ratio", "mechanical.gear_ratio", "gear"]),
-        "Propeller": getSpec(["propeller", "prop", "mechanical.propeller"]),
-        "Tilt Positions": getSpec(["tilt_positions", "tilt", "mechanical.tilt_positions"]),
-      },
+      title: 'Engine Specifications',
+      specs: ['Displacement', 'Cylinders', 'Stroke Type', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
     },
     {
-      title: "Fuel System",
-      specs: {
-        "Fuel Tank Type": getSpec(["tank_type", "fuel_tank_type", "fuel.tank_type"]),
-        "Tank Capacity": getSpec(["tank_capacity", "fuel_capacity", "fuel.tank_capacity"]),
-        "Runtime": getSpec(["runtime", "fuel_runtime", "fuel.runtime"]),
-        "Fuel Type": getSpec(["fuel_type", "fuel.type", "fuel"]),
-      },
+      title: 'Physical Dimensions & Weight',
+      specs: ['Weight', 'Shaft Length', 'Width (W)']
     },
     {
-      title: "Features & Controls",
-      specs: {
-        "Throttle Control": getSpec(["throttle_control", "throttle", "features.throttle_control"]),
-        "Steering": getSpec(["steering", "steering_type", "features.steering"]),
-        "Shift System": getSpec(["shift", "shift_system", "features.shift"]),
-        "Starting System": getSpec(["starting", "starting_system", "features.starting"]),
-      },
+      title: 'Performance & Mechanical',
+      specs: ['Gear Ratio', 'Propeller', 'Tilt Positions', 'Power Trim & Tilt']
     },
     {
-      title: "Compliance & Certifications",
-      specs: {
-        "EPA Compliance": getSpec(["epa", "epa_compliance", "compliance.epa"]),
-        "CARB Rating": getSpec(["carb", "carb_rating", "compliance.carb"]),
-        "Emissions": getSpec(["emissions", "emission_standard", "compliance.emissions"]),
-      },
+      title: 'Fuel & Lubrication',
+      specs: ['Fuel Tank Type', 'Fuel Type', 'Recommended Oil', 'Lubrication System']
     },
     {
-      title: "Product Information",
-      specs: {
-        "Brand": product.brand,
-        "Model": product.title,
-        "SKU": selectedVariant?.sku || "",
-        "Type": product.type,
-        "Category": product.powerCategory?.replace("-", " ")?.toUpperCase() || "",
-        "Ideal Applications": getSpec(["applications", "ideal_for", "applications.ideal_for", "use_case"]),
-      },
+      title: 'Controls & Features',
+      specs: ['Throttle Control', 'Steering', 'Shift System', 'Control Type', 'Steering Type']
     },
+    {
+      title: 'Warranty & Service',
+      specs: ['Warranty Period', 'Extended Warranty Available', 'Service Intervals']
+    }
   ];
 
-  // Filter out empty sections and specs
-  const filteredSections = sections
-    .map(section => ({
-      ...section,
-      specs: Object.entries(section.specs).reduce((acc, [key, value]) => {
-        if (value && value.trim() !== "" && value !== "N/A") {
-          acc[key] = value;
-        }
-        return acc;
-      }, {} as Record<string, string>)
-    }))
-    .filter(section => Object.keys(section.specs).length > 0);
-
-  if (filteredSections.length === 0) {
-    return (
-      <div>
-        <h2 className="text-2xl font-bold text-charcoal mb-6">
-          Specifications
-        </h2>
-        <p className="text-gray-600">Specifications will be available soon.</p>
-      </div>
-    );
-  }
-
-  // Combine all specs into one flat list
+  // Combine all specs into one flat list using the same logic as compare page
   const allSpecs: Record<string, string> = {};
   
-  // Add all specs from all sections
-  filteredSections.forEach(section => {
-    Object.entries(section.specs).forEach(([key, value]) => {
+  // Add all specs from all categories
+  specCategories.forEach(category => {
+    category.specs.forEach(spec => {
+      const value = getSpecValue(spec);
       if (value && value.trim() !== "" && value !== "N/A") {
-        allSpecs[key] = value;
+        allSpecs[spec] = value;
       }
     });
   });

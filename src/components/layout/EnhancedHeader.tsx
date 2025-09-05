@@ -112,7 +112,7 @@ export default function EnhancedHeader() {
           {/* Hamburger Menu - Left side on mobile */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 text-text-blue"
+            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none text-text-blue"
             aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"

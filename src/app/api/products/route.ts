@@ -74,17 +74,81 @@ function transformGraphQLProduct(graphqlProduct: GraphQLProduct): Product {
     alt: edge.node.altText || graphqlProduct.title,
   })) || [];
 
-  // Extract specifications from metafields
+  // Extract specifications and condition from metafields
   const specs: Record<string, string> = {};
+  let condition: 'new' | 'used' | 'refurbished' = 'new';
+  
   if (graphqlProduct.metafields && Array.isArray(graphqlProduct.metafields)) {
     graphqlProduct.metafields.forEach((metafield: { namespace?: string; key: string; value: string }) => {
       if (metafield && metafield.value && metafield.key) {
-        // Create a key with namespace.key format for better organization
-        const fullKey = metafield.namespace ? `${metafield.namespace}.${metafield.key}` : metafield.key;
-        specs[fullKey] = metafield.value;
+        // Handle condition separately
+        if (metafield.namespace === 'motor' && metafield.key === 'condition') {
+          const conditionValue = metafield.value.toLowerCase();
+          if (conditionValue === 'used' || conditionValue === 'refurbished') {
+            condition = conditionValue as 'used' | 'refurbished';
+          } else {
+            condition = 'new';
+          }
+        } else {
+          // Map metafields to our specification keys
+          const specKey = getSpecificationKey(metafield.namespace, metafield.key);
+          if (specKey) {
+            specs[specKey] = metafield.value;
+          }
+        }
       }
     });
-  } else {
+  }
+
+  // Helper function to map Shopify metafields to our specification keys
+  function getSpecificationKey(namespace?: string, key?: string): string | null {
+    if (!namespace || !key) return null;
+    
+    const mapping: Record<string, Record<string, string>> = {
+      'engine': {
+        'displacement': 'Displacement',
+        'cylinders': 'Cylinders',
+        'stroke_type': 'Stroke Type',
+        'engine_type': 'Engine Type',
+        'cooling_system': 'Cooling System',
+        'ignition': 'Ignition',
+        'starting_system': 'Starting System',
+        'fuel_induction_system': 'Fuel Induction System',
+        'compression_ratio': 'Compression Ratio',
+        'bore_x_stroke': 'Bore x Stroke'
+      },
+      'physical': {
+        'weight': 'Weight',
+        'shaft_length': 'Shaft Length',
+        'width': 'Width (W)'
+      },
+      'mechanical': {
+        'gear_ratio': 'Gear Ratio',
+        'propeller': 'Propeller',
+        'tilt_positions': 'Tilt Positions',
+        'power_trim_tilt': 'Power Trim & Tilt'
+      },
+      'fuel': {
+        'fuel_tank_type': 'Fuel Tank Type',
+        'fuel_type': 'Fuel Type',
+        'recommended_oil': 'Recommended Oil',
+        'lubrication_system': 'Lubrication System'
+      },
+      'controls': {
+        'throttle_control': 'Throttle Control',
+        'steering': 'Steering',
+        'shift_system': 'Shift System',
+        'control_type': 'Control Type',
+        'steering_type': 'Steering Type'
+      },
+      'warranty': {
+        'warranty_period': 'Warranty Period',
+        'extended_warranty_available': 'Extended Warranty Available',
+        'service_intervals': 'Service Intervals'
+      }
+    };
+
+    return mapping[namespace]?.[key] || null;
   }
 
   // Get variant info
@@ -170,11 +234,12 @@ function transformGraphQLProduct(graphqlProduct: GraphQLProduct): Product {
     horsepower,
     published: true, // Products returned by Storefront API are published
     images,
-    specs, // Now populated from metafields
+    specs, // Now populated from metafields with proper mapping
     variants,
     priceRange,
     inStock: variants.some(v => v.inventory > 0),
     status: 'active',
+    condition, // Now extracted from metafields
   };
 }
 
