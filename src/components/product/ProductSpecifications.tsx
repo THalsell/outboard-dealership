@@ -36,11 +36,11 @@ export default function ProductSpecifications({
     },
     {
       title: 'Engine Specifications',
-      specs: ['Displacement', 'Cylinders', 'Stroke Type', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
+      specs: ['Displacement', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
     },
     {
       title: 'Physical Dimensions & Weight',
-      specs: ['Weight', 'Shaft Length', 'Width (W)']
+      specs: ['Weight', 'Shaft Length']
     },
     {
       title: 'Performance & Mechanical',
@@ -48,15 +48,15 @@ export default function ProductSpecifications({
     },
     {
       title: 'Fuel & Lubrication',
-      specs: ['Fuel Tank Type', 'Fuel Type', 'Recommended Oil', 'Lubrication System']
+      specs: ['Fuel Type', 'Recommended Oil', 'Lubrication System']
     },
     {
       title: 'Controls & Features',
-      specs: ['Throttle Control', 'Steering', 'Shift System', 'Control Type', 'Steering Type']
+      specs: ['Throttle Control', 'Steering', 'Shift System']
     },
     {
       title: 'Warranty & Service',
-      specs: ['Warranty Period', 'Extended Warranty Available', 'Service Intervals']
+      specs: ['Warranty Period', 'Extended Warranty Available']
     }
   ];
 

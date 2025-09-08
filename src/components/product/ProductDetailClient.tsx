@@ -68,7 +68,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         },
         {
           title: 'Engine Specifications', 
-          specs: ['Displacement', 'Cylinders', 'Stroke Type', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
+          specs: ['Displacement', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
         }
       ]
     },
@@ -78,7 +78,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       categories: [
         {
           title: 'Physical Dimensions & Weight',
-          specs: ['Weight', 'Shaft Length', 'Width (W)']
+          specs: ['Weight', 'Shaft Length']
         },
         {
           title: 'Performance & Mechanical',
@@ -86,7 +86,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         },
         {
           title: 'Fuel & Lubrication',
-          specs: ['Fuel Tank Type', 'Fuel Type', 'Recommended Oil', 'Lubrication System']
+          specs: ['Fuel Type', 'Recommended Oil', 'Lubrication System']
         }
       ]
     },
@@ -96,11 +96,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       categories: [
         {
           title: 'Controls & Features',
-          specs: ['Throttle Control', 'Steering', 'Shift System', 'Control Type', 'Steering Type']
+          specs: ['Throttle Control', 'Steering', 'Shift System']
         },
         {
           title: 'Warranty & Service',
-          specs: ['Warranty Period', 'Extended Warranty Available', 'Service Intervals']
+          specs: ['Warranty Period', 'Extended Warranty Available']
         }
       ]
     }
@@ -425,7 +425,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                                   {tab.categories.map((category) => (
                                     <React.Fragment key={category.title}>
                                       <tr className="bg-slate-800">
-                                        <td colSpan={2} className="p-4 font-bold text-blue-400 text-lg text-center">
+                                        <td colSpan={2} className="p-4 font-bold text-white text-lg text-center">
                                           {category.title}
                                         </td>
                                       </tr>
