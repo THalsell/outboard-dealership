@@ -61,39 +61,47 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
               }
             }
             metafields(identifiers: [
-              {namespace: "motor", key: "horsepower"},
-              {namespace: "motor", key: "manufacturer"},
-              {namespace: "motor", key: "model_number"},
-              {namespace: "motor", key: "condition"},
-              {namespace: "engine", key: "displacement"},
-              {namespace: "engine", key: "cylinders"},
-              {namespace: "engine", key: "stroke_type"},
-              {namespace: "engine", key: "engine_type"},
-              {namespace: "engine", key: "cooling_system"},
-              {namespace: "engine", key: "ignition"},
-              {namespace: "engine", key: "starting_system"},
-              {namespace: "engine", key: "fuel_induction_system"},
-              {namespace: "engine", key: "compression_ratio"},
-              {namespace: "engine", key: "bore_x_stroke"},
-              {namespace: "physical", key: "weight"},
-              {namespace: "physical", key: "shaft_length"},
-              {namespace: "physical", key: "width"},
-              {namespace: "mechanical", key: "gear_ratio"},
-              {namespace: "mechanical", key: "propeller"},
-              {namespace: "mechanical", key: "tilt_positions"},
-              {namespace: "mechanical", key: "power_trim_tilt"},
-              {namespace: "fuel", key: "fuel_tank_type"},
-              {namespace: "fuel", key: "fuel_type"},
-              {namespace: "fuel", key: "recommended_oil"},
-              {namespace: "fuel", key: "lubrication_system"},
-              {namespace: "controls", key: "throttle_control"},
-              {namespace: "controls", key: "steering"},
-              {namespace: "controls", key: "shift_system"},
-              {namespace: "controls", key: "control_type"},
-              {namespace: "controls", key: "steering_type"},
-              {namespace: "warranty", key: "warranty_period"},
-              {namespace: "warranty", key: "extended_warranty_available"},
-              {namespace: "warranty", key: "service_intervals"}
+              {namespace: "custom", key: "horsepower"},
+              {namespace: "custom", key: "manufacturer"},
+              {namespace: "custom", key: "model_number"},
+              {namespace: "custom", key: "condition"},
+              {namespace: "custom", key: "displacement"},
+              {namespace: "custom", key: "cylinders"},
+              {namespace: "custom", key: "stroke_type"},
+              {namespace: "custom", key: "engine_type"},
+              {namespace: "custom", key: "cooling_system"},
+              {namespace: "custom", key: "ignition"},
+              {namespace: "custom", key: "starting_system"},
+              {namespace: "custom", key: "fuel_induction_system"},
+              {namespace: "custom", key: "compression_ratio"},
+              {namespace: "custom", key: "bore_x_stroke"},
+              {namespace: "custom", key: "weight"},
+              {namespace: "custom", key: "shaft_length"},
+              {namespace: "custom", key: "width"},
+              {namespace: "custom", key: "width_w"},
+              {namespace: "custom", key: "gear_ratio"},
+              {namespace: "custom", key: "propeller"},
+              {namespace: "custom", key: "tilt_positions"},
+              {namespace: "custom", key: "power_trim_tilt"},
+              {namespace: "custom", key: "fuel_tank_type"},
+              {namespace: "custom", key: "tank_type"},
+              {namespace: "custom", key: "fuel_type"},
+              {namespace: "custom", key: "recommended_oil"},
+              {namespace: "custom", key: "lubrication_system"},
+              {namespace: "custom", key: "throttle_control"},
+              {namespace: "custom", key: "steering"},
+              {namespace: "custom", key: "shift_system"},
+              {namespace: "custom", key: "control_type"},
+              {namespace: "custom", key: "steering_type"},
+              {namespace: "custom", key: "warranty_period"},
+              {namespace: "custom", key: "extended_warranty_available"},
+              {namespace: "custom", key: "service_intervals"},
+              {namespace: "custom", key: "brand"},
+              {namespace: "custom", key: "model"},
+              {namespace: "custom", key: "sku"},
+              {namespace: "custom", key: "type"},
+              {namespace: "custom", key: "power_category"},
+              {namespace: "custom", key: "stock_status"}
             ]) {
               namespace
               key
@@ -187,20 +195,62 @@ export async function fetchProduct(handle: string): Promise<unknown> {
           name
           values
         }
-        metafields(first: 10) {
-          edges {
-            node {
-              namespace
-              key
-              value
-            }
-          }
+        metafields(identifiers: [
+          {namespace: "custom", key: "displacement"},
+          {namespace: "custom", key: "cylinders"},
+          {namespace: "custom", key: "stroke_type"},
+          {namespace: "custom", key: "engine_type"},
+          {namespace: "custom", key: "cooling_system"},
+          {namespace: "custom", key: "ignition"},
+          {namespace: "custom", key: "starting_system"},
+          {namespace: "custom", key: "fuel_induction_system"},
+          {namespace: "custom", key: "compression_ratio"},
+          {namespace: "custom", key: "bore_x_stroke"},
+          {namespace: "custom", key: "weight"},
+          {namespace: "custom", key: "shaft_length"},
+          {namespace: "custom", key: "width"},
+          {namespace: "custom", key: "width_w"},
+          {namespace: "custom", key: "gear_ratio"},
+          {namespace: "custom", key: "propeller"},
+          {namespace: "custom", key: "tilt_positions"},
+          {namespace: "custom", key: "power_trim_tilt"},
+          {namespace: "custom", key: "fuel_tank_type"},
+          {namespace: "custom", key: "tank_type"},
+          {namespace: "custom", key: "fuel_type"},
+          {namespace: "custom", key: "recommended_oil"},
+          {namespace: "custom", key: "lubrication_system"},
+          {namespace: "custom", key: "throttle_control"},
+          {namespace: "custom", key: "steering"},
+          {namespace: "custom", key: "shift_system"},
+          {namespace: "custom", key: "control_type"},
+          {namespace: "custom", key: "steering_type"},
+          {namespace: "custom", key: "warranty_period"},
+          {namespace: "custom", key: "extended_warranty_available"},
+          {namespace: "custom", key: "service_intervals"},
+          {namespace: "custom", key: "horsepower"},
+          {namespace: "custom", key: "brand"},
+          {namespace: "custom", key: "model"},
+          {namespace: "custom", key: "sku"},
+          {namespace: "custom", key: "type"},
+          {namespace: "custom", key: "power_category"},
+          {namespace: "custom", key: "condition"},
+          {namespace: "custom", key: "stock_status"}
+        ]) {
+          namespace
+          key
+          value
+          type
         }
       }
     }
   `;
 
   try {
+    console.log('Making Shopify API call for handle:', handle);
+    console.log('Store domain:', storefrontClient.domain);
+    console.log('API version:', storefrontClient.apiVersion);
+    console.log('Has access token:', !!storefrontClient.storefrontAccessToken);
+    
     const response = await fetch(`https://${storefrontClient.domain}/api/${storefrontClient.apiVersion}/graphql.json`, {
       method: 'POST',
       headers: {
@@ -213,11 +263,21 @@ export async function fetchProduct(handle: string): Promise<unknown> {
       }),
     });
 
+    console.log('Shopify API response status:', response.status);
+
     if (!response.ok) {
-      throw new Error(`Shopify API error: ${response.status}`);
+      const errorText = await response.text();
+      console.error('Shopify API error response:', errorText);
+      throw new Error(`Shopify API error: ${response.status} - ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('Shopify API response data:', JSON.stringify(data, null, 2));
+    
+    if (data.errors) {
+      console.error('GraphQL errors:', data.errors);
+    }
+    
     return data.data.product;
   } catch (error) {
     console.error('Error fetching product:', error);

@@ -53,10 +53,10 @@ export default function HeroSlider() {
           <div className="absolute inset-0 flex items-center">
             <div className="container mx-auto px-4">
               <div className="max-w-2xl text-white">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2">
                   {slide.title}
                 </h1>
-                <p className="text-xl md:text-2xl mb-2 text-blue-300">
+                <p className="text-lg md:text-xl mb-2 text-blue-300">
                   {slide.subtitle}
                 </p>
                 <p className="text-lg mb-8 text-gray-200">

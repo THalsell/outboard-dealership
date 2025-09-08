@@ -1,77 +1,55 @@
 import Link from 'next/link';
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
 
 export const metadata = {
-  title: 'About Us | Clay Powersports',
-  description: 'Learn about Clay Powersports - your trusted outboard motor dealership in Celina, TN.',
+  title: 'About Us | Outboard Motor Sales',
+  description: 'Learn about Outboard Motor Sales - your trusted outboard motor dealership.',
 };
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white">
+      {/* Breadcrumb */}
+      <nav aria-label="Breadcrumb" className="bg-white border-b border-gray-200">
+        <ol role="list" className="mx-auto flex max-w-7xl items-center space-x-2 px-4 py-4 sm:px-6 lg:px-8">
+          <li>
+            <div className="flex items-center">
+              <Link href="/" className="text-sm font-medium text-gray-600 hover:text-deep-blue transition-colors">
+                Home
+              </Link>
+              <ChevronRightIcon className="h-4 w-4 text-gray-400 mx-2" />
+            </div>
+          </li>
+          <li className="text-sm font-medium text-deep-blue">About</li>
+        </ol>
+      </nav>
+
       <div className="container mx-auto px-4 py-12">
-        <h1 className="text-4xl font-bold text-charcoal mb-8">About Clay Powersports</h1>
-        
-        <div className="grid md:grid-cols-2 gap-12 mb-12">
-          <div>
-            <h2 className="text-2xl font-semibold text-deep-blue mb-4">Our Story</h2>
-            <p className="text-charcoal mb-4">
-              For over 20 years, Clay Powersports has been the premier destination for outboard motors
-              in Middle Tennessee. What started as a small family business has grown into the region&#39;s
-              most trusted marine dealership.
-            </p>
-            <p className="text-charcoal mb-4">
-              We pride ourselves on offering the highest quality outboard motors, exceptional customer
-              service, and expert maintenance to keep you on the water.
-            </p>
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-charcoal mb-8">About Outboard Motor Sales</h1>
+          
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-light-gray rounded-xl p-12">
+              <h2 className="text-3xl font-semibold text-deep-blue mb-6">Coming Soon</h2>
+              <p className="text-lg text-charcoal mb-8">
+                We&#39;re working hard to bring you the best outboard motor shopping experience. 
+                Our comprehensive about page with company information, history, and team details 
+                will be available soon.
+              </p>
+              <p className="text-charcoal">
+                In the meantime, feel free to browse our inventory and contact us with any questions.
+              </p>
+            </div>
           </div>
           
-          <div>
-            <h2 className="text-2xl font-semibold text-deep-blue mb-4">Our Mission</h2>
-            <p className="text-charcoal mb-4">
-              To provide boaters with reliable, high-performance outboard motors and unmatched service,
-              ensuring every customer enjoys their time on the water with confidence and peace of mind.
-            </p>
-            <ul className="space-y-2 text-charcoal">
-              <li>✓ Authorized dealer for top brands</li>
-              <li>✓ Factory-trained technicians</li>
-              <li>✓ Competitive pricing</li>
-              <li>✓ Full-service maintenance center</li>
-            </ul>
+          <div className="mt-12">
+            <Link
+              href="/inventory"
+              className="text-deep-blue hover:text-[#0a3a6e] font-semibold underline transition-colors"
+            >
+              Browse Our Inventory
+            </Link>
           </div>
-        </div>
-
-        <div className="bg-light-gray rounded-xl p-8 mb-12">
-          <h2 className="text-2xl font-semibold text-deep-blue mb-6">Why Choose Us?</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-4xl mb-4">🏆</div>
-              <h3 className="font-semibold text-charcoal mb-2">Award Winning Service</h3>
-              <p className="text-charcoal">Recognized as Tennessee&#39;s top marine dealership 3 years running</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-4">🔧</div>
-              <h3 className="font-semibold text-charcoal mb-2">Expert Technicians</h3>
-              <p className="text-charcoal">Factory-certified technicians for all major brands</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-4">💰</div>
-              <h3 className="font-semibold text-charcoal mb-2">Best Price Guarantee</h3>
-              <p className="text-charcoal">We&#39;ll match any competitor&#39;s advertised price</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-deep-blue mb-4">Visit Our Showroom</h2>
-          <p className="text-charcoal mb-6">
-            615 West Lake Avenue, Celina, TN 38551
-          </p>
-          <Link
-            href="/inventory"
-            className="inline-block bg-deep-blue text-white px-8 py-3 rounded-lg hover:bg-[#0a3a6e] transition-colors"
-          >
-            Browse Our Inventory
-          </Link>
         </div>
       </div>
     </div>

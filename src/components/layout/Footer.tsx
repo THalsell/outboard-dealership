@@ -42,8 +42,8 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/inventory/new" className="text-xs text-gray-400 hover:text-blue-400">New Motors</Link></li>
-              <li><Link href="/inventory/used" className="text-xs text-gray-400 hover:text-blue-400">Used Motors</Link></li>
+              <li><Link href="/inventory?condition=new" className="text-xs text-gray-400 hover:text-blue-400">New Motors</Link></li>
+              <li><Link href="/inventory?condition=used" className="text-xs text-gray-400 hover:text-blue-400">Used Motors</Link></li>
               <li><Link href="/learn/guides" className="text-xs text-gray-400 hover:text-blue-400">Buying Guides</Link></li>
             </ul>
           </div>

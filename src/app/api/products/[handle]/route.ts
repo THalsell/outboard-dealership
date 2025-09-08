@@ -125,15 +125,92 @@ function transformDetailedGraphQLProduct(graphqlProduct: GraphQLProduct): Produc
     max: prices.length > 0 ? Math.max(...prices) : 0,
   };
 
-  // Extract specs from metafields
+  // Extract specs from metafields - convert key to display name
   const specs: Record<string, string> = {};
-  if (graphqlProduct.metafields?.edges) {
-    graphqlProduct.metafields.edges.forEach((edge: { node: { namespace: string; key: string; value: string } }) => {
-      const metafield = edge.node;
-      if (metafield.namespace === 'specs' || metafield.namespace === 'custom') {
-        specs[metafield.key] = metafield.value;
-      }
-    });
+  
+  // Handle both array format (new) and edges format (old)
+  const metafieldsArray = Array.isArray(graphqlProduct.metafields) 
+    ? graphqlProduct.metafields 
+    : graphqlProduct.metafields?.edges?.map((edge: { node: { namespace: string; key: string; value: string; type?: string } }) => edge.node) || [];
+  
+  // Debug logging
+  console.log('Metafields array length:', metafieldsArray.length);
+  console.log('Raw metafields structure:', JSON.stringify(metafieldsArray, null, 2));
+  
+  metafieldsArray.forEach((metafield: { namespace: string; key: string; value: string; type?: string }, index: number) => {
+    // Skip null metafields
+    if (!metafield) {
+      console.log(`Skipping null metafield at index ${index}`);
+      return;
+    }
+    
+    console.log(`Processing metafield ${index}: ${metafield.namespace}.${metafield.key} = "${metafield.value}" (type: ${metafield.type})`);
+    
+    if (metafield.value && metafield.value.trim() !== '') {
+      // Convert key to display name format that the website expects
+      const displayName = keyToDisplayName(metafield.key);
+      specs[displayName] = metafield.value;
+      
+      // Also keep the original key format for backward compatibility
+      specs[metafield.key] = metafield.value;
+      
+      // Add namespace+key combination for backward compatibility
+      specs[`${metafield.namespace}.${metafield.key}`] = metafield.value;
+      
+      console.log(`✓ Added spec: "${displayName}" = "${metafield.value}"`);
+    } else {
+      console.log(`✗ Skipped metafield (empty value): ${metafield.namespace}.${metafield.key}`);
+    }
+  });
+  
+  console.log('Final specs object keys:', Object.keys(specs));
+  console.log('Final specs object:', JSON.stringify(specs, null, 2));
+
+  // Helper function to convert key to display name
+  function keyToDisplayName(key: string): string {
+    const keyMap: Record<string, string> = {
+      'horsepower': 'Horsepower',
+      'brand': 'Brand',
+      'model': 'Model',
+      'sku': 'SKU',
+      'type': 'Type',
+      'power_category': 'Power Category',
+      'condition': 'Condition',
+      'stock_status': 'Stock Status',
+      'displacement': 'Displacement',
+      'cylinders': 'Cylinders',
+      'stroke_type': 'Stroke Type',
+      'engine_type': 'Engine Type',
+      'cooling_system': 'Cooling System',
+      'ignition': 'Ignition',
+      'starting_system': 'Starting System',
+      'fuel_induction_system': 'Fuel Induction System',
+      'compression_ratio': 'Compression Ratio',
+      'bore_x_stroke': 'Bore x Stroke',
+      'weight': 'Weight',
+      'shaft_length': 'Shaft Length',
+      'width_w': 'Width (W)',
+      'gear_ratio': 'Gear Ratio',
+      'propeller': 'Propeller',
+      'tilt_positions': 'Tilt Positions',
+      'power_trim_tilt': 'Power Trim & Tilt',
+      'fuel_tank_type': 'Fuel Tank Type',
+      'fuel_type': 'Fuel Type',
+      'recommended_oil': 'Recommended Oil',
+      'lubrication_system': 'Lubrication System',
+      'throttle_control': 'Throttle Control',
+      'steering': 'Steering',
+      'shift_system': 'Shift System',
+      'control_type': 'Control Type',
+      'steering_type': 'Steering Type',
+      'warranty_period': 'Warranty Period',
+      'extended_warranty_available': 'Extended Warranty Available',
+      'service_intervals': 'Service Intervals'
+    };
+    
+    return keyMap[key] || key.split('_').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
   }
 
   return {
@@ -174,7 +251,10 @@ export async function GET(
     }
 
     // Fetch product using GraphQL Storefront API
+    console.log('Fetching product with handle:', handle);
     const graphqlProduct = await fetchProduct(handle);
+
+    console.log('Raw GraphQL product response:', JSON.stringify(graphqlProduct, null, 2));
 
     // Check for valid product shape
     if (
@@ -184,6 +264,13 @@ export async function GET(
       !(graphqlProduct as GraphQLProduct).handle ||
       !(graphqlProduct as GraphQLProduct).title
     ) {
+      console.log('Product validation failed:', {
+        exists: !!graphqlProduct,
+        isObject: typeof graphqlProduct === 'object',
+        hasId: !!(graphqlProduct as GraphQLProduct)?.id,
+        hasHandle: !!(graphqlProduct as GraphQLProduct)?.handle,
+        hasTitle: !!(graphqlProduct as GraphQLProduct)?.title
+      });
       return NextResponse.json(
         { error: 'Product not found' },
         { status: 404 }

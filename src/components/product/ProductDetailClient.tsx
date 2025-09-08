@@ -28,6 +28,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const hasDiscount = comparePrice > price;
   const discountPercent = hasDiscount ? Math.round(((comparePrice - price) / comparePrice) * 100) : 0;
 
+  // Debug: Log available specs
+  if (typeof window !== 'undefined') {
+    console.log('Product specs available:', Object.keys(product.specs || {}));
+    console.log('Full specs object:', product.specs);
+  }
+
 
   const handleAddToCart = () => {
     if (!selectedVariant || !product.inStock) return;
@@ -102,17 +108,25 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
   // Get specification value function from compare page
   const getSpecValue = (product: Product, key: string): string => {
-    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '-';
-    if (key === 'Brand') return product.brand || '-';
-    if (key === 'Model') return product.title || '-';
-    if (key === 'SKU') return product.variants[0]?.sku || '-';
-    if (key === 'Type') return product.type || '-';
-    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '-';
+    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '';
+    if (key === 'Brand') return product.brand || '';
+    if (key === 'Model') return product.title || '';
+    if (key === 'SKU') return product.variants[0]?.sku || '';
+    if (key === 'Type') return product.type || '';
+    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '';
     if (key === 'Condition') return (product.condition || 'new').charAt(0).toUpperCase() + (product.condition || 'new').slice(1);
     if (key === 'Stock Status') return product.inStock ? 'In Stock' : 'Out of Stock';
-    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.specs?.['weight'] || product.specs?.['weight_lbs'] || '-';
-    if (key === 'Shaft Length') return product.variants[0]?.option1Name?.toLowerCase().includes('shaft') ? product.variants[0].option1Value || '-' : product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '-';
-    return product.specs?.[key] || product.specs?.[key.toLowerCase()] || product.specs?.[key.replace(/ /g, '_')] || product.specs?.[key.replace(/ /g, '_').toLowerCase()] || '-';
+    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.specs?.['Weight'] || product.specs?.['weight'] || product.specs?.['weight_lbs'] || '';
+    if (key === 'Shaft Length') return product.variants[0]?.option1Name?.toLowerCase().includes('shaft') ? product.variants[0].option1Value || '' : product.specs?.['Shaft Length'] || product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '';
+    
+    // Try multiple key variations for specs lookup
+    return product.specs?.[key] || 
+           product.specs?.[key.toLowerCase()] || 
+           product.specs?.[key.replace(/ /g, '_')] || 
+           product.specs?.[key.replace(/ /g, '_').toLowerCase()] ||
+           product.specs?.[key.replace(/\s+/g, '')] ||
+           product.specs?.[key.replace(/\s+/g, '').toLowerCase()] ||
+           '';
   };
 
   return (
@@ -417,13 +431,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                                       </tr>
                                       {category.specs.map((spec, specIndex) => {
                                         const value = getSpecValue(product, spec);
+                                        const displayValue = value || '-';
                                         return (
                                           <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
                                             <td className="p-4 font-medium text-gray-300">
                                               {spec}
                                             </td>
                                             <td className="p-4 text-white font-medium">
-                                              {value}
+                                              {displayValue}
                                             </td>
                                           </tr>
                                         );
@@ -457,13 +472,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                                       <tbody>
                                         {tab.categories[0]?.specs.map((spec, specIndex) => {
                                           const value = getSpecValue(product, spec);
+                                          const displayValue = value || '-';
                                           return (
                                             <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
                                               <td className="p-4 font-medium text-gray-300">
                                                 {spec}
                                               </td>
                                               <td className="p-4 text-white font-medium">
-                                                {value}
+                                                {displayValue}
                                               </td>
                                             </tr>
                                           );
@@ -493,13 +509,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                                       <tbody>
                                         {tab.categories[1]?.specs.map((spec, specIndex) => {
                                           const value = getSpecValue(product, spec);
+                                          const displayValue = value || '-';
                                           return (
                                             <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
                                               <td className="p-4 font-medium text-gray-300">
                                                 {spec}
                                               </td>
                                               <td className="p-4 text-white font-medium">
-                                                {value}
+                                                {displayValue}
                                               </td>
                                             </tr>
                                           );

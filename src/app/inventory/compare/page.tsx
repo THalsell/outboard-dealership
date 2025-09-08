@@ -88,17 +88,25 @@ export default function ComparePage() {
   };
 
   const getSpecValue = (product: Product, key: string): string => {
-    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '-';
-    if (key === 'Brand') return product.brand || '-';
-    if (key === 'Model') return product.title || '-';
-    if (key === 'SKU') return product.variants[0]?.sku || '-';
-    if (key === 'Type') return product.type || '-';
-    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '-';
+    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '';
+    if (key === 'Brand') return product.brand || '';
+    if (key === 'Model') return product.title || '';
+    if (key === 'SKU') return product.variants[0]?.sku || '';
+    if (key === 'Type') return product.type || '';
+    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '';
     if (key === 'Condition') return (product.condition || 'new').charAt(0).toUpperCase() + (product.condition || 'new').slice(1);
     if (key === 'Stock Status') return product.inStock ? 'In Stock' : 'Out of Stock';
-    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.specs?.['weight'] || product.specs?.['weight_lbs'] || '-';
-    if (key === 'Shaft Length') return product.variants[0]?.option1Name?.toLowerCase().includes('shaft') ? product.variants[0].option1Value || '-' : product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '-';
-    return product.specs?.[key] || product.specs?.[key.toLowerCase()] || product.specs?.[key.replace(/ /g, '_')] || product.specs?.[key.replace(/ /g, '_').toLowerCase()] || '-';
+    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.specs?.['Weight'] || product.specs?.['weight'] || product.specs?.['weight_lbs'] || '';
+    if (key === 'Shaft Length') return product.variants[0]?.option1Name?.toLowerCase().includes('shaft') ? product.variants[0].option1Value || '' : product.specs?.['Shaft Length'] || product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '';
+    
+    // Try multiple key variations for specs lookup
+    return product.specs?.[key] || 
+           product.specs?.[key.toLowerCase()] || 
+           product.specs?.[key.replace(/ /g, '_')] || 
+           product.specs?.[key.replace(/ /g, '_').toLowerCase()] ||
+           product.specs?.[key.replace(/\s+/g, '')] ||
+           product.specs?.[key.replace(/\s+/g, '').toLowerCase()] ||
+           '';
   };
 
   const specCategories = [
@@ -231,7 +239,7 @@ export default function ComparePage() {
                   'Weight',
                   'Shaft Length'
                 ].map(spec => {
-                  const hasValues = selectedProducts.slice(0, 2).some(product => product && getSpecValue(product, spec) !== '-');
+                  const hasValues = selectedProducts.slice(0, 2).some(product => product && getSpecValue(product, spec) !== '' && getSpecValue(product, spec) !== '-');
                   if (!hasValues) return null;
                   
                   return (
@@ -241,7 +249,7 @@ export default function ComparePage() {
                         {selectedProducts.slice(0, 2).map((product, index) => (
                           <div key={index} className="text-center">
                             <span className="text-white text-sm">
-                              {product ? getSpecValue(product, spec) : '-'}
+                              {product ? (getSpecValue(product, spec) || '-') : '-'}
                             </span>
                           </div>
                         ))}
@@ -323,7 +331,7 @@ export default function ComparePage() {
                   {specCategories.map((category) => (
                     <React.Fragment key={category.title}>
                       <tr className="bg-slate-800">
-                        <td colSpan={4} className="p-4 font-bold text-blue-400 text-lg text-center">
+                        <td colSpan={4} className="p-4 font-bold text-white text-lg text-center">
                           {category.title}
                         </td>
                       </tr>
@@ -334,7 +342,7 @@ export default function ComparePage() {
                           </td>
                           {selectedProducts.map((product, index) => (
                             <td key={index} className="p-4 text-center text-white">
-                              {product ? getSpecValue(product, spec) : '-'}
+                              {product ? (getSpecValue(product, spec) || '-') : '-'}
                             </td>
                           ))}
                         </tr>
@@ -346,7 +354,7 @@ export default function ComparePage() {
                   {selectedProducts.some(p => p?.tags && p.tags.length > 0) && (
                     <React.Fragment>
                       <tr className="bg-slate-800">
-                        <td colSpan={4} className="p-4 font-bold text-blue-400 text-lg text-center">
+                        <td colSpan={4} className="p-4 font-bold text-white text-lg text-center">
                           Additional Features
                         </td>
                       </tr>

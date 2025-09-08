@@ -71,12 +71,12 @@ export default function BuyingGuidePage() {
           <nav className="lg:hidden bg-slate-700 shadow-2xl p-6 mb-12 max-w-4xl mx-auto">
             <h2 className="text-xl font-semibold text-white mb-4 text-center">Quick Navigation</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-              <a href="#horsepower" className="text-blue-400 hover:text-blue-300 transition-colors">Horsepower Selection</a>
-              <a href="#shaft-length" className="text-blue-400 hover:text-blue-300 transition-colors">Shaft Length</a>
-              <a href="#features" className="text-blue-400 hover:text-blue-300 transition-colors">Key Features</a>
-              <a href="#brands" className="text-blue-400 hover:text-blue-300 transition-colors">Brand Comparison</a>
-              <a href="#maintenance" className="text-blue-400 hover:text-blue-300 transition-colors">Maintenance</a>
-              <a href="#budget" className="text-blue-400 hover:text-blue-300 transition-colors">Budget Planning</a>
+              <a href="#horsepower" className="text-white hover:text-gray-300 transition-colors text-lg">Horsepower Selection</a>
+              <a href="#shaft-length" className="text-white hover:text-gray-300 transition-colors text-lg">Shaft Length</a>
+              <a href="#features" className="text-white hover:text-gray-300 transition-colors text-lg">Key Features</a>
+              <a href="#brands" className="text-white hover:text-gray-300 transition-colors text-lg">Brand Comparison</a>
+              <a href="#maintenance" className="text-white hover:text-gray-300 transition-colors text-lg">Maintenance</a>
+              <a href="#budget" className="text-white hover:text-gray-300 transition-colors text-lg">Budget Planning</a>
             </div>
           </nav>
 
