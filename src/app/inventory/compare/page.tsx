@@ -132,7 +132,7 @@ export default function ComparePage() {
     },
     {
       title: 'Controls & Features',
-      specs: ['Throttle Control', 'Steering', 'Shift System']
+      specs: ['Controls', 'Throttle Control', 'Steering', 'Shift System']
     },
     {
       title: 'Warranty & Service',

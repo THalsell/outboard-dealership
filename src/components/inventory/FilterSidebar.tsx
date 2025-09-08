@@ -508,7 +508,7 @@ export default function FilterSidebar({
             onClick={() => toggleSection('steering')}
             className="flex items-center justify-between w-full text-left"
           >
-            <h3 className="text-base font-semibold text-charcoal">Steering</h3>
+            <h3 className="text-base font-semibold text-charcoal">Controls</h3>
             <svg 
               className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('steering') ? 'rotate-180' : ''}`} 
               fill="none" 

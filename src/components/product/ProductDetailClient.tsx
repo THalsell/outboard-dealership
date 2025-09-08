@@ -96,7 +96,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       categories: [
         {
           title: 'Controls & Features',
-          specs: ['Throttle Control', 'Steering', 'Shift System']
+          specs: ['Controls', 'Throttle Control', 'Steering', 'Shift System']
         },
         {
           title: 'Warranty & Service',
@@ -599,6 +599,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* Disclaimer */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-gray-100 border border-gray-300 rounded-lg p-6">
+          <h3 className="text-sm font-semibold text-gray-800 mb-2">Important Notice</h3>
+          <p className="text-sm text-gray-700 leading-relaxed">
+            <strong>Disclaimer:</strong> Images displayed on this site are for illustrative purposes only and may not accurately reflect the exact boat or outboard model available. Specifications, features, and configurations can vary. We strongly recommend reviewing all details with a member of our sales team to ensure clarity before purchase or deposit.
+          </p>
         </div>
       </div>
     </div>

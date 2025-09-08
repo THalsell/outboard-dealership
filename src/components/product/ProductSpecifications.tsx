@@ -52,7 +52,7 @@ export default function ProductSpecifications({
     },
     {
       title: 'Controls & Features',
-      specs: ['Throttle Control', 'Steering', 'Shift System']
+      specs: ['Controls', 'Throttle Control', 'Steering', 'Shift System']
     },
     {
       title: 'Warranty & Service',

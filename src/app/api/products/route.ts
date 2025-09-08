@@ -184,7 +184,8 @@ function transformGraphQLProduct(graphqlProduct: GraphQLProduct): Product {
         'type': 'Type',
         'power_category': 'Power Category',
         'condition': 'Condition',
-        'stock_status': 'Stock Status'
+        'stock_status': 'Stock Status',
+        'controls': 'Controls'
       }
     };
 
