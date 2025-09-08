@@ -17,7 +17,7 @@ interface URLFilters {
 }
 
 export default function InventoryPageClient() {
-  const { filters, compareList, removeFromCompare } = useFilter();
+  const { filters, compareList, removeFromCompare, resetFilters } = useFilter();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -513,6 +513,9 @@ export default function InventoryPageClient() {
       // Brands
       if (product.brand) {
         brandsSet.add(product.brand);
+        console.log('Adding brand to filter:', product.brand);
+      } else {
+        console.log('Product missing brand:', product.title, product);
       }
 
       // Price range
@@ -522,24 +525,22 @@ export default function InventoryPageClient() {
           maxPrice = Math.max(maxPrice, variant.price);
         }
 
-        // Shaft lengths
+        // Shaft lengths from variants (legacy)
         const optionName = variant.option1Name?.toLowerCase() || '';
         if ((optionName.includes('shaft') || optionName.includes('length')) && variant.option1Value) {
           const value = variant.option1Value.toLowerCase();
           if (value.includes('15') || value.includes('short')) {
-            shaftLengthsSet.add('15"');
+            shaftLengthsSet.add('Short (15")');
           } else if (value.includes('20') || value.includes('long')) {
-            shaftLengthsSet.add('20"');
+            shaftLengthsSet.add('Long (20")');
           } else if (value.includes('25') || value.includes('extra')) {
-            shaftLengthsSet.add('25"');
-          }
-          // Handle exact matches
-          else if (value === '15"' || value === '15') {
-            shaftLengthsSet.add('15"');
+            shaftLengthsSet.add('Extra Long (25")');
+          } else if (value === '15"' || value === '15') {
+            shaftLengthsSet.add('Short (15")');
           } else if (value === '20"' || value === '20') {
-            shaftLengthsSet.add('20"');
+            shaftLengthsSet.add('Long (20")');
           } else if (value === '25"' || value === '25') {
-            shaftLengthsSet.add('25"');
+            shaftLengthsSet.add('Extra Long (25")');
           }
         }
       });
@@ -549,9 +550,43 @@ export default function InventoryPageClient() {
         minHP = Math.min(minHP, product.horsepower);
         maxHP = Math.max(maxHP, product.horsepower);
       }
+
+      // Shaft lengths from metafields
+      if (product.specs) {
+        const shaftLengthSpec = product.specs['Shaft Length'] || 
+                               product.specs['shaft_length'] || 
+                               product.specs['custom.shaft_length'];
+        
+        console.log('Checking shaft length metafield for product:', product.title, 'value:', shaftLengthSpec);
+        
+        if (shaftLengthSpec) {
+          const value = shaftLengthSpec.toString().toLowerCase();
+          if (value.includes('15') || value.includes('short')) {
+            shaftLengthsSet.add('Short (15")');
+            console.log('Added Short (15") from metafield');
+          } else if (value.includes('20') || value.includes('long')) {
+            shaftLengthsSet.add('Long (20")');
+            console.log('Added Long (20") from metafield');
+          } else if (value.includes('25') || value.includes('extra')) {
+            shaftLengthsSet.add('Extra Long (25")');
+            console.log('Added Extra Long (25") from metafield');
+          } else if (value === '15"' || value === '15') {
+            shaftLengthsSet.add('Short (15")');
+            console.log('Added Short (15") from metafield - exact match');
+          } else if (value === '20"' || value === '20') {
+            shaftLengthsSet.add('Long (20")');
+            console.log('Added Long (20") from metafield - exact match');
+          } else if (value === '25"' || value === '25') {
+            shaftLengthsSet.add('Extra Long (25")');
+            console.log('Added Extra Long (25") from metafield - exact match');
+          } else {
+            console.log('Shaft length metafield value did not match any pattern:', value);
+          }
+        }
+      }
     });
 
-    return {
+    const result = {
       priceRange: { 
         min: minPrice === Infinity ? 0 : Math.floor(minPrice), 
         max: maxPrice === 0 ? 100000 : Math.ceil(maxPrice) 
@@ -563,6 +598,12 @@ export default function InventoryPageClient() {
       availableBrands: Array.from(brandsSet).sort(),
       availableShaftLengths: Array.from(shaftLengthsSet).sort()
     };
+    
+    console.log('Dynamic ranges calculated:', result);
+    console.log('Available brands:', result.availableBrands);
+    console.log('Total products processed:', allProducts.length);
+    
+    return result;
   }, [allProducts]);
 
   return (
@@ -573,10 +614,8 @@ export default function InventoryPageClient() {
           <FilterSidebar 
             isMobile={true} 
             onClose={() => setShowMobileFilters(false)}
-            availableBrands={dynamicRanges.availableBrands}
             priceRange={dynamicRanges.priceRange}
             horsepowerRange={dynamicRanges.horsepowerRange}
-            availableShaftLengths={dynamicRanges.availableShaftLengths}
           />
         </div>
       )}
@@ -634,10 +673,8 @@ export default function InventoryPageClient() {
           {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">
             <FilterSidebar 
-              availableBrands={dynamicRanges.availableBrands}
               priceRange={dynamicRanges.priceRange}
               horsepowerRange={dynamicRanges.horsepowerRange}
-              availableShaftLengths={dynamicRanges.availableShaftLengths}
             />
           </aside>
 
@@ -658,6 +695,7 @@ export default function InventoryPageClient() {
             <InventoryGrid
               products={paginatedProducts}
               loading={loading}
+              onClearFilters={resetFilters}
             />
 
             {/* Pagination */}

@@ -15,20 +15,18 @@ interface FilterSidebarProps {
 export default function FilterSidebar({ 
   isMobile = false, 
   onClose,
-  availableBrands = ['Honda', 'Yamaha', 'Mercury', 'Freedom', 'Suzuki', 'Tohatsu'],
+  availableBrands = ['Honda', 'Yamaha', 'Mercury', 'Suzuki', 'Tohatsu', 'Freedom'],
   priceRange = { min: 0, max: 100000 },
   horsepowerRange = { min: 0, max: 500 },
-  availableShaftLengths = ['15"', '20"', '25"']
+  availableShaftLengths = ['Short (15")', 'Long (20")', 'Extra Long (25")']
 }: FilterSidebarProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
-  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'shaft', 'drive', 'fuel', 'tank', 'starting', 'steering', 'trimtilt']);
+  const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'shaft', 'fuel', 'starting', 'steering', 'trimtilt']);
 
   const brands = availableBrands;
   const shaftLengths = availableShaftLengths;
   const conditions = ['new', 'used', 'overstock', 'scratch-dent'];
-  const driveTypes = ['jet', 'prop'];
   const fuelDeliveryTypes = ['carburetor', 'efi', 'propane'];
-  const fuelTankTypes = ['internal', 'external'];
   const startingTypes = ['manual', 'electric'];
   const steeringTypes = ['remote', 'tiller'];
   const trimTiltTypes = ['manual', 'power-tilt', 'power-trim-tilt'];
@@ -64,12 +62,6 @@ export default function FilterSidebar({
   };
 
 
-  const handleDriveTypeToggle = (driveType: string) => {
-    const newDriveTypes = filters.driveTypes.includes(driveType)
-      ? filters.driveTypes.filter(d => d !== driveType)
-      : [...filters.driveTypes, driveType];
-    updateFilter('driveTypes', newDriveTypes);
-  };
 
   const handleFuelDeliveryToggle = (fuelType: string) => {
     const newFuelDelivery = filters.fuelDelivery.includes(fuelType)
@@ -78,12 +70,6 @@ export default function FilterSidebar({
     updateFilter('fuelDelivery', newFuelDelivery);
   };
 
-  const handleFuelTankToggle = (tankType: string) => {
-    const newFuelTank = filters.fuelTank.includes(tankType)
-      ? filters.fuelTank.filter(t => t !== tankType)
-      : [...filters.fuelTank, tankType];
-    updateFilter('fuelTank', newFuelTank);
-  };
 
   const handleStartingToggle = (startType: string) => {
     const newStarting = filters.starting.includes(startType)
@@ -442,40 +428,6 @@ export default function FilterSidebar({
           )}
         </div>
 
-        {/* Drive Type */}
-        <div className="py-4 border-b border-gray-200">
-          <button
-            onClick={() => toggleSection('drive')}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="text-base font-semibold text-charcoal">Drive Type</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('drive') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          {expandedSections.includes('drive') && (
-            <div className="mt-3 space-y-2">
-              {driveTypes.map((driveType) => (
-                <label key={driveType} className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={filters.driveTypes.includes(driveType)}
-                    onChange={() => handleDriveTypeToggle(driveType)}
-                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
-                  />
-                  <span className="text-sm text-gray-700 capitalize">
-                    {driveType === 'jet' ? 'Jet Drive' : 'Propeller'}
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
 
         {/* Fuel Delivery */}
         <div className="py-4 border-b border-gray-200">
@@ -514,40 +466,6 @@ export default function FilterSidebar({
           )}
         </div>
 
-        {/* Fuel Tank */}
-        <div className="py-4 border-b border-gray-200">
-          <button
-            onClick={() => toggleSection('tank')}
-            className="flex items-center justify-between w-full text-left"
-          >
-            <h3 className="text-base font-semibold text-charcoal">Fuel Tank</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('tank') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          {expandedSections.includes('tank') && (
-            <div className="mt-3 space-y-2">
-              {fuelTankTypes.map((tankType) => (
-                <label key={tankType} className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={filters.fuelTank.includes(tankType)}
-                    onChange={() => handleFuelTankToggle(tankType)}
-                    className="w-4 h-4 text-deep-blue rounded border-gray-300 focus:ring-deep-blue"
-                  />
-                  <span className="text-sm text-gray-700 capitalize">
-                    {tankType === 'internal' ? 'Internal Tank' : 'External Tank'}
-                  </span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
 
         {/* Starting Method */}
         <div className="py-4 border-b border-gray-200">
