@@ -1,45 +1,86 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { Product } from '@/lib/data/products';
+
+const horsepowerCategories = [
+  {
+    id: '1',
+    name: 'Small Outboards',
+    hpRange: '2.5-30',
+    description: '2.5HP - 30HP',
+    detail: 'Perfect for dinghies, small fishing boats, and tenders',
+    image: '/small.jpg',
+    minHp: 2.5,
+    maxHp: 30
+  },
+  {
+    id: '2',
+    name: 'Mid-Range Outboards',
+    hpRange: '40-90',
+    description: '40HP - 90HP',
+    detail: 'Ideal for runabouts, pontoons, and mid-size fishing boats',
+    image: '/mid.webp',
+    minHp: 40,
+    maxHp: 90
+  },
+  {
+    id: '3',
+    name: 'High Performance',
+    hpRange: '100-300',
+    description: '100HP - 300HP',
+    detail: 'Power for larger boats, offshore fishing, and watersports',
+    image: '/high.webp',
+    minHp: 100,
+    maxHp: 300
+  },
+  {
+    id: '4',
+    name: 'Elite Power',
+    hpRange: '350+',
+    description: '350HP+',
+    detail: 'Maximum performance for high-speed and commercial applications',
+    image: '/elite.webp',
+    minHp: 350,
+    maxHp: Infinity
+  }
+];
 
 export default function ShopByCategory() {
-  const horsepowerCategories = [
-    {
-      id: '1',
-      name: 'Small Outboards',
-      hpRange: '2.5-30',
-      description: '2.5HP - 30HP',
-      detail: 'Perfect for dinghies, small fishing boats, and tenders',
-      image: '/small.jpg',
-      motorCount: 45
-    },
-    {
-      id: '2',
-      name: 'Mid-Range Outboards',
-      hpRange: '40-90',
-      description: '40HP - 90HP',
-      detail: 'Ideal for runabouts, pontoons, and mid-size fishing boats',
-      image: '/mid.webp',
-      motorCount: 82
-    },
-    {
-      id: '3',
-      name: 'High Performance',
-      hpRange: '100-300',
-      description: '100HP - 300HP',
-      detail: 'Power for larger boats, offshore fishing, and watersports',
-      image: '/high.webp',
-      motorCount: 64
-    },
-    {
-      id: '4',
-      name: 'Elite Power',
-      hpRange: '350+',
-      description: '350HP+',
-      detail: 'Maximum performance for high-speed and commercial applications',
-      image: '/elite.webp',
-      motorCount: 18
-    }
-  ];
+  const [motorCounts, setMotorCounts] = useState<Record<string, number>>({});
+
+  // Fetch products and calculate counts for each horsepower range
+  useEffect(() => {
+    const fetchProductCounts = async () => {
+      try {
+        const response = await fetch('/api/products');
+        if (response.ok) {
+          const products: Product[] = await response.json();
+          
+          // Calculate counts for each category
+          const counts: Record<string, number> = {};
+          
+          horsepowerCategories.forEach(category => {
+            const count = products.filter(product => 
+              product.horsepower >= category.minHp && product.horsepower <= category.maxHp
+            ).length;
+            counts[category.id] = count;
+          });
+          
+          setMotorCounts(counts);
+        }
+      } catch (error) {
+        console.error('Failed to fetch product counts:', error);
+        // Set fallback counts if fetch fails
+        const fallbackCounts = { '1': 0, '2': 0, '3': 0, '4': 0 };
+        setMotorCounts(fallbackCounts);
+      }
+    };
+    
+    fetchProductCounts();
+  }, []);
 
   return (
     <section className="py-16 bg-light-gray">
@@ -69,7 +110,9 @@ export default function ShopByCategory() {
               <p className="text-2xl font-bold text-deep-blue mb-2">{category.description}</p>
               <p className="text-sm text-charcoal opacity-80 mb-3">{category.detail}</p>
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{category.motorCount} motors</span>
+                <span className="text-sm text-gray-600">
+                  {motorCounts[category.id] !== undefined ? motorCounts[category.id] : '...'} motors
+                </span>
                 <div className="flex items-center text-deep-blue font-semibold">
                   <span className="text-sm">Browse</span>
                   <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { useFilter } from '@/contexts/FilterContext';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +17,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [imageHover, setImageHover] = useState(false);
   const isInCompare = compareList.includes(product.id as string);
+
+  // Memoize event handlers to prevent infinite re-renders
+  const handleMouseEnter = useCallback(() => {
+    setImageHover(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setImageHover(false);
+  }, []);
 
   // Get the default variant (first one)
   const defaultVariant = product.variants[0];
@@ -103,8 +112,8 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link 
         href={`/inventory/${product.handle}`}
         className="block relative aspect-square overflow-hidden bg-gradient-to-b from-gray-50 to-white p-6"
-        onMouseEnter={() => setImageHover(true)}
-        onMouseLeave={() => setImageHover(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <div className="relative w-full h-full">
           <Image

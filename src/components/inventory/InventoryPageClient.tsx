@@ -17,13 +17,14 @@ interface URLFilters {
 }
 
 export default function InventoryPageClient() {
-  const { filters, compareList, removeFromCompare, resetFilters } = useFilter();
+  const { filters, compareList, removeFromCompare, resetFilters, updateFilter } = useFilter();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [urlFiltersApplied, setUrlFiltersApplied] = useState(false);
 
   // Get URL parameters for filtering
   const urlFilters: URLFilters = {
@@ -70,6 +71,82 @@ export default function InventoryPageClient() {
 
     fetchProducts();
   }, []);
+
+  // Apply URL filters when component loads (only once)
+  useEffect(() => {
+    if (urlFiltersApplied) return; // Prevent re-applying filters
+    
+    let hasFilters = false;
+    
+    // Process hp parameter (e.g., "2.5-30", "40-90", etc.)
+    if (urlFilters.hp) {
+      hasFilters = true;
+      const hpRange = urlFilters.hp;
+      
+      // Parse horsepower range
+      if (hpRange.includes('-')) {
+        const [min, max] = hpRange.split('-').map(hp => {
+          // Handle "350+" case
+          if (hp.includes('+')) {
+            return parseInt(hp.replace('+', ''));
+          }
+          return parseFloat(hp);
+        });
+        
+        if (!isNaN(min)) {
+          updateFilter('minHorsepower', min);
+        }
+        if (!isNaN(max)) {
+          updateFilter('maxHorsepower', max);
+        } else if (hpRange.includes('+')) {
+          // For "350+" set a high max value
+          updateFilter('maxHorsepower', 1000);
+        }
+      } else if (hpRange.includes('+')) {
+        // Handle single value with plus (e.g., "350+")
+        const min = parseInt(hpRange.replace('+', ''));
+        if (!isNaN(min)) {
+          updateFilter('minHorsepower', min);
+          updateFilter('maxHorsepower', 1000);
+        }
+      }
+    }
+
+    // Process brand parameter
+    if (urlFilters.brand) {
+      hasFilters = true;
+      updateFilter('brands', [urlFilters.brand]);
+    }
+
+    // Process condition parameter
+    if (urlFilters.condition) {
+      hasFilters = true;
+      updateFilter('conditions', [urlFilters.condition]);
+    }
+
+    // Process status parameter for special cases
+    if (urlFilters.status) {
+      hasFilters = true;
+      if (urlFilters.status === 'overstock') {
+        updateFilter('conditions', ['overstock']);
+      } else if (urlFilters.status === 'sale') {
+        updateFilter('onSaleOnly', true);
+      }
+    }
+    
+    // Mark URL filters as applied if we had any
+    if (hasFilters) {
+      setUrlFiltersApplied(true);
+    }
+  }, [
+    searchParams,
+    updateFilter,
+    urlFilters.brand,
+    urlFilters.condition,
+    urlFilters.hp,
+    urlFilters.status,
+    urlFiltersApplied
+  ]); // Include all necessary dependencies
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
@@ -661,7 +738,13 @@ export default function InventoryPageClient() {
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-3">
           <nav className="flex items-center text-sm">
-            <Link href="/" className="text-gray-600 hover:text-deep-blue">Home</Link>
+            <Link 
+              href="/" 
+              className="text-gray-600 hover:text-deep-blue"
+              onClick={resetFilters}
+            >
+              Home
+            </Link>
             <span className="mx-2 text-gray-400">/</span>
             <span className="text-gray-900 font-medium">Outboard Motors</span>
           </nav>

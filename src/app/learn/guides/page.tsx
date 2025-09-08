@@ -50,17 +50,38 @@ export default function BuyingGuidePage() {
       {/* Hero Section */}
       <section className="bg-slate-800 text-white py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Outboard Motor Buying Guide
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 mb-8">
-              Everything you need to know to choose the perfect outboard motor
-            </p>
-            <p className="text-lg text-gray-400">
-              Our comprehensive guide will help you make an informed decision based on your boat, 
-              usage, and performance needs.
-            </p>
+          <div className="max-w-4xl mx-auto">
+            {/* Breadcrumb */}
+            <nav className="mb-8">
+              <ol className="flex items-center space-x-2 text-sm">
+                <li>
+                  <Link href="/" className="text-gray-400 hover:text-white transition-colors">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </li>
+                <li>
+                  <span className="text-white font-medium">Buying Guides</span>
+                </li>
+              </ol>
+            </nav>
+
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                Outboard Motor Buying Guide
+              </h1>
+              <p className="text-xl md:text-2xl text-gray-300 mb-8">
+                Everything you need to know to choose the perfect outboard motor
+              </p>
+              <p className="text-lg text-gray-400">
+                Our comprehensive guide will help you make an informed decision based on your boat, 
+                usage, and performance needs.
+              </p>
+            </div>
           </div>
         </div>
       </section>

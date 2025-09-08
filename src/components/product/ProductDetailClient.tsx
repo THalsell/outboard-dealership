@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/lib/data/products';
@@ -21,6 +21,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
   const selectedVariant = product.variants[selectedVariantIndex];
   const price = selectedVariant?.price || 0;
@@ -33,6 +34,42 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     console.log('Product specs available:', Object.keys(product.specs || {}));
     console.log('Full specs object:', product.specs);
   }
+
+  // Fetch related products
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      try {
+        // Fetch products from the same brand or similar horsepower
+        const response = await fetch('/api/products?limit=8');
+        if (response.ok) {
+          const allProducts: Product[] = await response.json();
+          
+          // Filter out current product and get related ones
+          const filtered = allProducts
+            .filter(p => p.id !== product.id)
+            .sort((a, b) => {
+              // Priority: same brand, then similar horsepower
+              const aBrandMatch = a.brand === product.brand ? 1 : 0;
+              const bBrandMatch = b.brand === product.brand ? 1 : 0;
+              
+              if (aBrandMatch !== bBrandMatch) return bBrandMatch - aBrandMatch;
+              
+              // Then by horsepower similarity
+              const aHpDiff = Math.abs(a.horsepower - product.horsepower);
+              const bHpDiff = Math.abs(b.horsepower - product.horsepower);
+              return aHpDiff - bHpDiff;
+            })
+            .slice(0, 4); // Take first 4 results
+            
+          setRelatedProducts(filtered);
+        }
+      } catch (error) {
+        console.error('Failed to fetch related products:', error);
+      }
+    };
+    
+    fetchRelatedProducts();
+  }, [product.id, product.brand, product.horsepower]);
 
 
   const handleAddToCart = () => {
@@ -554,59 +591,51 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
           {/* Related Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {/* Related products based on same brand or similar HP */}
-            {[
-              {
-                title: `${product.brand} ${product.horsepower + 2.5} HP Outboard`,
-                price: Math.round(price * 1.3),
-                image: '/placeholder-motor.svg'
-              },
-              {
-                title: `${product.brand} ${Math.max(2.5, product.horsepower - 2.5)} HP Outboard`,
-                price: Math.round(price * 0.8),
-                image: '/placeholder-motor.svg'
-              },
-              {
-                title: `${product.horsepower} HP Propeller Package`,
-                price: Math.round(price * 0.2),
-                image: '/placeholder-motor.svg'
-              },
-              {
-                title: `${product.brand} Service Kit`,
-                price: Math.round(price * 0.15),
-                image: '/placeholder-motor.svg'
-              }
-            ].map((relatedItem, index) => (
-              <div key={index} className="p-6 hover:bg-gray-50 rounded-lg transition-all duration-200">
-                <div className="aspect-square bg-gray-50 rounded-lg mb-4 flex items-center justify-center">
-                  <Image
-                    src={relatedItem.image}
-                    alt={relatedItem.title}
-                    width={200}
-                    height={200}
-                    className="object-contain p-4"
-                  />
-                </div>
-                <h4 className="text-sm font-medium text-deep-blue mb-3 line-clamp-2 leading-tight">
-                  {relatedItem.title}
-                </h4>
-                <p className="text-lg font-bold text-deep-blue mb-4">
-                  ${relatedItem.price.toLocaleString()}
-                </p>
-                <button className="w-full bg-deep-blue hover:bg-[#0a3a6e] text-white text-sm font-medium py-3 px-4 rounded-lg transition-colors">
-                  View Details
-                </button>
+            {/* Related products from actual inventory */}
+            {relatedProducts.length > 0 ? (
+              relatedProducts.map((relatedProduct) => (
+                <Link 
+                  key={relatedProduct.id} 
+                  href={`/inventory/${relatedProduct.slug}`}
+                  className="p-6 hover:bg-gray-50 rounded-lg transition-all duration-200 block h-full flex flex-col"
+                >
+                  <div className="aspect-square bg-gray-50 rounded-lg mb-4 flex items-center justify-center">
+                    <Image
+                      src={relatedProduct.images[0]?.src || '/placeholder-motor.svg'}
+                      alt={relatedProduct.title}
+                      width={200}
+                      height={200}
+                      className="object-contain p-4"
+                    />
+                  </div>
+                  <h4 className="text-sm font-medium text-deep-blue mb-3 line-clamp-2 leading-tight flex-grow">
+                    {relatedProduct.title}
+                  </h4>
+                  <p className="text-lg font-bold text-deep-blue mb-4">
+                    ${relatedProduct.priceRange.min.toLocaleString()}
+                    {relatedProduct.priceRange.min !== relatedProduct.priceRange.max && 
+                      ` - $${relatedProduct.priceRange.max.toLocaleString()}`}
+                  </p>
+                  <div className="w-full bg-deep-blue hover:bg-[#0a3a6e] text-white text-sm font-medium py-3 px-4 transition-colors text-center mt-auto">
+                    View Details
+                  </div>
+                </Link>
+              ))
+            ) : (
+              // Fallback content while loading or if no related products
+              <div className="col-span-full text-center py-12">
+                <p className="text-gray-500">Loading related products...</p>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
 
       {/* Disclaimer */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-gray-100 border border-gray-300 rounded-lg p-6">
-          <h3 className="text-sm font-semibold text-gray-800 mb-2">Important Notice</h3>
-          <p className="text-sm text-gray-700 leading-relaxed">
+      <div className="py-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h3 className="text-xs font-semibold text-gray-800 mb-2">Important Notice</h3>
+          <p className="text-xs text-gray-700 leading-relaxed">
             <strong>Disclaimer:</strong> Images displayed on this site are for illustrative purposes only and may not accurately reflect the exact boat or outboard model available. Specifications, features, and configurations can vary. We strongly recommend reviewing all details with a member of our sales team to ensure clarity before purchase or deposit.
           </p>
         </div>
