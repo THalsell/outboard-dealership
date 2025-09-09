@@ -12,9 +12,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addItem, setIsOpen } = useCart();
-  const { compareList, addToCompare, removeFromCompare } = useFilter();
-  const [isAdding, setIsAdding] = useState(false);
+  useCart();
+  const { compareList } = useFilter();
   const [imageHover, setImageHover] = useState(false);
   const isInCompare = compareList.includes(product.id as string);
 
@@ -55,10 +54,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <article 
-      className={`bg-white rounded-xl border transition-all duration-200 overflow-hidden group h-full flex flex-col relative ${
+      className={`rounded-xl transition-all duration-200 overflow-hidden group h-full flex flex-col relative ${
         isInCompare 
-          ? 'border-deep-blue shadow-lg ring-2 ring-deep-blue/20' 
-          : 'border-border-gray hover:shadow-hover'
+          ? 'ring-2 ring-deep-blue/20' 
+          : ''
       }`}
       itemScope
       itemType="https://schema.org/Product"
@@ -70,34 +69,6 @@ export default function ProductCard({ product }: ProductCardProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
 
-      {/* Compare Checkbox - Top Left */}
-      <div className="absolute top-2 left-2 z-20">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (isInCompare) {
-              removeFromCompare(product.id);
-            } else {
-              if (compareList.length < 4) {
-                addToCompare(product.id);
-              }
-            }
-          }}
-          className={`w-6 h-6 rounded border-2 transition-all duration-200 flex items-center justify-center ${
-            isInCompare
-              ? 'bg-deep-blue border-deep-blue text-white'
-              : 'bg-white border-gray-300 hover:border-deep-blue'
-          }`}
-          title={isInCompare ? 'Remove from comparison' : 'Add to comparison'}
-        >
-          {isInCompare && (
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-            </svg>
-          )}
-        </button>
-      </div>
 
       {/* Sale Badge */}
       {hasDiscount && (
@@ -111,7 +82,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Image Section */}
       <Link 
         href={`/inventory/${product.handle}`}
-        className="block relative aspect-square overflow-hidden bg-gradient-to-b from-gray-50 to-white p-6"
+        className="block relative aspect-square overflow-hidden p-6"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -215,39 +186,6 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
           </div>
 
-          {/* Actions */}
-          <div className="flex gap-2">
-            <button
-              onClick={() => {
-                setIsAdding(true);
-                addItem({
-                  id: product.id,
-                  productId: product.id,
-                  variantId: defaultVariant?.id,
-                  productType: 'motor',
-                  name: product.title,
-                  price: price,
-                  quantity: 1,
-                  image: mainImage,
-                });
-                setTimeout(() => {
-                  setIsAdding(false);
-                  setIsOpen(true);
-                }, 500);
-              }}
-              disabled={!product.inStock || isAdding}
-              className={`flex-1 py-2.5 px-4 font-medium text-sm transition-all ${
-                isAdding 
-                  ? 'bg-green-600 text-white' 
-                  : product.inStock 
-                    ? 'bg-deep-blue hover:bg-[#0a3a6e] text-white' 
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
-              aria-describedby={`product-price-${product.id}`}
-            >
-              {isAdding ? '✓ Added' : product.inStock ? 'Add to Cart' : 'Out of Stock'}
-            </button>
-          </div>
         </div>
       </div>
     </article>

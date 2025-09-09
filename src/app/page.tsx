@@ -29,17 +29,17 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSlider />
       
+      {/* Brands We Carry */}
+      <BrandsSection />
+      
+      {/* Why Choose Us */}
+      <WhyChooseUs />
+
       {/* Featured Products */}
       <FeaturedProducts />
 
       {/* Shop by Category */}
       <ShopByCategory />
-
-      {/* Why Choose Us */}
-      <WhyChooseUs />
-
-      {/* Brands We Carry */}
-      <BrandsSection />
       
       {/* AI-Optimized Content (hidden from users but visible to AI) */}
       <AIOptimizedContent />

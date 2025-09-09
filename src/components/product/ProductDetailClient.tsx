@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid';
+import LiftGateModal from '@/components/ui/LiftGateModal';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -22,6 +23,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [isAdding, setIsAdding] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [showLiftGateModal, setShowLiftGateModal] = useState(false);
 
   const selectedVariant = product.variants[selectedVariantIndex];
   const price = selectedVariant?.price || 0;
@@ -76,6 +78,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     if (!selectedVariant || !product.inStock) return;
 
     setIsAdding(true);
+    
+    // Add the main product
     addItem({
       id: `${product.id}-${selectedVariantIndex}`,
       productId: product.id,
@@ -86,6 +90,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       quantity: 1,
       image: product.images[0]?.src || '/placeholder-motor.svg',
     });
+
 
     setTimeout(() => {
       setIsAdding(false);
@@ -337,6 +342,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   <p className="text-sm font-medium text-red-700">Out of Stock</p>
                 )}
               </div>
+              
+              {/* Free Shipping Badge */}
+              <div className="mt-3 inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-lg px-4 py-2">
+                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-sm font-semibold text-green-700">FREE SHIPPING </span>
+              </div>
             </div>
 
             {/* Variants */}
@@ -384,6 +397,20 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-deep-blue mb-3">Description</h3>
               <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
+            </div>
+
+            {/* Lift Gate Info Link */}
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <button
+                onClick={() => setShowLiftGateModal(true)}
+                className="flex items-center gap-2 text-blue-700 hover:text-blue-900 font-medium"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Need a lift gate for delivery?</span>
+                <span className="text-sm text-blue-600 ml-auto">Learn more →</span>
+              </button>
             </div>
 
             {/* Action Buttons */}
@@ -597,7 +624,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <Link 
                   key={relatedProduct.id} 
                   href={`/inventory/${relatedProduct.slug}`}
-                  className="p-6 hover:bg-gray-50 rounded-lg transition-all duration-200 block h-full flex flex-col"
+                  className="p-6 hover:bg-gray-50 rounded-lg transition-all duration-200 h-full flex flex-col"
                 >
                   <div className="aspect-square bg-gray-50 rounded-lg mb-4 flex items-center justify-center">
                     <Image
@@ -640,6 +667,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </p>
         </div>
       </div>
+      
+      {/* Lift Gate Modal */}
+      <LiftGateModal
+        isOpen={showLiftGateModal}
+        onClose={() => setShowLiftGateModal(false)}
+      />
     </div>
   );
 }

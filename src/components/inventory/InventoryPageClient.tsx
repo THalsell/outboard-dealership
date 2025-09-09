@@ -14,6 +14,7 @@ interface URLFilters {
   brand?: string;
   condition?: string;
   status?: string;
+  powerCategory?: string;
 }
 
 export default function InventoryPageClient() {
@@ -32,6 +33,7 @@ export default function InventoryPageClient() {
     brand: searchParams.get('brand') || undefined,
     condition: searchParams.get('condition') || undefined,
     status: searchParams.get('status') || undefined,
+    powerCategory: searchParams.get('powerCategory') || undefined,
   };
 
   // Prevent background scroll when mobile filters are open
@@ -133,6 +135,24 @@ export default function InventoryPageClient() {
         updateFilter('onSaleOnly', true);
       }
     }
+
+    // Process powerCategory parameter
+    if (urlFilters.powerCategory) {
+      hasFilters = true;
+      // Map power category to horsepower ranges
+      const categoryRanges: Record<string, { min: number; max: number }> = {
+        'portable': { min: 0, max: 30 },
+        'mid-range': { min: 31, max: 100 },
+        'high-performance': { min: 101, max: 200 },
+        'commercial': { min: 201, max: 1000 }
+      };
+      
+      const range = categoryRanges[urlFilters.powerCategory];
+      if (range) {
+        updateFilter('minHorsepower', range.min);
+        updateFilter('maxHorsepower', range.max);
+      }
+    }
     
     // Mark URL filters as applied if we had any
     if (hasFilters) {
@@ -145,6 +165,7 @@ export default function InventoryPageClient() {
     urlFilters.condition,
     urlFilters.hp,
     urlFilters.status,
+    urlFilters.powerCategory,
     urlFiltersApplied
   ]); // Include all necessary dependencies
 

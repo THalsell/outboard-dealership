@@ -17,7 +17,7 @@ export interface CartItem {
   id: string;
   productId: string;
   variantId?: string;
-  productType: 'motor';
+  productType: 'motor' | 'service' | 'part';
   name: string;        
   quantity: number;
   price: number;

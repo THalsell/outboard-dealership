@@ -6,6 +6,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 text-white mt-auto font-body">
+      
       <div className="container mx-auto px-4 py-12">
         {/* Newsletter Section */}
         <div className="mb-12">

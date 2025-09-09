@@ -97,6 +97,8 @@ export default function InventoryHeader({
 
   return (
     <div className="mb-8">
+      
+      
       {/* Main Heading */}
       <div className="mb-6">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-charcoal uppercase tracking-wide">
