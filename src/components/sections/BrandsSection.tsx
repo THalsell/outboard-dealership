@@ -5,10 +5,10 @@ export default function BrandsSection() {
   const brands = [
     { name: "Honda", hasLogo: true, logo: "/hondaLogo.png" },
     { name: "Yamaha", hasLogo: true, logo: "/yamahaLogo.png" },
-    { name: "Mercury", hasLogo: true, logo: "/mercuryLogo.png" },
-    { name: "Freedom", hasLogo: true, logo: "/freedomLogo.png" },
+    { name: "Mercury", hasLogo: true, logo: "/Mercurylogo.png" },
+    { name: "Freedom", hasLogo: true, logo: "/FreedomLogo.png" },
     { name: "Suzuki", hasLogo: true, logo: "/suzukiLogo.png" },
-    { name: "Tohatsu", hasLogo: true, logo: "/tohatsuLogo.png" }
+    { name: "Tohatsu", hasLogo: true, logo: "/TohatsuLogo.png" }
   ];
 
   return (
