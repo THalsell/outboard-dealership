@@ -20,22 +20,22 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
     <div className="relative w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-3 bg-slate-700 border border-slate-600 rounded-lg text-left text-white hover:bg-slate-600 transition-colors flex justify-between items-center"
+        className="w-full p-4 bg-white border-2 border-gray-300 rounded-lg text-left text-gray-800 hover:bg-gray-50 hover:border-blue-400 transition-all flex justify-between items-center shadow-sm"
       >
-        <span className={selectedProduct ? 'text-white' : 'text-gray-400'}>
+        <span className={selectedProduct ? 'text-gray-800 font-medium' : 'text-gray-500'}>
           {selectedProduct ? `${selectedProduct.brand} ${selectedProduct.title} - ${selectedProduct.horsepower}HP` : placeholder}
         </span>
         <span className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
       </button>
       
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-slate-700 border border-slate-600 rounded-lg shadow-2xl z-50 max-h-60 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-300 rounded-lg shadow-xl z-50 max-h-72 overflow-y-auto">
           <button
             onClick={() => {
               onSelect(null);
               setIsOpen(false);
             }}
-            className="w-full p-3 text-left text-gray-400 hover:bg-slate-600 transition-colors border-b border-slate-600"
+            className="w-full p-4 text-left text-gray-500 hover:bg-gray-50 transition-colors border-b border-gray-200"
           >
             {placeholder}
           </button>
@@ -46,10 +46,10 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
                 onSelect(product);
                 setIsOpen(false);
               }}
-              className="w-full p-3 text-left text-white hover:bg-slate-600 transition-colors border-b border-slate-600 last:border-b-0"
+              className="w-full p-4 text-left text-gray-800 hover:bg-blue-50 transition-colors border-b border-gray-200 last:border-b-0"
             >
-              <div className="font-medium">{product.brand} {product.title}</div>
-              <div className="text-sm text-gray-300">{product.horsepower}HP • ${product.variants[0]?.price?.toLocaleString()}</div>
+              <div className="font-semibold text-gray-900">{product.brand} {product.title}</div>
+              <div className="text-sm text-gray-600 mt-1">{product.horsepower}HP • ${product.variants[0]?.price?.toLocaleString()}</div>
             </button>
           ))}
         </div>
@@ -141,7 +141,7 @@ export default function ComparePage() {
   ];
 
   if (loading) {
-    return <div className="min-h-screen bg-slate-800 p-6"><div className="text-white text-center py-16">Loading...</div></div>;
+    return <div className="min-h-screen bg-gray-50 p-6"><div className="text-gray-800 text-center py-16 text-lg">Loading...</div></div>;
   }
 
   const availableProducts = allProducts.filter(product => 
@@ -149,19 +149,19 @@ export default function ComparePage() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-800">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">Engine Comparison</h1>
-          <p className="text-gray-300 mb-6 sm:mb-8 text-sm sm:text-base">Select up to 3 engines to compare specifications side-by-side</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">Engine Comparison</h1>
+          <p className="text-gray-600 mb-6 sm:mb-8 text-base sm:text-lg">Select up to 3 engines to compare specifications side-by-side</p>
         </div>
 
         {/* Product Selection Section - responsive */}
         {selectedProducts.every(product => product === null) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
             {selectedProducts.map((product, index) => (
-              <div key={index} className="bg-slate-700 rounded-lg p-4 sm:p-6">
+              <div key={index} className="bg-white rounded-lg p-6 sm:p-8 shadow-lg border border-gray-200">
                 <div className="text-center py-8 sm:py-12">
                   <ProductDropdown
                     products={availableProducts}
@@ -178,13 +178,13 @@ export default function ComparePage() {
         {/* Mobile Card-Based Comparison - visible only on small screens */}
         {selectedProducts.some(product => product !== null) && (
           <div className="block lg:hidden mb-8">
-            <div className="bg-slate-700 rounded-lg p-4">
-              <h2 className="text-xl font-bold text-white text-center mb-6">Compare Engines</h2>
+            <div className="bg-white rounded-lg p-6 shadow-lg border border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">Compare Engines</h2>
               
               {/* Mobile Product Selection */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {selectedProducts.slice(0, 2).map((product, index) => (
-                  <div key={index} className="bg-slate-600 rounded-lg p-4">
+                  <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                     {product ? (
                       <div className="text-center">
                         <div className="relative w-24 h-20 mx-auto mb-3">
@@ -196,15 +196,15 @@ export default function ComparePage() {
                             unoptimized
                           />
                         </div>
-                        <h3 className="font-bold text-white text-sm mb-1">{product.brand}</h3>
-                        <p className="text-white text-xs mb-1">{product.title}</p>
-                        <p className="text-gray-300 text-xs mb-1">{product.horsepower}HP</p>
-                        <p className="text-blue-400 font-bold text-sm mb-2">
+                        <h3 className="font-bold text-gray-900 text-base mb-1">{product.brand}</h3>
+                        <p className="text-gray-700 text-sm mb-1">{product.title}</p>
+                        <p className="text-gray-600 text-sm mb-1">{product.horsepower}HP</p>
+                        <p className="text-blue-600 font-bold text-lg mb-2">
                           ${product.variants[0]?.price?.toLocaleString() || 'N/A'}
                         </p>
                         <Link
                           href={`/inventory/${product.handle}`}
-                          className="text-blue-400 hover:text-blue-300 text-xs underline hover:no-underline transition-colors"
+                          className="text-blue-600 hover:text-blue-700 text-sm font-medium underline hover:no-underline transition-colors"
                         >
                           View Details →
                         </Link>
@@ -243,12 +243,12 @@ export default function ComparePage() {
                   if (!hasValues) return null;
                   
                   return (
-                    <div key={spec} className="bg-slate-600 rounded p-3">
-                      <h4 className="text-blue-400 font-semibold text-sm mb-2 text-center">{spec}</h4>
+                    <div key={spec} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                      <h4 className="text-blue-700 font-bold text-base mb-3 text-center">{spec}</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {selectedProducts.slice(0, 2).map((product, index) => (
                           <div key={index} className="text-center">
-                            <span className="text-white text-sm">
+                            <span className="text-gray-800 text-base font-medium">
                               {product ? (getSpecValue(product, spec) || '-') : '-'}
                             </span>
                           </div>
@@ -264,22 +264,22 @@ export default function ComparePage() {
 
         {/* Desktop Comparison Table - hidden on mobile */}
         {selectedProducts.some(product => product !== null) && (
-          <div className="hidden lg:block bg-slate-700 rounded-lg overflow-hidden">
-            <div className="bg-slate-800 px-6 py-4">
-              <h2 className="text-xl font-bold text-white text-center">Detailed Specifications</h2>
+          <div className="hidden lg:block bg-white rounded-lg overflow-hidden shadow-xl border border-gray-200">
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-5">
+              <h2 className="text-2xl font-bold text-white text-center">Detailed Specifications</h2>
             </div>
             
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-slate-800">
-                    <th className="text-left p-4 font-semibold text-white min-w-[200px] sticky left-0 bg-slate-800 z-10">
+                  <tr className="bg-gray-100">
+                    <th className="text-left p-4 font-semibold text-gray-800 text-base min-w-[200px] sticky left-0 bg-gray-100 z-10 border-b-2 border-gray-300">
                       
                     </th>
                     {selectedProducts.map((product, index) => (
                       <th key={index} className="p-4 text-center min-w-[250px]">
                         {product ? (
-                          <div className="bg-slate-700 rounded-lg p-4">
+                          <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
                             <div className="relative w-32 h-24 mx-auto mb-3">
                               <Image
                                 src={product.images[0]?.src || '/placeholder-motor.svg'}
@@ -289,20 +289,20 @@ export default function ComparePage() {
                                 unoptimized
                               />
                             </div>
-                            <h3 className="font-bold text-white text-lg mb-2">{product.brand} {product.title}</h3>
-                            <p className="text-gray-300 mb-2">{product.horsepower}HP</p>
-                            <p className="text-blue-400 font-bold text-lg">
+                            <h3 className="font-bold text-gray-900 text-xl mb-2">{product.brand} {product.title}</h3>
+                            <p className="text-gray-600 text-lg mb-2">{product.horsepower}HP</p>
+                            <p className="text-blue-600 font-bold text-xl">
                               ${product.variants[0]?.price?.toLocaleString() || 'N/A'}
                             </p>
                             <Link
                               href={`/inventory/${product.handle}`}
-                              className="inline-block mt-2 text-blue-400 hover:text-blue-300 text-sm underline hover:no-underline transition-colors"
+                              className="inline-block mt-3 text-blue-600 hover:text-blue-700 text-base font-medium underline hover:no-underline transition-colors"
                             >
                               View Details →
                             </Link>
                           </div>
                         ) : (
-                          <div className="bg-slate-700 rounded-lg p-6">
+                          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                             <div className="text-center">
                               <ProductDropdown
                                 products={availableProducts}
@@ -316,12 +316,12 @@ export default function ComparePage() {
                       </th>
                     ))}
                   </tr>
-                  <tr className="bg-slate-800">
-                    <th className="text-left p-4 font-semibold text-white min-w-[200px] sticky left-0 bg-slate-800 z-10">
+                  <tr className="bg-gray-100">
+                    <th className="text-left p-4 font-semibold text-gray-800 text-base min-w-[200px] sticky left-0 bg-gray-100 z-10 border-b-2 border-gray-300">
                       
                     </th>
                     {selectedProducts.map((product, index) => (
-                      <th key={index} className="p-4 text-center font-semibold text-white min-w-[200px]">
+                      <th key={index} className="p-4 text-center font-semibold text-gray-800 text-base min-w-[200px]">
                         
                       </th>
                     ))}
@@ -330,18 +330,18 @@ export default function ComparePage() {
                 <tbody>
                   {specCategories.map((category) => (
                     <React.Fragment key={category.title}>
-                      <tr className="bg-slate-800">
-                        <td colSpan={4} className="p-4 font-bold text-white text-lg text-center">
+                      <tr className="bg-blue-50">
+                        <td colSpan={4} className="p-5 font-bold text-gray-900 text-xl text-center border-y-2 border-blue-200">
                           {category.title}
                         </td>
                       </tr>
                       {category.specs.map((spec, specIndex) => (
-                        <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
-                          <td className="p-4 font-medium text-gray-300 sticky left-0 bg-inherit z-10">
+                        <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-blue-50 transition-colors`}>
+                          <td className="p-4 font-semibold text-gray-700 text-base sticky left-0 bg-inherit z-10 border-r border-gray-200">
                             {spec}
                           </td>
                           {selectedProducts.map((product, index) => (
-                            <td key={index} className="p-4 text-center text-white">
+                            <td key={index} className="p-4 text-center text-gray-800 text-base font-medium">
                               {product ? (getSpecValue(product, spec) || '-') : '-'}
                             </td>
                           ))}
@@ -353,20 +353,20 @@ export default function ComparePage() {
                   {/* Features from tags */}
                   {selectedProducts.some(p => p?.tags && p.tags.length > 0) && (
                     <React.Fragment>
-                      <tr className="bg-slate-800">
-                        <td colSpan={4} className="p-4 font-bold text-white text-lg text-center">
+                      <tr className="bg-blue-50">
+                        <td colSpan={4} className="p-5 font-bold text-gray-900 text-xl text-center border-y-2 border-blue-200">
                           Additional Features
                         </td>
                       </tr>
                       {(() => {
                         const maxTags = Math.max(...selectedProducts.map(p => p?.tags?.length || 0));
                         return Array.from({ length: maxTags }, (_, i) => (
-                          <tr key={`feature-${i}`} className={`${i % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
-                            <td className="p-4 font-medium text-gray-300 sticky left-0 bg-inherit z-10">
+                          <tr key={`feature-${i}`} className={`${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'} hover:bg-blue-50 transition-colors`}>
+                            <td className="p-4 font-semibold text-gray-700 text-base sticky left-0 bg-inherit z-10 border-r border-gray-200">
                               Feature {i + 1}
                             </td>
                             {selectedProducts.map((product, index) => (
-                              <td key={index} className="p-4 text-center text-white">
+                              <td key={index} className="p-4 text-center text-gray-800 text-base font-medium">
                                 {product?.tags?.[i] || '-'}
                               </td>
                             ))}
@@ -385,19 +385,19 @@ export default function ComparePage() {
         <div className="flex flex-col sm:flex-row justify-center items-center mt-12 gap-8 sm:gap-12">
           <button
             onClick={() => window.print()}
-            className="text-white hover:text-gray-300 font-semibold transition-colors"
+            className="text-blue-600 hover:text-blue-700 font-semibold transition-colors text-lg"
           >
             Print Comparison
           </button>
           <button
             onClick={() => setSelectedProducts([null, null, null])}
-            className="text-white hover:text-gray-300 font-semibold transition-colors"
+            className="text-red-600 hover:text-red-700 font-semibold transition-colors text-lg"
           >
             Clear All
           </button>
           <Link 
             href="/inventory"
-            className="text-white hover:text-gray-300 font-semibold transition-colors"
+            className="text-gray-700 hover:text-gray-900 font-semibold transition-colors text-lg"
           >
             ← Back to Inventory
           </Link>

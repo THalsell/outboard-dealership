@@ -137,7 +137,7 @@ export default function CartDrawer() {
                               ${item.price.toLocaleString()} each
                             </p>
                             {item.productType === 'motor' && (
-                              <p className="text-xs text-green-600 mt-1">✓ Free Shipping</p>
+                              <p className="text-xs text-green-600 mt-1">✓ Free Shipping (Lower 48)</p>
                             )}
                           </div>
                         </div>

@@ -14,13 +14,15 @@ interface InventoryHeaderProps {
   onShowMobileFilters: () => void;
   loading?: boolean;
   urlFilters?: URLFilters;
+  onClearAllFilters?: () => void;
 }
 
 export default function InventoryHeader({ 
   totalResults, 
   onShowMobileFilters, 
   loading = false,
-  urlFilters 
+  urlFilters,
+  onClearAllFilters
 }: InventoryHeaderProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
 
@@ -233,7 +235,7 @@ export default function InventoryHeader({
 
           {/* Clear all button */}
           <button
-            onClick={resetFilters}
+            onClick={onClearAllFilters || resetFilters}
             className="text-sm text-deep-blue hover:text-deep-blue/80 font-medium underline"
           >
             Clear all

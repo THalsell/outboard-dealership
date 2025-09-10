@@ -5,8 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
-import { ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid';
+import { StarIcon } from '@heroicons/react/20/solid';
 import LiftGateModal from '@/components/ui/LiftGateModal';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -171,30 +172,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
            '';
   };
 
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Inventory', href: '/inventory' },
+    { label: product.title }
+  ];
+
   return (
     <div className="bg-white min-h-screen">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="bg-white border-b border-gray-200">
-        <ol role="list" className="mx-auto flex max-w-7xl items-center space-x-2 px-4 py-4 sm:px-6 lg:px-8">
-          <li>
-            <div className="flex items-center">
-              <Link href="/" className="text-sm font-medium text-gray-600 hover:text-deep-blue transition-colors">
-                Home
-              </Link>
-              <ChevronRightIcon className="h-4 w-4 text-gray-400 mx-2" />
-            </div>
-          </li>
-          <li>
-            <div className="flex items-center">
-              <Link href="/inventory" className="text-sm font-medium text-gray-600 hover:text-deep-blue transition-colors">
-                Inventory
-              </Link>
-              <ChevronRightIcon className="h-4 w-4 text-gray-400 mx-2" />
-            </div>
-          </li>
-          <li className="text-sm font-medium text-deep-blue">{product.title}</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={breadcrumbItems} />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-32 lg:items-start">
@@ -348,7 +335,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span className="text-sm font-semibold text-green-700">FREE SHIPPING </span>
+                <span className="text-sm font-semibold text-green-700">FREE SHIPPING to Lower 48 States</span>
               </div>
             </div>
 

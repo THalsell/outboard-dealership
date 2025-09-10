@@ -20,12 +20,12 @@ export default function HeroSlider() {
       
       {/* Centered Free Shipping Message */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center text-white">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-wide drop-shadow-2xl">
-            FREE SHIPPING
+        <div className="text-center text-white px-4 max-w-5xl">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-wide drop-shadow-2xl">
+            Free Shipping on Outboard Motors
           </h1>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-semibold mt-4 tracking-wide drop-shadow-lg">
-            on ALL Outboard Motors!
+          <p className="text-xl md:text-2xl lg:text-3xl font-semibold mt-6 tracking-wide drop-shadow-lg">
+            We ship from our dealership in Tennessee and we pay the freight to the lower 48 states!
           </p>
         </div>
       </div>

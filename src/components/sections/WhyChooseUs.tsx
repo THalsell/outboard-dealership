@@ -53,7 +53,7 @@ export default function WhyChooseUs() {
                     <h3 className="text-2xl md:text-4xl lg:text-6xl font-bold">Free Shipping</h3>
                     <div className="w-20 md:w-32 lg:w-40 h-px bg-white/30"></div>
                   </div>
-                  <p className="text-sm md:text-base lg:text-xl font-light">Enjoy free delivery on every outboard motor purchase</p>
+                  <p className="text-sm md:text-base lg:text-xl font-light">Free delivery to the Lower 48 States on every outboard motor</p>
                 </li>
               </ul>
             </div>

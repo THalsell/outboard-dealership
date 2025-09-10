@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'About Us | Outboard Motor Sales',
@@ -7,22 +7,15 @@ export const metadata = {
 };
 
 export default function AboutPage() {
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: 'About' }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="bg-white border-b border-gray-200">
-        <ol role="list" className="mx-auto flex max-w-7xl items-center space-x-2 px-4 py-4 sm:px-6 lg:px-8">
-          <li>
-            <div className="flex items-center">
-              <Link href="/" className="text-sm font-medium text-gray-600 hover:text-deep-blue transition-colors">
-                Home
-              </Link>
-              <ChevronRightIcon className="h-4 w-4 text-gray-400 mx-2" />
-            </div>
-          </li>
-          <li className="text-sm font-medium text-deep-blue">About</li>
-        </ol>
-      </nav>
+      <Breadcrumb items={breadcrumbItems} />
 
       <div className="container mx-auto px-4 py-12">
         <div className="text-center">

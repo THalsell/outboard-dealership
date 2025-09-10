@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 
 interface FAQ {
@@ -100,28 +100,18 @@ export default function FAQsPage() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: 'FAQs' }
+  ];
+
   return (
     <div className="min-h-screen bg-slate-800">
+      {/* Breadcrumb - using standard component which will have white background */}
+      <Breadcrumb items={breadcrumbItems} />
+      
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          {/* Breadcrumb */}
-          <nav className="mb-8">
-            <ol className="flex items-center space-x-2 text-sm">
-              <li>
-                <Link href="/" className="text-gray-400 hover:text-white transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </li>
-              <li>
-                <span className="text-white font-medium">FAQs</span>
-              </li>
-            </ol>
-          </nav>
 
           {/* Header */}
           <div className="text-center mb-16">

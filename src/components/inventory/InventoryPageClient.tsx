@@ -3,11 +3,12 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useFilter } from '@/contexts/FilterContext';
 import { Product } from '@/lib/data/products';
-import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import FilterSidebar from './FilterSidebar';
 import InventoryGrid from './InventoryGrid';
 import InventoryHeader from './InventoryHeader';
+import BrandPromotionsBanner from './BrandPromotionsBanner';
+import Breadcrumb from '@/components/ui/Breadcrumb';
 
 interface URLFilters {
   hp?: string;
@@ -26,6 +27,13 @@ export default function InventoryPageClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [urlFiltersApplied, setUrlFiltersApplied] = useState(false);
+  
+  // Clear URL parameters when filters are reset
+  const handleResetFilters = () => {
+    resetFilters();
+    // Clear URL parameters
+    router.push('/inventory');
+  };
 
   // Get URL parameters for filtering
   const urlFilters: URLFilters = {
@@ -756,21 +764,13 @@ export default function InventoryPageClient() {
       )}
 
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-3">
-          <nav className="flex items-center text-sm">
-            <Link 
-              href="/" 
-              className="text-gray-600 hover:text-deep-blue"
-              onClick={resetFilters}
-            >
-              Home
-            </Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-900 font-medium">Outboard Motors</span>
-          </nav>
-        </div>
-      </div>
+      <Breadcrumb 
+        items={[
+          { label: 'Home', href: '/', onClick: handleResetFilters },
+          { label: 'Outboard Motors' },
+          ...(filters.brands.length === 1 ? [{ label: filters.brands[0] }] : [])
+        ]}
+      />
 
       <div className="container mx-auto px-4 py-6">
         <div className="flex gap-6">
@@ -787,19 +787,25 @@ export default function InventoryPageClient() {
 
           {/* Main Content */}
           <main className="flex-1">
+            {/* Promotion Card - appears at the top when single brand selected */}
+            {filters.brands.length === 1 && (
+              <BrandPromotionsBanner brand={filters.brands[0]} />
+            )}
+
             {/* Header with controls */}
             <InventoryHeader
               totalResults={totalResults}
               onShowMobileFilters={() => setShowMobileFilters(true)}
               loading={loading}
               urlFilters={urlFilters}
+              onClearAllFilters={handleResetFilters}
             />
 
             {/* Grid Content */}
             <InventoryGrid
               products={paginatedProducts}
               loading={loading}
-              onClearFilters={resetFilters}
+              onClearFilters={handleResetFilters}
             />
 
             {/* Pagination */}
