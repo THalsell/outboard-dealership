@@ -153,14 +153,23 @@ export default function ComparePage() {
     <div 
       className="min-h-screen relative"
       style={{
-        background: 'url(https://assets.basspro.com/image/upload/c_scale,f_auto,q_auto,w_3840/v1705683128/DigitalCreative/2024/Sitelets/Outboard-Motors/OMBackground.png) no-repeat top center/cover'
+        background: '#1e293b'
       }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/20"></div>
+      {/* Fixed background layer */}
+      <div 
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/background.png)',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+          backgroundSize: 'cover',
+          backgroundColor: '#1e293b'
+        }}
+      ></div>
       
       {/* Content wrapper */}
-      <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="relative z-20 w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">Engine Comparison</h1>

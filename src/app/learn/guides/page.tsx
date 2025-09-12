@@ -18,14 +18,23 @@ export default function BuyingGuidePage() {
       <div 
         className="min-h-screen relative"
         style={{
-          background: 'url(https://assets.basspro.com/image/upload/c_scale,f_auto,q_auto,w_3840/v1705683128/DigitalCreative/2024/Sitelets/Outboard-Motors/OMBackground.png) no-repeat top center/cover'
+          background: '#1e293b'
         }}
       >
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
+        {/* Fixed background layer */}
+        <div 
+          className="fixed inset-0 z-0"
+          style={{
+            backgroundImage: 'url(/background.png)',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center center',
+            backgroundSize: 'cover',
+            backgroundColor: '#1e293b'
+          }}
+        ></div>
         
         {/* Content wrapper */}
-        <div className="relative z-10">
+        <div className="relative z-20">
 
         <div className="mb-8 w-full relative h-24 md:h-32 lg:h-80">
               <Image

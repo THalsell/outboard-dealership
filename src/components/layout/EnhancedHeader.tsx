@@ -130,7 +130,7 @@ export default function EnhancedHeader() {
   }, [lastScrollY, pathname]);
   return (
     <>
-      <header className="bg-gray-900 shadow-md">
+      <header className="bg-gray-900 shadow-md relative z-50">
         {/* Main Navigation */}
         <nav className="container mx-auto px-4 py-3">
           <div className="flex justify-between items-center">
