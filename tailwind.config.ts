@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
 
 const config: Config = {
   content: [
@@ -7,11 +8,18 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'desktop-900': '900px',  // Custom breakpoint
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
     extend: {
       colors: {
         // Custom brand colors (actively used)
         'deep-blue': '#0e4c92',
-        'teal': '#00a8a8',
         'light-gray': '#f8fafc',
         'charcoal': '#1e293b',
         'professional-gray': '#64748b',
@@ -19,6 +27,7 @@ const config: Config = {
         'text-blue': '#1d293d',
       },
       fontFamily: {
+        'londrina': ['Londrina Solid', 'sans-serif'],
         'bebas-neue': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
         'roboto': ['var(--font-roboto)', 'system-ui', 'sans-serif'],
         'heading': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
@@ -86,7 +95,103 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function({ addBase, addComponents, theme }) {      
+      addBase({
+        /* Global Styles */
+        'html': {
+          'scroll-behavior': 'smooth',
+          'scroll-padding-top': '120px',
+        },
+        
+        /* Headings */
+        'h1, h2, h3, h4, h5, h6': {
+          fontFamily: 'var(--font-bebas-neue), Arial, sans-serif',
+          fontWeight: '400',
+          textTransform: 'uppercase',
+          letterSpacing: '2px',
+          lineHeight: '1.2',
+        },
+        
+        /* Scrollbar */
+        '::-webkit-scrollbar': {
+          width: '8px',
+        },
+        '::-webkit-scrollbar-track': {
+          backgroundColor: theme('colors.light-gray'),
+        },
+        '::-webkit-scrollbar-thumb': {
+          backgroundColor: theme('colors.charcoal'),
+          borderRadius: theme('borderRadius.DEFAULT'),
+        },
+        '::-webkit-scrollbar-thumb:hover': {
+          backgroundColor: theme('colors.deep-blue'),
+        },
+        
+        /* Focus styles */
+        '*:focus-visible': {
+          outline: `2px solid ${theme('colors.deep-blue')}`,
+          outlineOffset: '2px',
+        },
+        
+        /* Interactive elements */
+        'button, [role="button"], input[type="submit"], input[type="button"], a, label, select, [role="tab"], [role="menuitem"], [aria-expanded]': {
+          cursor: 'pointer',
+          transition: 'all 0.2s ease-in-out',
+        },
+        
+        /* Disabled states */
+        'button:disabled, [role="button"]:disabled, input[type="submit"]:disabled, input[type="button"]:disabled': {
+          opacity: '0.5',
+          cursor: 'not-allowed',
+        },
+        
+        /* Clickable elements */
+        '[onclick], [data-clickable="true"]': {
+          cursor: 'pointer',
+        },
+      })
+      
+      addComponents({
+        /* Typography Classes */
+        '.font-heading': {
+          fontFamily: 'var(--font-bebas-neue), Arial, sans-serif',
+          fontWeight: '400',
+          textTransform: 'uppercase',
+          letterSpacing: '2px',
+        },
+        
+        '.font-body': {
+          fontFamily: 'var(--font-roboto), system-ui, sans-serif',
+          fontWeight: '400',
+        },
+        
+        '.font-ui': {
+          fontFamily: 'var(--font-roboto), system-ui, sans-serif',
+          fontWeight: '500',
+        },
+        
+        /* Navigation and UI elements */
+        'nav, button, .btn, [role="button"]': {
+          fontFamily: 'var(--font-roboto), system-ui, sans-serif',
+          fontWeight: '500',
+        },
+        
+        /* Product cards, pricing, and filters */
+        '.product-card, .price, .filter-section': {
+          fontFamily: 'var(--font-roboto), system-ui, sans-serif',
+        },
+        
+        /* Footer override */
+        'footer': {
+          fontFamily: 'var(--font-roboto), system-ui, sans-serif !important',
+          textTransform: 'none !important',
+          letterSpacing: 'normal !important',
+        },
+      })
+    }),
+  ],
 }
+
 
 export default config

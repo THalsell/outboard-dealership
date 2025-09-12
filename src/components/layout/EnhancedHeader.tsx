@@ -1,18 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
-import TopBanner from './TopBanner';
+import { usePathname } from 'next/navigation';
 
 export default function EnhancedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdowns, setMobileDropdowns] = useState<string[]>([]);
   const [mobileNestedDropdowns, setMobileNestedDropdowns] = useState<string[]>([]);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const pathname = usePathname();
 
   const navigation = [
+    {
+      name: 'Home',
+      href: '/'
+    },
     {
       name: 'Outboard Motors',
       href: '#',
@@ -101,50 +106,63 @@ export default function EnhancedHeader() {
     };
   }, []);
 
+  // Scroll detection logic - only applies to non-home pages
+  // Scroll detection logic - only applies to non-home pages
+  useEffect(() => {
+    if (pathname === '/') {
+      return;
+    }
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Hide mobile menu when scrolling down (after 50px threshold)
+      if (currentScrollY > 50 && currentScrollY > lastScrollY) {
+        setMobileMenuOpen(false); // Close mobile menu when hiding
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, pathname]);
   return (
     <>
-      <header className="bg-white shadow-md sticky top-0 z-50">
-        <TopBanner />
-
-        {/* Logo Section with Mobile Menu */}
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Hamburger Menu - Left side on mobile */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none text-text-blue"
-            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            aria-expanded={mobileMenuOpen}
-            aria-controls="mobile-menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {mobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
-          </button>
-
-          {/* Logo - Center */}
-          <Link href="/" className="flex-1 flex justify-center lg:justify-center">
-            <Image
-              src="/logo.png"
-              alt="Outboard Motor Sales Logo"
-              width={500}
-              height={150}
-              className="w-[400px] h-16 sm:w-[600px] lg:w-[700px] sm:h-20 object-contain"
-            />
-          </Link>
-
-          {/* Spacer for balance on mobile */}
-          <div className="lg:hidden w-10"></div>
-        </div>
-
+      <header className="bg-gray-900 shadow-md">
         {/* Main Navigation */}
-        <nav className="container mx-auto px-4">
-          <div className="flex justify-center items-center py-2">
+        <nav className="container mx-auto px-4 py-3">
+          <div className="flex justify-between items-center">
+            {/* Hamburger Menu for Mobile */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="desktop-900:hidden p-2 hover:bg-white/10 rounded-lg transition-colors focus:outline-none text-white"
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+
+            {/* Site Title/Logo for non-home pages - Mobile */}
+            {pathname !== '/' && (
+              <Link 
+                href="/" 
+                className="desktop-900:hidden text-xl font-bold text-white font-londrina"
+              >
+                OMS
+              </Link>
+            )}
+
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-6">
+            <div className="hidden desktop-900:flex items-center gap-6 mx-auto">
               {navigation.map((item) => (
                 <div
                   key={item.name}
@@ -154,7 +172,7 @@ export default function EnhancedHeader() {
                 >
                   {item.href === '#' ? (
                     <span
-                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1 cursor-pointer text-lg"
+                      className="text-white font-medium py-2 flex items-center gap-1 cursor-pointer text-lg"
                     >
                       {item.name}
                       {item.dropdown && (
@@ -166,7 +184,7 @@ export default function EnhancedHeader() {
                   ) : (
                     <Link
                       href={item.href}
-                      className="text-gray-700 hover:text-gray-900 font-medium transition-colors py-2 flex items-center gap-1 text-lg"
+                      className="text-white font-medium py-2 flex items-center gap-1 text-lg"
                     >
                       {item.name}
                       {item.dropdown && (
@@ -255,7 +273,7 @@ export default function EnhancedHeader() {
           {mobileMenuOpen && (
             <div 
               id="mobile-menu" 
-              className="lg:hidden py-4 border-t"
+              className="desktop-900:hidden py-4 border-t"
               role="navigation"
               aria-label="Mobile navigation"
             >

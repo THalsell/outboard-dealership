@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Breadcrumb from '@/components/ui/Breadcrumb';
 
 
 interface FAQ {
@@ -100,33 +99,36 @@ export default function FAQsPage() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const breadcrumbItems = [
-    { label: 'Home', href: '/' },
-    { label: 'FAQs' }
-  ];
-
   return (
-    <div className="min-h-screen bg-slate-800">
-      {/* Breadcrumb - using standard component which will have white background */}
-      <Breadcrumb items={breadcrumbItems} />
+    <div 
+      className="min-h-screen relative"
+      style={{
+        background: 'url(https://assets.basspro.com/image/upload/c_scale,f_auto,q_auto,w_3840/v1705683128/DigitalCreative/2024/Sitelets/Outboard-Motors/OMBackground.png) no-repeat top center/cover'
+      }}
+    >
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40"></div>
+      
+      {/* Content wrapper */}
+      <div className="relative z-10">
       
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
 
           {/* Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">
               Frequently asked questions
             </h1>
           </div>
 
           {/* FAQ Items */}
-          <div className="space-y-1">
+          <div className="space-y-1 bg-slate-800/90 backdrop-blur-sm rounded-lg shadow-2xl">
             {faqs.map((faq, index) => (
               <div key={index} className="border-b border-slate-600">
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-6 text-left flex justify-between items-center hover:bg-slate-700/50 transition-colors"
+                  className="w-full px-6 py-6 text-left flex justify-between items-center hover:bg-slate-700/70 transition-colors"
                 >
                   <h3 className="text-lg font-medium text-white pr-8">{faq.question}</h3>
                   <div className="flex-shrink-0">
@@ -155,7 +157,7 @@ export default function FAQsPage() {
             <h2 className="text-2xl font-bold text-white mb-8 text-center">Manufacturer Support</h2>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {manufacturerFaqs.map((manufacturer, index) => (
-                <div key={index} className="bg-slate-700 rounded-lg p-6 hover:bg-slate-600 transition-colors">
+                <div key={index} className="bg-slate-700/90 backdrop-blur-sm rounded-lg p-6 hover:bg-slate-600/90 transition-colors">
                   <h3 className="font-bold text-white mb-2">{manufacturer.brand}</h3>
                   <p className="text-gray-300 text-sm mb-4">{manufacturer.description}</p>
                   <a
@@ -185,6 +187,7 @@ export default function FAQsPage() {
           </div>
 
         </div>
+      </div>
       </div>
     </div>
   );

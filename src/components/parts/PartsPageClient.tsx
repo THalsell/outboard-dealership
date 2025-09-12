@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { Product } from '@/lib/data/products';
-import Link from 'next/link';
 import ProductCard from '@/components/ui/ProductCard';
 
 interface SortOption {
@@ -99,16 +98,6 @@ export default function PartsPageClient() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-3">
-          <nav className="flex items-center text-sm">
-            <Link href="/" className="text-gray-600 hover:text-deep-blue">Home</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-900 font-medium">Parts & Accessories</span>
-          </nav>
-        </div>
-      </div>
 
       <div className="container mx-auto px-4 py-6">
         {/* Main Content */}

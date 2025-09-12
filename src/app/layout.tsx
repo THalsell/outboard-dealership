@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Roboto } from "next/font/google";
 import "./globals.css";
+import TopBanner from "@/components/layout/TopBanner";
 import EnhancedHeader from "@/components/layout/EnhancedHeader";
 import Footer from "@/components/layout/Footer";
 import AppProviders from "@/providers/AppProviders";
@@ -83,9 +84,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen`} suppressHydrationWarning={true}>
+      <body className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen bg-light-gray text-text-blue font-body`} suppressHydrationWarning={true} style={{ fontSize: '16px', fontWeight: '400', lineHeight: '1.6', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
         <AppProviders>
+          <TopBanner />
           <EnhancedHeader />
+          
           <main className="flex-grow">
             {children}
           </main>

@@ -8,7 +8,6 @@ import FilterSidebar from './FilterSidebar';
 import InventoryGrid from './InventoryGrid';
 import InventoryHeader from './InventoryHeader';
 import BrandPromotionsBanner from './BrandPromotionsBanner';
-import Breadcrumb from '@/components/ui/Breadcrumb';
 
 interface URLFilters {
   hp?: string;
@@ -763,14 +762,6 @@ export default function InventoryPageClient() {
         </div>
       )}
 
-      {/* Breadcrumb */}
-      <Breadcrumb 
-        items={[
-          { label: 'Home', href: '/', onClick: handleResetFilters },
-          { label: 'Outboard Motors' },
-          ...(filters.brands.length === 1 ? [{ label: filters.brands[0] }] : [])
-        ]}
-      />
 
       <div className="container mx-auto px-4 py-6">
         <div className="flex gap-6">

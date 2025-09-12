@@ -7,7 +7,6 @@ import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { StarIcon } from '@heroicons/react/20/solid';
 import LiftGateModal from '@/components/ui/LiftGateModal';
-import Breadcrumb from '@/components/ui/Breadcrumb';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -172,16 +171,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
            '';
   };
 
-  const breadcrumbItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Inventory', href: '/inventory' },
-    { label: product.title }
-  ];
-
   return (
     <div className="bg-white min-h-screen">
-      {/* Breadcrumb */}
-      <Breadcrumb items={breadcrumbItems} />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-32 lg:items-start">

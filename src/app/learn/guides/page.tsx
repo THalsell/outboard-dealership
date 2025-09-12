@@ -2,49 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Breadcrumb from '@/components/ui/Breadcrumb';
 
 export default function BuyingGuidePage() {
-  const [showSidebar, setShowSidebar] = useState(true);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const footerElement = document.querySelector('footer');
-      if (!footerElement) {
-        setShowSidebar(true);
-        return;
-      }
-
-      const footerRect = footerElement.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      
-      // Hide sidebar when footer is within viewport (with some padding)
-      const hideThreshold = viewportHeight * 0.8; // Hide when footer is 80% into viewport
-      
-      if (footerRect.top < hideThreshold) {
-        setShowSidebar(false);
-      } else {
-        setShowSidebar(true);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial position
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  const breadcrumbItems = [
-    { label: 'Home', href: '/' },
-    { label: 'Buying Guides' }
-  ];
-
   return (
     <>
+    
       <Head>
         <title>Outboard Motor Buying Guide | Expert Tips & Advice</title>
         <meta 
@@ -52,26 +15,38 @@ export default function BuyingGuidePage() {
           content="Complete guide to buying the perfect outboard motor. Learn about horsepower, features, brands, and more from our marine experts." 
         />
       </Head>
-      <div className="min-h-screen bg-slate-800">
-        {/* Breadcrumb - using standard component which will have white background */}
-        <Breadcrumb items={breadcrumbItems} />
+      <div 
+        className="min-h-screen relative"
+        style={{
+          background: 'url(https://assets.basspro.com/image/upload/c_scale,f_auto,q_auto,w_3840/v1705683128/DigitalCreative/2024/Sitelets/Outboard-Motors/OMBackground.png) no-repeat top center/cover'
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+        
+        {/* Content wrapper */}
+        <div className="relative z-10">
+
+        <div className="mb-8 w-full relative h-24 md:h-32 lg:h-80">
+              <Image
+                src="/pic10.png"
+                alt="Quick Navigation"
+                fill
+                sizes="100vw"
+                className="object-cover w-full object-center"
+              />
+            </div>
         
         {/* Hero Section */}
-        <section className="bg-slate-800 text-white py-16">
+        <section className="text-white py-8">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
 
             <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold  drop-shadow-lg">
                 Outboard Motor Buying Guide
               </h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-8">
-                Everything you need to know to choose the perfect outboard motor
-              </p>
-              <p className="text-lg text-gray-400">
-                Our comprehensive guide will help you make an informed decision based on your boat, 
-                usage, and performance needs.
-              </p>
+              
             </div>
           </div>
         </div>
@@ -80,81 +55,53 @@ export default function BuyingGuidePage() {
       <div className="container mx-auto px-4 py-12 max-w-none xl:max-w-8xl 2xl:max-w-9xl">
         <div className="relative">
           {/* Mobile Quick Navigation */}
-          <nav className="lg:hidden bg-slate-700 shadow-2xl p-6 mb-12 max-w-4xl mx-auto">
-            <h2 className="text-xl font-semibold text-white mb-4 text-center">Quick Navigation</h2>
+          <nav className="lg:hidden bg-white/95 backdrop-blur-sm shadow-2xl p-6 mb-12 max-w-4xl mx-auto rounded-lg">
+            <h2 className="text-xl font-semibold text-blue-900 mb-4 text-center">Quick Navigation</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
-              <a href="#horsepower" className="text-white hover:text-gray-300 transition-colors text-lg">Horsepower Selection</a>
-              <a href="#shaft-length" className="text-white hover:text-gray-300 transition-colors text-lg">Shaft Length</a>
-              <a href="#features" className="text-white hover:text-gray-300 transition-colors text-lg">Key Features</a>
-              <a href="#brands" className="text-white hover:text-gray-300 transition-colors text-lg">Brand Comparison</a>
-              <a href="#maintenance" className="text-white hover:text-gray-300 transition-colors text-lg">Maintenance</a>
-              <a href="#budget" className="text-white hover:text-gray-300 transition-colors text-lg">Budget Planning</a>
+              <a href="#horsepower" className="text-blue-900 hover:text-blue-700 font-medium transition-colors text-lg">Horsepower Selection</a>
+              <a href="#shaft-length" className="text-blue-900 hover:text-blue-700 font-medium transition-colors text-lg">Shaft Length</a>
+              <a href="#features" className="text-blue-900 hover:text-blue-700 font-medium transition-colors text-lg">Key Features</a>
+              <a href="#brands" className="text-blue-900 hover:text-blue-700 font-medium transition-colors text-lg">Brand Comparison</a>
+              <a href="#maintenance" className="text-blue-900 hover:text-blue-700 font-medium transition-colors text-lg">Maintenance</a>
             </div>
           </nav>
 
-          {/* Floating Navigation Buttons */}
-          <nav className="hidden lg:block">
-            <div 
-              className={`fixed right-8 top-1/2 -translate-y-1/2 z-50 transition-opacity duration-300 ${
-                showSidebar ? 'opacity-100 visible' : 'opacity-0 invisible'
-              }`}
-            >
-              <div className="space-y-3">
-                <a 
-                  href="#horsepower" 
-                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
-                  title="Horsepower Selection"
-                >
-                  <div className="text-center">
-                    <div className="text-xs font-bold leading-tight">HORSE<br />POWER</div>
-                  </div>
-                </a>
-                <a 
-                  href="#shaft-length" 
-                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
-                  title="Shaft Length"
-                >
-                  <div className="text-center">
-                    <div className="text-xs font-bold leading-tight">SHAFT<br />LENGTH</div>
-                  </div>
-                </a>
-                <a 
-                  href="#features" 
-                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
-                  title="Key Features"
-                >
-                  <div className="text-center">
-                    <div className="text-xs font-bold leading-tight">KEY<br />FEATURES</div>
-                  </div>
-                </a>
-                <a 
-                  href="#brands" 
-                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
-                  title="Brand Comparison"
-                >
-                  <div className="text-center">
-                    <div className="text-xs font-bold leading-tight">BRAND<br />COMPARE</div>
-                  </div>
-                </a>
-                <a 
-                  href="#maintenance" 
-                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
-                  title="Maintenance"
-                >
-                  <div className="text-center">
-                    <div className="text-xs font-bold leading-tight">MAINTEN<br />ANCE</div>
-                  </div>
-                </a>
-                <a 
-                  href="#budget" 
-                  className="block w-20 h-20 bg-slate-700/95 backdrop-blur-sm shadow-xl rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-all duration-300 hover:scale-110 group"
-                  title="Budget Planning"
-                >
-                  <div className="text-center">
-                    <div className="text-xs font-bold leading-tight">BUDGET<br />PLANNING</div>
-                  </div>
-                </a>
-              </div>
+          {/* Desktop Quick Navigation - Top */}
+          <nav className="hidden lg:block mb-12">
+            
+            <div className="max-w-6xl mx-auto text-center">
+            <div className="flex flex-wrap justify-center gap-6">
+              <a 
+                href="#horsepower" 
+                className="bg-white/95 backdrop-blur-sm border-2 border-blue-300 px-8 py-4 rounded-lg text-blue-900 hover:bg-blue-600 hover:text-white hover:border-blue-600 font-semibold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+              >
+                Horsepower Selection
+              </a>
+              <a 
+                href="#shaft-length" 
+                className="bg-white/95 backdrop-blur-sm border-2 border-blue-300 px-8 py-4 rounded-lg text-blue-900 hover:bg-blue-600 hover:text-white hover:border-blue-600 font-semibold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+              >
+                Shaft Length
+              </a>
+              <a 
+                href="#features" 
+                className="bg-white/95 backdrop-blur-sm border-2 border-blue-300 px-8 py-4 rounded-lg text-blue-900 hover:bg-blue-600 hover:text-white hover:border-blue-600 font-semibold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+              >
+                Key Features
+              </a>
+              <a 
+                href="#brands" 
+                className="bg-white/95 backdrop-blur-sm border-2 border-blue-300 px-8 py-4 rounded-lg text-blue-900 hover:bg-blue-600 hover:text-white hover:border-blue-600 font-semibold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+              >
+                Brand Comparison
+              </a>
+              <a 
+                href="#maintenance" 
+                className="bg-white/95 backdrop-blur-sm border-2 border-blue-300 px-8 py-4 rounded-lg text-blue-900 hover:bg-blue-600 hover:text-white hover:border-blue-600 font-semibold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105"
+              >
+                Maintenance
+              </a>
+            </div>
             </div>
           </nav>
 
@@ -162,20 +109,20 @@ export default function BuyingGuidePage() {
           <div className="max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-8xl mx-auto">
 
             {/* Horsepower Selection */}
-            <section id="horsepower" className="bg-slate-700 shadow-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Choosing the Right Horsepower</h2>
+            <section id="horsepower" className="p-8 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 text-center drop-shadow-lg">Choosing the Right Horsepower</h2>
             
             <div className="mb-6">
-              <p className="text-gray-300 mb-4">
+              <p className="text-white mb-4 drop-shadow">
                 Selecting the correct horsepower is crucial for optimal performance, fuel efficiency, and safety. 
                 Here&apos;s how to determine what you need:
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="text-lg font-semibold text-white mb-3">Factors to Consider</h3>
-                <ul className="space-y-2 text-gray-300">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="text-lg font-semibold text-blue-900 mb-3">Factors to Consider</h3>
+                <ul className="space-y-2 text-blue-800">
                   <li>• Boat length and weight</li>
                   <li>• Maximum capacity rating</li>
                   <li>• Typical passenger/cargo load</li>
@@ -185,22 +132,22 @@ export default function BuyingGuidePage() {
                 </ul>
               </div>
               
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="text-lg font-semibold text-white mb-3">General Guidelines</h3>
-                <ul className="space-y-2 text-gray-300">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="text-lg font-semibold text-blue-900 mb-3">General Guidelines</h3>
+                <ul className="space-y-2 text-blue-800">
                   <li>• <strong>14-16 ft:</strong> 25-60 HP</li>
                   <li>• <strong>17-19 ft:</strong> 75-150 HP</li>
                   <li>• <strong>20-24 ft:</strong> 150-300 HP</li>
                   <li>• <strong>25+ ft:</strong> 300+ HP</li>
                 </ul>
-                <p className="text-sm text-gray-400 mt-3">
+                <p className="text-sm text-blue-700 mt-3">
                   *Always check your boat&apos;s maximum HP rating
                 </p>
               </div>
             </div>
 
-            <div className="bg-blue-900/20 border border-blue-500  p-4">
-              <p className="text-white font-medium">
+            <div className="bg-white border-2 border-blue-400 rounded p-4">
+              <p className="text-blue-900 font-medium">
                 <strong>Pro Tip:</strong> It&apos;s often better to have slightly more power than you think you need. 
                 This gives you better hole shot, allows you to maintain speed in rough conditions, and provides 
                 a safety margin for emergencies.
@@ -209,11 +156,11 @@ export default function BuyingGuidePage() {
           </section>
 
           {/* Shaft Length Measurement */}
-          <section id="shaft-length" className="bg-slate-700 shadow-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Measuring for Correct Shaft Length</h2>
+          <section id="shaft-length" className="p-8 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 text-center drop-shadow-lg">Measuring for Correct Shaft Length</h2>
             
             <div className="mb-6">
-              <p className="text-gray-300 mb-4">
+              <p className="text-white mb-4 drop-shadow">
                 Selecting the correct shaft length is critical for optimal performance and preventing damage to your motor. 
                 An incorrectly sized shaft can cause cavitation, poor performance, and even engine damage.
               </p>
@@ -221,8 +168,8 @@ export default function BuyingGuidePage() {
 
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>
-                <h3 className="text-lg font-semibold text-white mb-3">How to Measure</h3>
-                <ol className="space-y-3 text-gray-300">
+                <h3 className="text-lg font-semibold text-white mb-3 drop-shadow">How to Measure</h3>
+                <ol className="space-y-3 text-white drop-shadow">
                   <li>
                     <strong>1. Position Your Boat:</strong> Make sure your boat is on a level surface or properly supported on a trailer.
                   </li>
@@ -237,9 +184,9 @@ export default function BuyingGuidePage() {
                   </li>
                 </ol>
 
-                <div className="bg-slate-600 p-4  mt-4">
-                  <h4 className="font-semibold text-white mb-2">Standard Shaft Lengths</h4>
-                  <ul className="space-y-1 text-sm text-gray-300">
+                <div className="bg-white border border-blue-300 p-4 rounded mt-4">
+                  <h4 className="font-semibold text-blue-900 mb-2">Standard Shaft Lengths</h4>
+                  <ul className="space-y-1 text-sm text-blue-800">
                     <li>• <strong>Short (S):</strong> 15&quot; - For transoms 15-16&quot;</li>
                     <li>• <strong>Long (L):</strong> 20&quot; - For transoms 19-21&quot;</li>
                     <li>• <strong>Extra Long (XL):</strong> 25&quot; - For transoms 24-26&quot;</li>
@@ -258,23 +205,23 @@ export default function BuyingGuidePage() {
                     className="object-contain"
                   />
                 </div>
-                <p className="text-sm text-gray-400 mt-2 text-center">
+                <p className="text-sm text-white mt-2 text-center drop-shadow">
                   Visual guide for measuring transom height
                 </p>
               </div>
             </div>
 
-            <div className="bg-blue-900/20 border border-blue-500  p-4">
-              <p className="text-white font-medium">
+            <div className="bg-white border-2 border-blue-400 rounded p-4">
+              <p className="text-blue-900 font-medium">
                 <strong>Important:</strong> The anti-ventilation plate on your outboard should be level with or slightly below the bottom of the boat when properly mounted. 
                 If you&apos;re between sizes, it&apos;s generally better to go with the longer shaft to ensure the propeller stays submerged in choppy water.
               </p>
             </div>
 
             <div className="mt-6 grid md:grid-cols-2 gap-4">
-              <div className="bg-slate-600 p-4 ">
-                <h4 className="font-semibold text-white mb-2">Common Mistakes to Avoid</h4>
-                <ul className="space-y-1 text-sm text-gray-300">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h4 className="font-semibold text-blue-900 mb-2">Common Mistakes to Avoid</h4>
+                <ul className="space-y-1 text-sm text-blue-800">
                   <li>• Measuring with the boat on an uneven surface</li>
                   <li>• Not accounting for transom modifications or jack plates</li>
                   <li>• Confusing shaft length with overall motor height</li>
@@ -282,9 +229,9 @@ export default function BuyingGuidePage() {
                 </ul>
               </div>
 
-              <div className="bg-slate-600 p-4 ">
-                <h4 className="font-semibold text-white mb-2">When to Consider Jack Plates</h4>
-                <ul className="space-y-1 text-sm text-gray-300">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h4 className="font-semibold text-blue-900 mb-2">When to Consider Jack Plates</h4>
+                <ul className="space-y-1 text-sm text-blue-800">
                   <li>• Fine-tuning motor height for performance</li>
                   <li>• Shallow water operation needs</li>
                   <li>• Compensating for non-standard transom heights</li>
@@ -295,30 +242,30 @@ export default function BuyingGuidePage() {
           </section>
 
           {/* Key Features */}
-          <section id="features" className="bg-slate-700 shadow-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Essential Features to Consider</h2>
+          <section id="features" className="p-8 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 text-center drop-shadow-lg">Essential Features to Consider</h2>
             
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <div className="bg-slate-600 p-4 ">
-                  <h3 className="font-semibold text-white mb-2">Power Steering</h3>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-white border border-blue-300 p-4 rounded">
+                  <h3 className="font-semibold text-blue-900 mb-2">Power Steering</h3>
+                  <p className="text-blue-800 text-sm">
                     Essential for larger motors (150+ HP). Makes maneuvering effortless and 
                     reduces fatigue during long trips.
                   </p>
                 </div>
 
-                <div className="bg-slate-600 p-4 ">
-                  <h3 className="font-semibold text-white mb-2">Electric Start</h3>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-white border border-blue-300 p-4 rounded">
+                  <h3 className="font-semibold text-blue-900 mb-2">Electric Start</h3>
+                  <p className="text-blue-800 text-sm">
                     Standard on most modern outboards. Much more convenient than pull-start, 
                     especially in emergency situations.
                   </p>
                 </div>
 
-                <div className="bg-slate-600 p-4 ">
-                  <h3 className="font-semibold text-white mb-2">Tilt & Trim</h3>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-white border border-blue-300 p-4 rounded">
+                  <h3 className="font-semibold text-blue-900 mb-2">Tilt & Trim</h3>
+                  <p className="text-blue-800 text-sm">
                     Power tilt allows you to adjust motor angle for optimal performance, 
                     better fuel economy, and easier trailering.
                   </p>
@@ -326,25 +273,25 @@ export default function BuyingGuidePage() {
               </div>
 
               <div className="space-y-4">
-                <div className="bg-slate-600 p-4 ">
-                  <h3 className="font-semibold text-white mb-2">Digital Gauges</h3>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-white border border-blue-300 p-4 rounded">
+                  <h3 className="font-semibold text-blue-900 mb-2">Digital Gauges</h3>
+                  <p className="text-blue-800 text-sm">
                     Modern displays provide real-time engine data, fuel consumption, 
                     maintenance alerts, and diagnostic information.
                   </p>
                 </div>
 
-                <div className="bg-slate-600 p-4 ">
-                  <h3 className="font-semibold text-white mb-2">Alternator Output</h3>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-white border border-blue-300 p-4 rounded">
+                  <h3 className="font-semibold text-blue-900 mb-2">Alternator Output</h3>
+                  <p className="text-blue-800 text-sm">
                     Higher output alternators (60A+) are essential if you run multiple 
                     electronics or need to charge batteries while running.
                   </p>
                 </div>
 
-                <div className="bg-slate-600 p-4 ">
-                  <h3 className="font-semibold text-white mb-2">Corrosion Protection</h3>
-                  <p className="text-gray-300 text-sm">
+                <div className="bg-white border border-blue-300 p-4 rounded">
+                  <h3 className="font-semibold text-blue-900 mb-2">Corrosion Protection</h3>
+                  <p className="text-blue-800 text-sm">
                     Look for quality anti-corrosion coatings and sacrificial anodes, 
                     especially important for saltwater use.
                   </p>
@@ -354,145 +301,109 @@ export default function BuyingGuidePage() {
           </section>
 
           {/* Brand Comparison */}
-          <section id="brands" className="bg-slate-700 shadow-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Brand Overview</h2>
+          <section id="brands" className="p-8 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 text-center drop-shadow-lg">Brand Overview</h2>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="font-semibold text-white mb-2">Honda</h3>
-                <p className="text-sm text-gray-300 mb-2">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="font-semibold text-blue-900 mb-2">Honda</h3>
+                <p className="text-sm text-blue-800 mb-2">
                   Known for reliability, quiet operation, and excellent fuel efficiency. 
                   4-stroke technology leader.
                 </p>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-blue-700">
                   Best for: Fuel economy, quiet operation
                 </div>
               </div>
 
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="font-semibold text-white mb-2">Yamaha</h3>
-                <p className="text-sm text-gray-300 mb-2">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="font-semibold text-blue-900 mb-2">Yamaha</h3>
+                <p className="text-sm text-blue-800 mb-2">
                   Industry leader in innovation with excellent performance across 
                   all horsepower ranges. Strong dealer network.
                 </p>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-blue-700">
                   Best for: Overall performance, reliability
                 </div>
               </div>
 
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="font-semibold text-white mb-2">Mercury</h3>
-                <p className="text-sm text-gray-300 mb-2">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="font-semibold text-blue-900 mb-2">Mercury</h3>
+                <p className="text-sm text-blue-800 mb-2">
                   High-performance engines with advanced technology. 
                   Excellent for speed and power applications.
                 </p>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-blue-700">
                   Best for: Performance, high-speed applications
                 </div>
               </div>
 
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="font-semibold text-white mb-2">Suzuki</h3>
-                <p className="text-sm text-gray-300 mb-2">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="font-semibold text-blue-900 mb-2">Suzuki</h3>
+                <p className="text-sm text-blue-800 mb-2">
                   Lightweight designs with good fuel efficiency. 
                   Competitive pricing with solid performance.
                 </p>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-blue-700">
                   Best for: Value, lightweight applications
                 </div>
               </div>
 
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="font-semibold text-white mb-2">Freedom</h3>
-                <p className="text-sm text-gray-300 mb-2">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="font-semibold text-blue-900 mb-2">Freedom</h3>
+                <p className="text-sm text-blue-800 mb-2">
                   Emerging brand offering competitive features and pricing 
                   with modern technology.
                 </p>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-blue-700">
                   Best for: Value, modern features
                 </div>
               </div>
 
-              <div className="bg-slate-600 p-4 ">
-                <h3 className="font-semibold text-white mb-2">Tohatsu</h3>
-                <p className="text-sm text-gray-300 mb-2">
+              <div className="bg-white border border-blue-300 p-4 rounded">
+                <h3 className="font-semibold text-blue-900 mb-2">Tohatsu</h3>
+                <p className="text-sm text-blue-800 mb-2">
                   Reliable, no-frills engines with good value. 
                   Popular for commercial and utility applications.
                 </p>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-blue-700">
                   Best for: Commercial use, value pricing
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Budget Planning */}
-          <section id="budget" className="bg-slate-700 shadow-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Budget Planning</h2>
-            
-            <div className="grid md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4 text-center">Initial Costs</h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• <strong>Motor price:</strong> Varies by HP and features</li>
-                  <li>• <strong>Installation:</strong> $500-$1,500</li>
-                  <li>• <strong>Controls & gauges:</strong> $300-$1,000</li>
-                  <li>• <strong>Propeller:</strong> $200-$800</li>
-                  <li>• <strong>Rigging:</strong> $200-$500</li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold text-white mb-4 text-center">Ongoing Costs</h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• <strong>Annual maintenance:</strong> $200-$500</li>
-                  <li>• <strong>Oil changes:</strong> $50-$100 each</li>
-                  <li>• <strong>Fuel:</strong> Varies by usage</li>
-                  <li>• <strong>Winterization:</strong> $100-$200</li>
-                  <li>• <strong>Unexpected repairs:</strong> Budget 5-10% of motor value annually</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="bg-blue-900/20 border border-blue-500  p-4 mt-6">
-              <h4 className="font-semibold text-white mb-2">Financing Options</h4>
-              <p className="text-gray-300 text-sm">
-                We offer competitive financing options with terms up to 7 years for qualified buyers. 
-                Consider total cost of ownership, not just monthly payments, when making your decision.
-              </p>
-            </div>
-          </section>
 
           {/* Maintenance */}
-          <section id="maintenance" className="bg-slate-700 shadow-2xl p-8 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Maintenance Considerations</h2>
+          <section id="maintenance" className="p-8 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 text-center drop-shadow-lg">Maintenance Considerations</h2>
             
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-white mb-3">Regular Maintenance Schedule</h3>
+                <h3 className="text-lg font-semibold text-white mb-3 drop-shadow">Regular Maintenance Schedule</h3>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full bg-slate-600  overflow-hidden">
+                  <table className="min-w-full bg-white border border-blue-200 overflow-hidden rounded">
                     <thead>
-                      <tr className="bg-slate-800 text-white">
+                      <tr className="bg-blue-50 text-blue-900 border-b-2 border-blue-300">
                         <th className="px-4 py-2 text-left">Interval</th>
                         <th className="px-4 py-2 text-left">Service Required</th>
                       </tr>
                     </thead>
-                    <tbody className="text-gray-300">
-                      <tr className="border-b border-slate-500">
-                        <td className="px-4 py-2 font-medium text-white">After first 20 hours</td>
+                    <tbody className="text-blue-800">
+                      <tr className="border-b border-blue-200">
+                        <td className="px-4 py-2 font-medium text-blue-900">After first 20 hours</td>
                         <td className="px-4 py-2">Initial service - oil change, filter replacement</td>
                       </tr>
-                      <tr className="border-b border-slate-500">
-                        <td className="px-4 py-2 font-medium text-white">Every 100 hours / Annually</td>
+                      <tr className="border-b border-blue-200">
+                        <td className="px-4 py-2 font-medium text-blue-900">Every 100 hours / Annually</td>
                         <td className="px-4 py-2">Oil change, gear oil, spark plugs, fuel filter</td>
                       </tr>
-                      <tr className="border-b border-slate-500">
-                        <td className="px-4 py-2 font-medium text-white">Every 200 hours / 2 years</td>
+                      <tr className="border-b border-blue-200">
+                        <td className="px-4 py-2 font-medium text-blue-900">Every 200 hours / 2 years</td>
                         <td className="px-4 py-2">Impeller, thermostats, fuel pump inspection</td>
                       </tr>
                       <tr>
-                        <td className="px-4 py-2 font-medium text-white">Every 300 hours / 3 years</td>
+                        <td className="px-4 py-2 font-medium text-blue-900">Every 300 hours / 3 years</td>
                         <td className="px-4 py-2">Major service - timing belt, valve adjustment</td>
                       </tr>
                     </tbody>
@@ -500,9 +411,9 @@ export default function BuyingGuidePage() {
                 </div>
               </div>
 
-              <div className="bg-blue-900/20 border border-blue-500  p-4">
-                <h4 className="font-semibold text-white mb-2">Professional Service Benefits</h4>
-                <ul className="text-gray-300 text-sm space-y-1">
+              <div className="bg-white border-2 border-blue-400 rounded p-4">
+                <h4 className="font-semibold text-blue-900 mb-2">Professional Service Benefits</h4>
+                <ul className="text-blue-800 text-sm space-y-1">
                   <li>• Warranty compliance and protection</li>
                   <li>• Expert diagnosis of potential issues</li>
                   <li>• Genuine parts and proper tools</li>
@@ -513,21 +424,21 @@ export default function BuyingGuidePage() {
           </section>
 
             {/* Call to Action */}
-            <section className="bg-slate-800 text-white p-8 text-center shadow-2xl">
-              <h2 className="text-2xl font-bold mb-4">Ready to Find Your Perfect Outboard?</h2>
-              <p className="text-gray-300 mb-6">
+            <section className="p-8 text-center">
+              <h2 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Ready to Find Your Perfect Outboard?</h2>
+              <p className="text-white mb-6 drop-shadow">
                 Our expert team is here to help you choose the right outboard motor for your needs and budget.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <Link 
                   href="/inventory" 
-                  className="text-blue-400 hover:text-blue-300 font-semibold transition-colors underline hover:no-underline"
+                  className="text-white hover:text-white/80 font-semibold transition-colors underline hover:no-underline drop-shadow"
                 >
                   Browse Inventory
                 </Link>
                 <a 
                   href="tel:9312434555" 
-                  className="text-blue-400 hover:text-blue-300 font-semibold transition-colors underline hover:no-underline"
+                  className="text-white hover:text-white/80 font-semibold transition-colors underline hover:no-underline drop-shadow"
                 >
                   Call (931) 243-4555
                 </a>
@@ -535,6 +446,7 @@ export default function BuyingGuidePage() {
             </section>
           </div>
         </div>
+      </div>
       </div>
       </div>
     </>

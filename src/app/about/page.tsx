@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Breadcrumb from '@/components/ui/Breadcrumb';
 
 export const metadata = {
   title: 'About Us | Outboard Motor Sales',
@@ -7,15 +6,8 @@ export const metadata = {
 };
 
 export default function AboutPage() {
-  const breadcrumbItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About' }
-  ];
-
   return (
     <div className="min-h-screen bg-white">
-      {/* Breadcrumb */}
-      <Breadcrumb items={breadcrumbItems} />
 
       <div className="container mx-auto px-4 py-12">
         <div className="text-center">
