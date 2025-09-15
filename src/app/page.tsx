@@ -14,11 +14,11 @@ export default function Home() {
 
   return (
     <>
-      {/* Logo positioned below fixed headers - responsive margin */}
-      <div className="relative z-30 -mt-[70px] sm:-mt-[60px]">
+      {/* Logo positioned below fixed headers */}
+      <div className="mt-[50px] sm:mt-[50px]">
         <Logo />
       </div>
-      
+
       <div className="min-h-screen">
         <script
           type="application/ld+json"
