@@ -121,7 +121,7 @@ export default function EnhancedHeader() {
   }, [mobileMenuOpen]);
   return (
     <>
-      <header className="bg-gray-900 shadow-md fixed top-[95px] sm:top-[52px] left-0 right-0 z-50 overflow-x-hidden">
+      <header className="bg-gray-900 shadow-md fixed top-[115px] sm:top-[60px] left-0 right-0 z-[100] overflow-visible">
         {/* Main Navigation */}
         <nav className="w-full max-w-full px-2 sm:px-4 py-3">
           <div className="flex justify-between items-center w-full max-w-full">
@@ -157,7 +157,7 @@ export default function EnhancedHeader() {
               {navigation.map((item) => (
                 <div
                   key={item.name}
-                  className="relative"
+                  className="relative z-[101]"
                   onMouseEnter={() => handleMouseEnter(item.name)}
                   onMouseLeave={handleMouseLeave}
                 >
@@ -188,7 +188,7 @@ export default function EnhancedHeader() {
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && activeDropdown === item.name && (
-                    <div className={`absolute top-full left-0 mt-1 ${item.name === 'Outboard Motors' ? 'w-96' : 'w-72'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-50`}>
+                    <div className={`fixed top-[160px] sm:top-[108px] ${item.name === 'Outboard Motors' ? 'w-96' : 'w-72'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-[9999]`} style={{ left: 'calc(50% - 200px)' }}>
                       {item.name === 'Outboard Motors' ? (
                         // Special layout for Inventory dropdown
                         <div className="grid grid-cols-2 gap-1">

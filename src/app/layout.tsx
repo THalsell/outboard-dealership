@@ -89,7 +89,7 @@ export default function RootLayout({
           <TopBanner />
           <EnhancedHeader />
           
-          <main className="flex-grow pt-[85px] sm:pt-[96px]">
+          <main className="flex-grow pt-[115px] sm:pt-[108px]">
             {children}
           </main>
           <Footer />
