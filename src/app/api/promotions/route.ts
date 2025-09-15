@@ -178,8 +178,15 @@ export async function GET(request: NextRequest) {
       priority: number;
     };
 
+    console.log('Requested brand:', brand);
+    console.log('Available promotions:', promotions.map((p: Promotion) => p.brand));
+
     const filteredPromotions = brand 
-      ? promotions.filter((p: Promotion) => p.brand?.toLowerCase() === brand.toLowerCase() && p.active)
+      ? promotions.filter((p: Promotion) => {
+          const matches = p.brand?.toLowerCase() === brand.toLowerCase() && p.active;
+          console.log(`Checking ${p.brand} vs ${brand}: ${matches}`);
+          return matches;
+        })
       : promotions.filter((p: Promotion) => p.active);
 
     // Sort by priority

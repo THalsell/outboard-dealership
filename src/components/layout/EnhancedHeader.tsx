@@ -197,9 +197,9 @@ export default function EnhancedHeader() {
                             <div className="px-3 py-1 text-xs font-semibold text-gray-900 uppercase tracking-wider border-b border-gray-100 mb-2">
                               Browse Motors
                             </div>
-                            <Link href="/inventory" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                            <a href="/inventory" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
                               <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">All Motors</div>
-                            </Link>
+                            </a>
                             <div className="px-3 py-1 text-xs font-medium text-gray-900 uppercase tracking-wider mt-3 mb-1">
                               By Condition
                             </div>
@@ -227,9 +227,9 @@ export default function EnhancedHeader() {
                               Shop by Brand
                             </div>
                             {item.dropdown.find(subItem => subItem.isNested)?.brands?.map((brand: { name: string; href: string }) => (
-                              <Link key={brand.name} href={brand.href} className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                              <a key={brand.name} href={brand.href} className="block px-3 py-2 hover:text-gray-900 transition-colors group">
                                 <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">{brand.name}</div>
-                              </Link>
+                              </a>
                             ))}
                           </div>
                         </div>

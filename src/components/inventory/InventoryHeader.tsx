@@ -1,6 +1,7 @@
 'use client';
 
 import { useFilter } from '@/contexts/FilterContext';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 interface URLFilters {
   hp?: string;
@@ -25,6 +26,8 @@ export default function InventoryHeader({
   onClearAllFilters
 }: InventoryHeaderProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const sortOptions = [
     { value: 'featured', label: 'Featured' },
@@ -44,15 +47,32 @@ export default function InventoryHeader({
     ...filters.brands,
     ...filters.shaftLengths, 
     ...filters.conditions,
+    ...filters.driveTypes,
+    ...filters.fuelDelivery,
+    ...filters.fuelTank,
+    ...filters.starting,
+    ...filters.steering,
+    ...filters.trimTilt,
     ...(filters.inStockOnly ? ['inStock'] : []),
     ...(filters.onSaleOnly ? ['onSale'] : []),
     ...(filters.minPrice > 0 ? ['minPrice'] : []),
     ...(filters.maxPrice < 100000 ? ['maxPrice'] : []),
     ...(filters.minHorsepower > 0 ? ['minHorsepower'] : []),
     ...(filters.maxHorsepower < 500 ? ['maxHorsepower'] : []),
+    ...(filters.searchQuery ? ['search'] : []),
   ].length;
 
   const getMainHeading = () => {
+    // Check if we're on the base inventory page without any parameters
+    const isBaseInventoryPage = pathname === '/inventory' && searchParams.toString() === '';
+    
+    // If we're on the base page OR have no filters, show default
+    const hasAnyFilters = activeFiltersCount > 0 || Object.values(urlFilters || {}).some(v => v);
+    
+    if (isBaseInventoryPage || !hasAnyFilters) {
+      return 'SHOP ALL OUTBOARD MOTORS';
+    }
+    
     // Test brand filter first (simplest case)
     if (filters.brands.length === 1) {
       return `SHOP ${filters.brands[0].toUpperCase()} OUTBOARD MOTORS`;
@@ -78,7 +98,8 @@ export default function InventoryHeader({
         ? `${urlFilters.hp.replace('+', '')}+ HP` 
         : `${urlFilters.hp.replace('-', '-')} HP`;
       return `SHOP ${hpDisplay} OUTBOARD MOTORS`;
-    } else if (urlFilters?.brand) {
+    } else if (urlFilters?.brand && filters.brands.length === 0) {
+      // Only use URL brand filter if no filter context brand is set
       return `SHOP ${urlFilters.brand.toUpperCase()} OUTBOARD MOTORS`;
     } else if (filters.minHorsepower > 0 || filters.maxHorsepower < 500) {
       if (filters.minHorsepower <= 30 && filters.maxHorsepower <= 30) {

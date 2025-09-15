@@ -26,12 +26,15 @@ export default function InventoryPageClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [urlFiltersApplied, setUrlFiltersApplied] = useState(false);
+  const [lastAppliedUrlParams, setLastAppliedUrlParams] = useState<string>('');
   
   // Clear URL parameters when filters are reset
   const handleResetFilters = () => {
     resetFilters();
-    // Clear URL parameters
-    router.push('/inventory');
+    setUrlFiltersApplied(false); // Reset the URL filters applied state
+    setLastAppliedUrlParams(''); // Clear the last applied params
+    // Clear URL parameters with page reload
+    window.location.href = '/inventory';
   };
 
   // Get URL parameters for filtering
@@ -81,9 +84,22 @@ export default function InventoryPageClient() {
     fetchProducts();
   }, []);
 
-  // Apply URL filters when component loads (only once)
+  // Apply URL filters when URL parameters change
   useEffect(() => {
-    if (urlFiltersApplied) return; // Prevent re-applying filters
+    const hasUrlParams = Object.values(urlFilters).some(value => value !== undefined);
+    const currentParamString = JSON.stringify(urlFilters);
+    
+    // Reset URL filters applied state when there are no URL parameters
+    if (!hasUrlParams) {
+      setUrlFiltersApplied(false);
+      setLastAppliedUrlParams('');
+      return;
+    }
+    
+    // Only skip if we've already applied filters for these exact same URL parameters
+    if (urlFiltersApplied && currentParamString === lastAppliedUrlParams) {
+      return;
+    }
     
     let hasFilters = false;
     
@@ -124,7 +140,20 @@ export default function InventoryPageClient() {
     // Process brand parameter
     if (urlFilters.brand) {
       hasFilters = true;
-      updateFilter('brands', [urlFilters.brand]);
+      // Normalize brand name - handle special cases like "Mercury" and "Yamaha"
+      const brandName = urlFilters.brand.toLowerCase();
+      let normalizedBrand;
+      
+      if (brandName === 'yamaha' || brandName === 'mercury' || brandName === 'honda' || brandName === 'suzuki' || brandName === 'tohatsu') {
+        normalizedBrand = brandName.charAt(0).toUpperCase() + brandName.slice(1);
+      } else if (brandName === 'freedom') {
+        normalizedBrand = 'Freedom';
+      } else {
+        // Default capitalization
+        normalizedBrand = urlFilters.brand.charAt(0).toUpperCase() + urlFilters.brand.slice(1).toLowerCase();
+      }
+      
+      updateFilter('brands', [normalizedBrand]);
     }
 
     // Process condition parameter
@@ -164,16 +193,16 @@ export default function InventoryPageClient() {
     // Mark URL filters as applied if we had any
     if (hasFilters) {
       setUrlFiltersApplied(true);
+      setLastAppliedUrlParams(currentParamString);
     }
   }, [
-    searchParams,
-    updateFilter,
     urlFilters.brand,
     urlFilters.condition,
     urlFilters.hp,
     urlFilters.status,
     urlFilters.powerCategory,
-    urlFiltersApplied
+    urlFiltersApplied,
+    updateFilter
   ]); // Include all necessary dependencies
 
   // Filter and sort products
@@ -721,6 +750,7 @@ export default function InventoryPageClient() {
             onClose={() => setShowMobileFilters(false)}
             priceRange={dynamicRanges.priceRange}
             horsepowerRange={dynamicRanges.horsepowerRange}
+            onClearAll={handleResetFilters}
           />
         </div>
       )}
@@ -770,6 +800,7 @@ export default function InventoryPageClient() {
             <FilterSidebar 
               priceRange={dynamicRanges.priceRange}
               horsepowerRange={dynamicRanges.horsepowerRange}
+              onClearAll={handleResetFilters}
             />
           </aside>
 

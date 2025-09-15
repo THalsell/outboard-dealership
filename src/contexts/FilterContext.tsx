@@ -72,7 +72,7 @@ export function FilterProvider({ children }: { children: ReactNode }) {
   };
 
   const resetFilters = () => {
-    setFilters(defaultFilters);
+    setFilters(getDefaultFilters());
   };
 
   const addToCompare = (id: string) => {

@@ -10,6 +10,7 @@ interface FilterSidebarProps {
   priceRange?: { min: number; max: number };
   horsepowerRange?: { min: number; max: number };
   availableShaftLengths?: string[];
+  onClearAll?: () => void;
 }
 
 export default function FilterSidebar({ 
@@ -18,7 +19,8 @@ export default function FilterSidebar({
   availableBrands = ['Honda', 'Yamaha', 'Mercury', 'Suzuki', 'Tohatsu', 'Freedom'],
   priceRange = { min: 0, max: 100000 },
   horsepowerRange = { min: 0, max: 500 },
-  availableShaftLengths = ['Short (15")', 'Long (20")', 'Extra Long (25")']
+  availableShaftLengths = ['Short (15")', 'Long (20")', 'Extra Long (25")'],
+  onClearAll
 }: FilterSidebarProps) {
   const { filters, updateFilter, resetFilters } = useFilter();
   const [expandedSections, setExpandedSections] = useState<string[]>(['availability', 'brand', 'condition', 'shaft', 'fuel', 'starting', 'steering', 'trimtilt']);
@@ -100,7 +102,7 @@ export default function FilterSidebar({
           <h2 className="text-lg font-bold text-charcoal uppercase tracking-wide">Filter By</h2>
         <div className="flex gap-2">
           <button
-            onClick={resetFilters}
+            onClick={onClearAll || resetFilters}
             className="text-sm text-deep-blue hover:text-deep-blue/80 font-medium"
           >
             Clear All
