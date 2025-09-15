@@ -68,12 +68,12 @@ export default function ShopByCategory() {
 
   return (
     <section className="py-16 bg-light-gray overflow-hidden">
-      <div className="container mx-auto px-4 pr-8">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-3xl md:text-4xl font-bold whitespace-nowrap">Shop by Power Category</h2>
-            <div className="flex-1 h-px bg-gray-300"></div>
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
+            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2">Shop by Power Category</h2>
+            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
           </div>
           <p className="text-xl text-charcoal opacity-80">Find the perfect motor for your boat and needs</p>
         </div>
@@ -82,7 +82,7 @@ export default function ShopByCategory() {
             <Link
               key={category.id}
               href={`/inventory?powerCategory=${category.category}`}
-              className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group aspect-[4/5] min-h-[600px] w-[85%] mx-auto md:w-full"
+              className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 group aspect-[4/5] min-h-[400px] sm:min-h-[500px] md:min-h-[600px] w-full"
             >
               <Image
                 src={category.image}
@@ -92,10 +92,10 @@ export default function ShopByCategory() {
               />
               <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-all duration-300"></div>
               <div className="absolute inset-0 p-8 flex flex-col justify-center items-center text-center text-white">
-                <h3 className="text-4xl md:text-5xl font-bold mb-4 group-hover:text-blue-300 transition-colors leading-tight">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 group-hover:text-blue-300 transition-colors leading-tight">
                   {category.name}
                 </h3>
-                <p className="text-xl md:text-2xl opacity-90 mb-6 leading-relaxed">{category.detail}</p>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 mb-6 leading-relaxed">{category.detail}</p>
                 <div className="flex flex-col items-center gap-4">
                   <span className="text-lg opacity-80 bg-black/20 px-4 py-2 rounded-full">
                     {motorCounts[category.id] !== undefined ? motorCounts[category.id] : '...'} motors available

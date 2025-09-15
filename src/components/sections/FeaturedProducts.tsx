@@ -32,10 +32,10 @@ export default function FeaturedProducts() {
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-3xl md:text-4xl font-bold whitespace-nowrap">Featured Motors</h2>
-            <div className="flex-1 h-px bg-gray-300"></div>
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
+            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2">Featured Motors</h2>
+            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
           </div>
           <p className="text-xl text-charcoal opacity-80">Top-rated motors from trusted brands</p>
         </div>

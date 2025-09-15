@@ -147,14 +147,8 @@ export default function InventoryHeader({
         </div>
       </div>
 
-      {/* Hidden search and sort - keep for mobile filter functionality */}
+      {/* Hidden sort - keep for mobile filter functionality */}
       <div className="hidden">
-        <input
-          type="text"
-          placeholder="Search outboard motors..."
-          value={filters.searchQuery}
-          onChange={(e) => updateFilter('searchQuery', e.target.value)}
-        />
         <select
           value={filters.sortBy}
           onChange={(e) => updateFilter('sortBy', e.target.value)}

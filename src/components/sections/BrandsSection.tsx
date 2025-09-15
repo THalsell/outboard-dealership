@@ -15,10 +15,10 @@ export default function BrandsSection() {
     <section className="py-16 bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-3xl md:text-4xl font-bold whitespace-nowrap">Authorized Dealer For</h2>
-            <div className="flex-1 h-px bg-gray-300"></div>
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
+            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2">Authorized Dealer For</h2>
+            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
           </div>
           <p className="text-xl text-charcoal opacity-80">Industry-leading manufacturers</p>
         </div>
