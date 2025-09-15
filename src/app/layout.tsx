@@ -84,12 +84,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen bg-light-gray text-text-blue font-body`} suppressHydrationWarning={true} style={{ fontSize: '16px', fontWeight: '400', lineHeight: '1.6', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
+      <body className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen bg-light-gray text-text-blue font-body overflow-x-hidden`} suppressHydrationWarning={true} style={{ fontSize: '16px', fontWeight: '400', lineHeight: '1.6', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
         <AppProviders>
           <TopBanner />
           <EnhancedHeader />
           
-          <main className="flex-grow">
+          <main className="flex-grow pt-[85px] sm:pt-[96px]">
             {children}
           </main>
           <Footer />

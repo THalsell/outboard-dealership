@@ -5,9 +5,9 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 text-white mt-auto font-body relative z-40">
+    <footer className="bg-gray-900 text-white mt-auto font-body relative z-40 overflow-x-hidden">
       
-      <div className="container mx-auto px-4 py-12">
+      <div className="w-full max-w-7xl mx-auto px-4 py-12">
         {/* Newsletter Section */}
         <div className="mb-12">
           <NewsletterSignup 
@@ -68,7 +68,7 @@ export default function Footer() {
                   Phone: (931) 243-4555
                 </a>
               </p>
-              <p>
+              <p className="break-all">
                 <a href="mailto:info@claypowersports.com" className="hover:text-blue-400">
                   Email: info@claypowersports.com
                 </a>

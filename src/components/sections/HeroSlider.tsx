@@ -2,7 +2,7 @@
 
 export default function HeroSlider() {
   return (
-    <section className="relative h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden">
+    <section className="relative w-screen h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden ml-[calc(-50vw+50%)]">
       {/* Video Background */}
       <video
         className="absolute inset-0 w-full h-full object-cover"

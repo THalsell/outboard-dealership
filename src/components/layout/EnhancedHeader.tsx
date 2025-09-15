@@ -9,7 +9,6 @@ export default function EnhancedHeader() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileDropdowns, setMobileDropdowns] = useState<string[]>([]);
   const [mobileNestedDropdowns, setMobileNestedDropdowns] = useState<string[]>([]);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
 
@@ -106,38 +105,30 @@ export default function EnhancedHeader() {
     };
   }, []);
 
-  // Scroll detection logic - only applies to non-home pages
-  // Scroll detection logic - only applies to non-home pages
+  // Remove scroll-based hiding - keep header always visible
+  // Close mobile menu on scroll for better UX, but don't hide the header
   useEffect(() => {
-    if (pathname === '/') {
-      return;
-    }
-
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Hide mobile menu when scrolling down (after 50px threshold)
-      if (currentScrollY > 50 && currentScrollY > lastScrollY) {
-        setMobileMenuOpen(false); // Close mobile menu when hiding
+      // Only close mobile menu when scrolling, don't hide the header
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
       }
-      
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY, pathname]);
+  }, [mobileMenuOpen]);
   return (
     <>
-      <header className="bg-gray-900 shadow-md relative z-50">
+      <header className="bg-gray-900 shadow-md fixed top-[95px] sm:top-[52px] left-0 right-0 z-50 overflow-x-hidden">
         {/* Main Navigation */}
-        <nav className="container mx-auto px-4 py-3">
-          <div className="flex justify-between items-center">
+        <nav className="w-full max-w-full px-2 sm:px-4 py-3">
+          <div className="flex justify-between items-center w-full max-w-full">
             {/* Hamburger Menu for Mobile */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="desktop-900:hidden p-2 hover:bg-white/10 rounded-lg transition-colors focus:outline-none text-white"
+              className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors focus:outline-none text-white dark:text-white"
               aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
@@ -155,14 +146,14 @@ export default function EnhancedHeader() {
             {pathname !== '/' && (
               <Link 
                 href="/" 
-                className="desktop-900:hidden text-xl font-bold text-white font-londrina"
+                className="lg:hidden text-xl font-bold text-white dark:text-white font-londrina"
               >
                 OMS
               </Link>
             )}
 
             {/* Desktop Navigation */}
-            <div className="hidden desktop-900:flex items-center gap-6 mx-auto">
+            <div className="hidden lg:flex items-center gap-6 mx-auto">
               {navigation.map((item) => (
                 <div
                   key={item.name}
@@ -172,7 +163,7 @@ export default function EnhancedHeader() {
                 >
                   {item.href === '#' ? (
                     <span
-                      className="text-white font-medium py-2 flex items-center gap-1 cursor-pointer text-lg"
+                      className="text-white dark:text-white font-medium py-2 flex items-center gap-1 cursor-pointer text-lg"
                     >
                       {item.name}
                       {item.dropdown && (
@@ -184,7 +175,7 @@ export default function EnhancedHeader() {
                   ) : (
                     <Link
                       href={item.href}
-                      className="text-white font-medium py-2 flex items-center gap-1 text-lg"
+                      className="text-white dark:text-white font-medium py-2 flex items-center gap-1 text-lg"
                     >
                       {item.name}
                       {item.dropdown && (
@@ -273,7 +264,7 @@ export default function EnhancedHeader() {
           {mobileMenuOpen && (
             <div 
               id="mobile-menu" 
-              className="desktop-900:hidden py-4 border-t"
+              className="lg:hidden py-4 border-t border-gray-200 bg-white"
               role="navigation"
               aria-label="Mobile navigation"
             >
@@ -283,7 +274,7 @@ export default function EnhancedHeader() {
                     <div className="flex items-center justify-between">
                       {item.href === '#' ? (
                         <span
-                          className="flex-1 text-gray-700 hover:text-gray-900 font-medium py-3 px-4 cursor-pointer"
+                          className="flex-1 text-deep-blue hover:text-blue-700 font-medium py-3 px-4 cursor-pointer"
                           onClick={() => {
                             if (item.dropdown) {
                               toggleMobileDropdown(item.name);
@@ -295,7 +286,7 @@ export default function EnhancedHeader() {
                       ) : (
                         <Link
                           href={item.href}
-                          className="flex-1 text-gray-700 hover:text-gray-900 font-medium py-3 px-4"
+                          className="flex-1 text-deep-blue hover:text-blue-700 font-medium py-3 px-4"
                           onClick={() => {
                             if (!item.dropdown) {
                               setMobileMenuOpen(false);
@@ -356,7 +347,7 @@ export default function EnhancedHeader() {
                               <div key={subItem.name}>
                                 <div className="flex items-center justify-between">
                                   <span
-                                    className="flex-1 text-gray-600 hover:text-gray-900 py-2 px-4 text-sm cursor-pointer"
+                                    className="flex-1 text-deep-blue hover:text-blue-700 py-2 px-4 text-sm cursor-pointer"
                                     onClick={() => toggleMobileNestedDropdown(subItem.name)}
                                   >
                                     {subItem.name}
@@ -384,7 +375,7 @@ export default function EnhancedHeader() {
                                       <Link
                                         key={brand.name}
                                         href={brand.href}
-                                        className="block text-gray-500 hover:text-gray-900 py-2 px-4 text-xs"
+                                        className="block text-deep-blue hover:text-blue-700 py-2 px-4 text-xs"
                                         onClick={() => setMobileMenuOpen(false)}
                                       >
                                         {brand.name}
@@ -400,7 +391,7 @@ export default function EnhancedHeader() {
                             <Link
                               key={subItem.name}
                               href={subItem.href}
-                              className="block text-gray-600 hover:text-gray-900 py-2 px-4 text-sm"
+                              className="block text-deep-blue hover:text-blue-700 py-2 px-4 text-sm"
                               onClick={() => setMobileMenuOpen(false)}
                             >
                               {subItem.name}

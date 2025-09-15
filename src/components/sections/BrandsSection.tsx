@@ -20,7 +20,7 @@ export default function BrandsSection() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2">Authorized Dealer For</h2>
             <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
           </div>
-          <p className="text-xl text-charcoal opacity-80">Industry-leading manufacturers</p>
+          <p className="text-lg sm:text-xl text-charcoal opacity-80 px-2">Industry-leading manufacturers</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
           {brands.map((brand, index) => (

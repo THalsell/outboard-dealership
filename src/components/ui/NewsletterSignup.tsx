@@ -69,21 +69,21 @@ export default function NewsletterSignup({
         <h3 className="text-lg font-semibold text-white">{title}</h3>
         <p className="text-gray-300 text-sm">{description}</p>
         
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="flex gap-2">
+        <form onSubmit={handleSubmit} className="space-y-3 max-w-full">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:border-white"
+              className="flex-1 min-w-0 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:border-white"
               disabled={isSubmitting}
               required
             />
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-deep-blue hover:bg-[#0a3a6e] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-2 bg-deep-blue hover:bg-[#0a3a6e] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
               {isSubmitting ? '...' : 'Subscribe'}
             </button>

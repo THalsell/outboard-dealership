@@ -14,8 +14,8 @@ export default function Home() {
 
   return (
     <>
-      {/* Logo positioned to appear between TopBanner and EnhancedHeader */}
-      <div style={{ position: 'relative', top: '-1px', zIndex: 40 }}>
+      {/* Logo positioned below fixed headers - responsive margin */}
+      <div className="relative z-30 -mt-[70px] sm:-mt-[60px]">
         <Logo />
       </div>
       
