@@ -121,10 +121,10 @@ export default function EnhancedHeader() {
   }, [mobileMenuOpen]);
   return (
     <>
-      <header className="bg-gray-900 shadow-md fixed top-[115px] sm:top-[60px] left-0 right-0 z-[100] overflow-visible">
+      <header className="bg-gray-900 shadow-md fixed top-[115px] sm:top-[60px] left-0 right-0 z-[100] overflow-hidden">
         {/* Main Navigation */}
-        <nav className="w-full max-w-full px-2 sm:px-4 py-3">
-          <div className="flex justify-between items-center w-full max-w-full">
+        <nav className="w-full px-2 sm:px-4 py-3">
+          <div className="flex justify-between items-center w-full">
             {/* Hamburger Menu for Mobile */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -188,7 +188,7 @@ export default function EnhancedHeader() {
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && activeDropdown === item.name && (
-                    <div className={`fixed top-[160px] sm:top-[108px] ${item.name === 'Outboard Motors' ? 'w-96' : 'w-72'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-[9999]`} style={{ left: 'calc(50% - 200px)' }}>
+                    <div className={`fixed top-[160px] sm:top-[108px] ${item.name === 'Outboard Motors' ? 'w-96 max-w-[95vw]' : 'w-72 max-w-[95vw]'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-[9999] left-2 right-2 mx-auto`} style={{ left: 'max(8px, calc(50% - 200px))', right: 'max(8px, calc(50% - 200px))' }}>
                       {item.name === 'Outboard Motors' ? (
                         // Special layout for Inventory dropdown
                         <div className="grid grid-cols-2 gap-1">
@@ -197,9 +197,9 @@ export default function EnhancedHeader() {
                             <div className="px-3 py-1 text-xs font-semibold text-gray-900 uppercase tracking-wider border-b border-gray-100 mb-2">
                               Browse Motors
                             </div>
-                            <a href="/inventory" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
+                            <Link href="/inventory" className="block px-3 py-2 hover:text-gray-900 transition-colors group">
                               <div className="font-medium text-gray-600 group-hover:text-gray-900 text-sm">All Motors</div>
-                            </a>
+                            </Link>
                             <div className="px-3 py-1 text-xs font-medium text-gray-900 uppercase tracking-wider mt-3 mb-1">
                               By Condition
                             </div>

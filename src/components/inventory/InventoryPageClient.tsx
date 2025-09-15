@@ -38,13 +38,13 @@ export default function InventoryPageClient() {
   };
 
   // Get URL parameters for filtering
-  const urlFilters: URLFilters = {
+  const urlFilters: URLFilters = useMemo(() => ({
     hp: searchParams.get('hp') || undefined,
     brand: searchParams.get('brand') || undefined,
     condition: searchParams.get('condition') || undefined,
     status: searchParams.get('status') || undefined,
     powerCategory: searchParams.get('powerCategory') || undefined,
-  };
+  }), [searchParams]);
 
   // Prevent background scroll when mobile filters are open
   useEffect(() => {
@@ -196,12 +196,14 @@ export default function InventoryPageClient() {
       setLastAppliedUrlParams(currentParamString);
     }
   }, [
+    urlFilters,
     urlFilters.brand,
     urlFilters.condition,
     urlFilters.hp,
     urlFilters.status,
     urlFilters.powerCategory,
     urlFiltersApplied,
+    lastAppliedUrlParams,
     updateFilter
   ]); // Include all necessary dependencies
 

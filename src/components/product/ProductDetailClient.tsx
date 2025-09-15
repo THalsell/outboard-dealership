@@ -172,10 +172,9 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   };
 
   return (
-    <div className="bg-white min-h-screen">
-
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="lg:grid lg:grid-cols-2 lg:gap-32 lg:items-start">
+    <div className="min-h-screen bg-white -mt-20 sm:-mt-16 pt-24 sm:pt-20 overflow-x-hidden">
+      <div className="mx-auto max-w-7xl px-4 pt-6 pb-8 sm:px-6 lg:px-8">
+        <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 lg:items-start">
           {/* Image gallery */}
           <div className="flex flex-col">
             {product.images.length > 0 ? (
@@ -223,7 +222,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   
                   {/* Image counter */}
                   {product.images.length > 1 && (
-                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-deep-blue px-3 py-1 rounded-full text-sm">
                       {selectedImageIndex + 1} / {product.images.length}
                     </div>
                   )}
@@ -239,7 +238,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         index === selectedImageIndex
                           ? 'ring-2 ring-gray-900'
                           : 'ring-1 ring-gray-300 hover:ring-gray-400',
-                        'relative aspect-square overflow-hidden rounded-lg bg-gray-50 transition-all duration-200'
+                        'relative aspect-square overflow-hidden rounded-lg bg-gray-200 transition-all duration-200'
                       )}
                     >
                       <Image
@@ -271,7 +270,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <div className="mt-10 lg:mt-0 lg:pl-24 lg:border-l lg:border-gray-200">
             {/* Product title and brand */}
             <div className="mb-6">
-              <h1 className="text-3xl font-bold tracking-tight text-deep-blue sm:text-4xl lg:text-5xl">{product.title}</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-text-blue sm:text-4xl lg:text-5xl">{product.title}</h1>
               
               {/* Reviews */}
               <div className="mt-4 flex items-center space-x-4">
@@ -279,13 +278,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   {[0, 1, 2, 3, 4].map((rating) => (
                     <StarIcon
                       key={rating}
-                      className="h-6 w-6 text-gray-300"
+                      className="h-6 w-6 text-gray-400"
                       aria-hidden="true"
                     />
                   ))}
                 </div>
                 <span className="text-lg text-gray-500">No reviews yet</span>
-                <span className="text-gray-300">|</span>
+                <span className="text-deep-blue">|</span>
                 <button className="text-lg text-blue-600 hover:text-blue-700 font-medium">
                   Write a review
                 </button>
@@ -295,7 +294,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {/* Price */}
             <div className="mb-8 p-6">
               <div className="flex items-center space-x-4">
-                <span className="text-4xl font-bold text-deep-blue lg:text-5xl">
+                <span className="text-4xl font-bold text-text-blue lg:text-5xl">
                   ${price.toLocaleString()}
                 </span>
                 {hasDiscount && (
@@ -343,7 +342,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       className={classNames(
                         variant.available
                           ? 'cursor-pointer bg-white hover:bg-gray-50 border-gray-200'
-                          : 'cursor-not-allowed bg-gray-50 text-gray-400 border-gray-200',
+                          : 'cursor-not-allowed bg-gray-200 text-gray-400 border-gray-200',
                         index === selectedVariantIndex ? 'ring-2 ring-deep-blue border-deep-blue bg-blue-50' : '',
                         'relative flex items-center justify-between rounded-xl border p-4 text-sm font-medium transition-all duration-200 focus:outline-none shadow-sm'
                       )}
@@ -373,15 +372,15 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
             {/* Description */}
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-deep-blue mb-3">Description</h3>
-              <p className="text-gray-700 leading-relaxed text-lg">{product.description}</p>
+              <h3 className="text-xl font-semibold text-text-blue mb-3">Description</h3>
+              <p className="text-text-blue leading-relaxed text-lg">{product.description}</p>
             </div>
 
             {/* Lift Gate Info Link */}
             <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
               <button
                 onClick={() => setShowLiftGateModal(true)}
-                className="flex items-center gap-2 text-blue-700 hover:text-blue-900 font-medium"
+                className="flex items-center gap-2 text-blue-700 hover:text-deep-blue font-medium"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -415,14 +414,65 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </div>
         </div>
 
-        {/* Specifications Tabs */}
+        {/* Specifications */}
         <div className="mt-16">
           <div className="space-y-8">
-            {/* Tabbed Product Information */}
-            <div className="mb-8">
+            {/* Mobile: Single Combined Table */}
+            <div className="block md:hidden mb-8">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-deep-blue">Specifications</h2>
+              </div>
+              
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div>
+                  <table className="w-full table-fixed">
+                    <thead>
+                      <tr className="bg-gray-300">
+                        <th className="text-left p-3 font-semibold text-deep-blue w-1/2 text-lg">
+                          
+                        </th>
+                        <th className="text-left p-3 font-semibold text-deep-blue w-1/2 text-lg">
+                          
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tabCategories.map((tab) => 
+                        tab.categories.map((category) => (
+                          <React.Fragment key={`${tab.id}-${category.title}`}>
+                            <tr className="bg-gray-300 border-b border-gray-400">
+                              <td colSpan={2} className="p-3 font-bold text-deep-blue text-2xl text-center">
+                                {category.title}
+                              </td>
+                            </tr>
+                            {category.specs.map((spec, specIndex) => {
+                              const value = getSpecValue(product, spec);
+                              const displayValue = value || '-';
+                              return (
+                                <tr key={`${tab.id}-${spec}`} className={`${specIndex % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} border-b border-gray-400`}>
+                                  <td className="p-3 font-semibold text-deep-blue text-lg break-words border-r border-gray-300 uppercase">
+                                    {spec}
+                                  </td>
+                                  <td className="p-3 text-deep-blue font-medium text-lg break-words border-l border-gray-300">
+                                    {displayValue}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </React.Fragment>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop: Tabbed Product Information */}
+            <div className="hidden md:block mb-8">
               {/* Tab Navigation */}
               <div className="border-b border-gray-200">
-                <nav className="-mb-px flex justify-center space-x-12">
+                <nav className="-mb-px flex space-x-4 lg:space-x-8 justify-center px-4">
                   {tabCategories.map((tab) => (
                     <button
                       key={tab.id}
@@ -430,8 +480,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                       className={classNames(
                         activeTab === tab.id
                           ? 'text-deep-blue border-deep-blue'
-                          : 'text-gray-600 border-transparent hover:text-gray-800 hover:border-gray-300',
-                        'whitespace-nowrap py-4 px-6 border-b-2 font-bold text-xl uppercase transition-colors'
+                          : 'text-gray-600 border-transparent hover:text-deep-blue hover:border-gray-300',
+                        'whitespace-nowrap py-4 px-3 lg:px-4 border-b-2 font-bold text-lg lg:text-lg uppercase transition-colors'
                       )}
                     >
                       {tab.title}
@@ -450,125 +500,46 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                           <h2 className="text-2xl font-bold text-deep-blue">{tab.title}</h2>
                         </div>
                             
-                            {/* Mobile: Single column layout */}
-                            <div className="lg:hidden overflow-x-auto">
-                              <table className="w-full">
-                                <thead>
-                                  <tr className="bg-slate-800">
-                                    <th className="text-left p-4 font-semibold text-white min-w-[200px]">
-                                      
-                                    </th>
-                                    <th className="text-left p-4 font-semibold text-white min-w-[250px]">
-                                      
-                                    </th>
+                        {/* Single table for desktop */}
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="bg-gray-300">
+                                <th className="text-left p-4 font-semibold text-deep-blue min-w-[200px] text-lg">
+                                  
+                                </th>
+                                <th className="text-left p-4 font-semibold text-deep-blue min-w-[250px] text-lg">
+                                  
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {tab.categories.map((category) => (
+                                <React.Fragment key={category.title}>
+                                  <tr className="bg-gray-300 border-b border-gray-400">
+                                    <td colSpan={2} className="p-4 font-bold text-deep-blue text-2xl text-center">
+                                      {category.title}
+                                    </td>
                                   </tr>
-                                </thead>
-                                <tbody>
-                                  {tab.categories.map((category) => (
-                                    <React.Fragment key={category.title}>
-                                      <tr className="bg-slate-800">
-                                        <td colSpan={2} className="p-4 font-bold text-white text-lg text-center">
-                                          {category.title}
+                                  {category.specs.map((spec, specIndex) => {
+                                    const value = getSpecValue(product, spec);
+                                    const displayValue = value || '-';
+                                    return (
+                                      <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'} border-b border-gray-400`}>
+                                        <td className="p-4 font-semibold text-deep-blue text-lg border-r border-gray-300 uppercase">
+                                          {spec}
+                                        </td>
+                                        <td className="p-4 text-deep-blue font-medium text-lg border-l border-gray-300">
+                                          {displayValue}
                                         </td>
                                       </tr>
-                                      {category.specs.map((spec, specIndex) => {
-                                        const value = getSpecValue(product, spec);
-                                        const displayValue = value || '-';
-                                        return (
-                                          <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
-                                            <td className="p-4 font-medium text-gray-300">
-                                              {spec}
-                                            </td>
-                                            <td className="p-4 text-white font-medium">
-                                              {displayValue}
-                                            </td>
-                                          </tr>
-                                        );
-                                      })}
-                                    </React.Fragment>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-
-                            {/* Desktop: Two separate tables with gap */}
-                            <div className="hidden lg:block">
-                              <div className="flex justify-between gap-12">
-                                {/* Left Table - Basic Information */}
-                                <div className="flex-1 bg-slate-700 rounded-lg overflow-hidden">
-                                  <div className="bg-slate-800 px-6 py-4">
-                                    <h3 className="text-lg font-bold text-white text-center">{tab.categories[0]?.title}</h3>
-                                  </div>
-                                  <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                      <thead>
-                                        <tr className="bg-slate-800">
-                                          <th className="text-left p-4 font-semibold text-white">
-                                            
-                                          </th>
-                                          <th className="text-left p-4 font-semibold text-white">
-                                            
-                                          </th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {tab.categories[0]?.specs.map((spec, specIndex) => {
-                                          const value = getSpecValue(product, spec);
-                                          const displayValue = value || '-';
-                                          return (
-                                            <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
-                                              <td className="p-4 font-medium text-gray-300">
-                                                {spec}
-                                              </td>
-                                              <td className="p-4 text-white font-medium">
-                                                {displayValue}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-
-                                {/* Right Table - Engine Specifications */}
-                                <div className="flex-1 bg-slate-700 rounded-lg overflow-hidden">
-                                  <div className="bg-slate-800 px-6 py-4">
-                                    <h3 className="text-lg font-bold text-white text-center">{tab.categories[1]?.title}</h3>
-                                  </div>
-                                  <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                      <thead>
-                                        <tr className="bg-slate-800">
-                                          <th className="text-left p-4 font-semibold text-white">
-                                            
-                                          </th>
-                                          <th className="text-left p-4 font-semibold text-white">
-                                            
-                                          </th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        {tab.categories[1]?.specs.map((spec, specIndex) => {
-                                          const value = getSpecValue(product, spec);
-                                          const displayValue = value || '-';
-                                          return (
-                                            <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-slate-700' : 'bg-slate-600'}`}>
-                                              <td className="p-4 font-medium text-gray-300">
-                                                {spec}
-                                              </td>
-                                              <td className="p-4 text-white font-medium">
-                                                {displayValue}
-                                              </td>
-                                            </tr>
-                                          );
-                                        })}
-                                      </tbody>
-                                    </table>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                                    );
+                                  })}
+                                </React.Fragment>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     )
                   ))}
@@ -580,48 +551,48 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       </div>
 
       {/* You May Also Like Section - Outside main container */}
-      <div className="py-16">
+      <div className="py-8 sm:py-12 lg:py-16 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Divider with centered text */}
-          <div className="relative mb-12">
+          <div className="relative mb-8 sm:mb-10 lg:mb-12">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-white px-6 py-2 text-2xl font-bold text-deep-blue">
+              <span className="bg-white px-4 sm:px-6 py-2 text-xl sm:text-2xl font-bold text-deep-blue">
                 You May Also Like
               </span>
             </div>
           </div>
 
           {/* Related Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {/* Related products from actual inventory */}
             {relatedProducts.length > 0 ? (
               relatedProducts.map((relatedProduct) => (
                 <Link 
                   key={relatedProduct.id} 
                   href={`/inventory/${relatedProduct.slug}`}
-                  className="p-6 hover:bg-gray-50 rounded-lg transition-all duration-200 h-full flex flex-col"
+                  className="p-4 sm:p-6 hover:bg-gray-50 rounded-lg transition-all duration-200 h-full flex flex-col"
                 >
-                  <div className="aspect-square bg-gray-50 rounded-lg mb-4 flex items-center justify-center">
+                  <div className="aspect-square bg-white rounded-lg mb-3 sm:mb-4 flex items-center justify-center">
                     <Image
                       src={relatedProduct.images[0]?.src || '/placeholder-motor.svg'}
                       alt={relatedProduct.title}
                       width={200}
                       height={200}
-                      className="object-contain p-4"
+                      className="object-contain p-2 sm:p-4"
                     />
                   </div>
-                  <h4 className="text-sm font-medium text-deep-blue mb-3 line-clamp-2 leading-tight flex-grow">
+                  <h4 className="text-sm sm:text-base font-medium text-deep-blue mb-2 sm:mb-3 line-clamp-2 leading-tight flex-grow">
                     {relatedProduct.title}
                   </h4>
-                  <p className="text-lg font-bold text-deep-blue mb-4">
+                  <p className="text-base sm:text-lg font-bold text-deep-blue mb-3 sm:mb-4">
                     ${relatedProduct.priceRange.min.toLocaleString()}
                     {relatedProduct.priceRange.min !== relatedProduct.priceRange.max && 
                       ` - $${relatedProduct.priceRange.max.toLocaleString()}`}
                   </p>
-                  <div className="w-full bg-deep-blue hover:bg-[#0a3a6e] text-white text-sm font-medium py-3 px-4 transition-colors text-center mt-auto">
+                  <div className="w-full bg-deep-blue hover:bg-[#0a3a6e] text-white text-xs sm:text-sm font-medium py-2 sm:py-3 px-3 sm:px-4 transition-colors text-center mt-auto">
                     View Details
                   </div>
                 </Link>
@@ -639,8 +610,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       {/* Disclaimer */}
       <div className="py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h3 className="text-xs font-semibold text-gray-800 mb-2">Important Notice</h3>
-          <p className="text-xs text-gray-700 leading-relaxed">
+          <h3 className="text-xs font-semibold text-blue-900 mb-2">Important Notice</h3>
+          <p className="text-xs text-blue-900 leading-relaxed">
             <strong>Disclaimer:</strong> Images displayed on this site are for illustrative purposes only and may not accurately reflect the exact boat or outboard model available. Specifications, features, and configurations can vary. We strongly recommend reviewing all details with a member of our sales team to ensure clarity before purchase or deposit.
           </p>
         </div>
