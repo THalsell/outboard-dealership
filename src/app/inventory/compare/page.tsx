@@ -20,9 +20,9 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
     <div className="relative w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-2 bg-white border-2 border-gray-300 text-left text-gray-800 hover:bg-gray-50 hover:border-blue-400 transition-all flex justify-between items-center shadow-sm"
+        className="w-full p-2 bg-white border-2 border-gray-300 text-left text-gray-900 hover:bg-gray-50 hover:border-blue-400 transition-all flex justify-between items-center shadow-sm"
       >
-        <span className={selectedProduct ? 'text-gray-800 font-medium' : 'text-gray-500'}>
+        <span className={selectedProduct ? 'text-gray-900 font-medium' : 'text-gray-500'}>
           {selectedProduct ? `${selectedProduct.brand} ${selectedProduct.title} - ${selectedProduct.horsepower}HP` : placeholder}
         </span>
         <span className={`transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>▼</span>
@@ -35,7 +35,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
               onSelect(null);
               setIsOpen(false);
             }}
-            className="w-full p-2 text-left text-gray-500 hover:bg-gray-50 transition-colors border-b border-gray-200"
+            className="w-full p-2 text-left text-gray-500 hover:bg-gray-50 transition-colors border-b border-gray-300"
           >
             {placeholder}
           </button>
@@ -46,7 +46,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
                 onSelect(product);
                 setIsOpen(false);
               }}
-              className="w-full p-2 text-left text-gray-800 hover:bg-blue-50 transition-colors border-b border-gray-200 last:border-b-0"
+              className="w-full p-2 text-left text-gray-900 hover:bg-blue-50 transition-colors border-b border-gray-300 last:border-b-0"
             >
               <div className="font-semibold text-deep-blue">{product.brand} {product.title}</div>
               <div className="text-sm text-gray-600 mt-1">{product.horsepower}HP • ${product.variants[0]?.price?.toLocaleString()}</div>
@@ -96,9 +96,20 @@ export default function ComparePage() {
     if (key === 'Type') return product.type || '';
     if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '';
     if (key === 'Condition') return (product.condition || 'new').charAt(0).toUpperCase() + (product.condition || 'new').slice(1);
-    if (key === 'Stock Status') return product.inStock ? 'In Stock' : 'Out of Stock';
-    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.specs?.['Weight'] || product.specs?.['weight'] || product.specs?.['weight_lbs'] || '';
-    if (key === 'Shaft Length') return product.variants[0]?.option1Name?.toLowerCase().includes('shaft') ? product.variants[0].option1Value || '' : product.specs?.['Shaft Length'] || product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '';
+    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.weight && product.weight > 0 ? `${product.weight} lbs` : product.specs?.['Weight'] || product.specs?.['weight'] || product.specs?.['weight_lbs'] || '';
+    if (key === 'Shaft Length') {
+      if (product.shaftLength) return product.shaftLength;
+      if (product.variants[0]?.option1Name?.toLowerCase().includes('shaft')) {
+        return product.variants[0].option1Value || '';
+      }
+      return product.specs?.['Shaft Length'] || product.specs?.['custom.shaft_length'] || product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '';
+    }
+    if (key === 'Recommended Cooling') return product.specs?.['Cooling System'] || product.specs?.['cooling_system'] || '';
+    if (key === 'Starting Method') return product.specs?.['Starting System'] || product.specs?.['starting_system'] || '';
+    if (key === 'Fuel Induction') return product.specs?.['Fuel Induction System'] || product.specs?.['fuel_induction_system'] || '';
+    if (key === 'Lubrication') return product.specs?.['Lubrication System'] || product.specs?.['lubrication_system'] || '';
+    if (key === 'Full Throttle RPM Range') return product.specs?.['Throttle Control'] || product.specs?.['throttle_control'] || '';
+    if (key === 'Gear Shift') return product.specs?.['Shift System'] || product.specs?.['shift_system'] || '';
     
     // Try multiple key variations for specs lookup
     return product.specs?.[key] || 
@@ -113,11 +124,11 @@ export default function ComparePage() {
   const specCategories = [
     {
       title: 'Basic Information',
-      specs: ['Price', 'Horsepower', 'Brand', 'Model', 'SKU', 'Type', 'Power Category', 'Condition', 'Stock Status']
+      specs: ['Price', 'Horsepower', 'Brand', 'Model', 'SKU', 'Type', 'Power Category', 'Condition']
     },
     {
       title: 'Engine Specifications',
-      specs: ['Displacement', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
+      specs: ['Displacement', 'Engine Type', 'Recommended Cooling', 'Ignition', 'Starting Method', 'Fuel Induction', 'Compression Ratio', 'Bore x Stroke']
     },
     {
       title: 'Physical Dimensions & Weight',
@@ -129,11 +140,11 @@ export default function ComparePage() {
     },
     {
       title: 'Fuel & Lubrication',
-      specs: ['Fuel Type', 'Recommended Oil', 'Lubrication System']
+      specs: ['Fuel Type', 'Recommended Oil', 'Lubrication']
     },
     {
       title: 'Controls & Features',
-      specs: ['Controls', 'Throttle Control', 'Steering', 'Shift System']
+      specs: ['Controls', 'Full Throttle RPM Range', 'Steering', 'Gear Shift']
     },
     {
       title: 'Warranty & Service',
@@ -142,7 +153,7 @@ export default function ComparePage() {
   ];
 
   if (loading) {
-    return <div className="min-h-screen bg-gray-50 p-6"><div className="text-gray-800 text-center py-16 text-lg">Loading...</div></div>;
+    return <div className="min-h-screen bg-gray-50 p-6"><div className="text-gray-900 text-center py-16 text-lg">Loading...</div></div>;
   }
 
   const availableProducts = allProducts.filter(product => 
@@ -150,30 +161,13 @@ export default function ComparePage() {
   );
 
   return (
-    <div 
-      className="min-h-screen relative"
-      style={{
-        background: '#1e293b'
-      }}
-    >
-      {/* Fixed background layer */}
-      <div 
-        className="fixed inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/background.png)',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center',
-          backgroundSize: 'cover',
-          backgroundColor: '#1e293b'
-        }}
-      ></div>
-      
+    <div className="min-h-screen bg-gradient-to-br from-sky-200 via-blue-300 to-blue-500">
       {/* Content wrapper */}
-      <div className="relative z-20 w-full px-4 sm:px-6 lg:px-8 pt-[180px] sm:pt-[120px] pb-8 sm:pb-12">
+      <div className="w-full px-4 sm:px-6 lg:px-8 pt-[180px] sm:pt-[120px] pb-8 sm:pb-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">Engine Comparison</h1>
-          <p className="text-white/90 mb-6 sm:mb-8 text-base sm:text-lg drop-shadow">Select up to 3 engines to compare specifications side-by-side</p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-deep-blue mb-4">Engine Comparison</h1>
+          <p className="text-gray-700 mb-6 sm:mb-8 text-base sm:text-lg xl:text-xl 2xl:text-2xl">Select up to 3 engines to compare specifications side-by-side</p>
         </div>
 
         {/* Product Selection Section - simplified */}
@@ -210,13 +204,13 @@ export default function ComparePage() {
                       </div>
                       <Link
                         href={`/inventory/${product.handle}`}
-                        className="text-white hover:text-white/80 text-sm font-medium underline hover:no-underline transition-colors drop-shadow"
+                        className="text-deep-blue hover:text-blue-700 text-sm font-medium underline hover:no-underline transition-colors"
                       >
                         View Details
                       </Link>
                     </div>
                   ) : (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20">
+                    <div className="bg-white rounded-lg p-4 border border-gray-300 shadow-md">
                       <div className="text-center">
                         <ProductDropdown
                           products={availableProducts}
@@ -236,7 +230,7 @@ export default function ComparePage() {
         {/* Mobile Card-Based Comparison - visible only on small screens */}
         {selectedProducts.some(product => product !== null) && (
           <div className="block lg:hidden mb-8">
-            <div className="bg-white p-6 shadow-lg border border-gray-200">
+            <div className="bg-white p-6 shadow-lg border border-gray-300">
               <h2 className="text-2xl font-bold text-deep-blue text-center mb-6">Compare Engines</h2>
 
               {/* Key Specifications Comparison */}
@@ -246,27 +240,31 @@ export default function ComparePage() {
                     {[
                       'Price',
                       'Horsepower',
-                      'Brand', 
+                      'Brand',
                       'Model',
                       'Type',
                       'Power Category',
                       'Condition',
-                      'Stock Status',
                       'Displacement',
                       'Engine Type',
+                      'Recommended Cooling',
+                      'Starting Method',
                       'Weight',
-                      'Shaft Length'
+                      'Shaft Length',
+                      'Fuel Induction',
+                      'Full Throttle RPM Range',
+                      'Gear Shift'
                     ].map((spec, specIndex) => {
                       const hasValues = selectedProducts.slice(0, 2).some(product => product && getSpecValue(product, spec) !== '' && getSpecValue(product, spec) !== '-');
                       if (!hasValues) return null;
                       
                       return (
-                        <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}>
-                          <td className="p-3 font-semibold text-gray-700 text-lg border-r border-gray-300 uppercase">
+                        <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'}`}>
+                          <td className="p-3 font-semibold text-gray-900 text-lg border-r border-gray-300 uppercase">
                             {spec}
                           </td>
                           {selectedProducts.slice(0, 2).map((product, index) => (
-                            <td key={index} className="p-3 text-center text-gray-800 text-base font-medium border-l border-gray-300">
+                            <td key={index} className="p-3 text-left text-gray-900 text-base font-medium border-l border-gray-300">
                               {product ? (getSpecValue(product, spec) || '-') : '-'}
                             </td>
                           ))}
@@ -283,7 +281,7 @@ export default function ComparePage() {
         {/* Floating Motor Images - Desktop */}
         {selectedProducts.some(product => product !== null) && (
           <div className="hidden lg:block mb-8">
-            <div className="grid grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-3 gap-8 max-w-6xl xl:max-w-7xl 2xl:max-w-full mx-auto">
               {selectedProducts.map((product, index) => (
                 <div key={index} className="text-center">
                   {product ? (
@@ -299,13 +297,13 @@ export default function ComparePage() {
                       </div>
                       <Link
                         href={`/inventory/${product.handle}`}
-                        className="inline-block text-white hover:text-white/80 text-sm font-medium underline hover:no-underline transition-colors drop-shadow"
+                        className="inline-block text-deep-blue hover:text-blue-700 text-sm font-medium underline hover:no-underline transition-colors"
                       >
                         View Details
                       </Link>
                     </div>
                   ) : (
-                    <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                    <div className="bg-white rounded-lg p-6 border border-gray-300 shadow-md">
                       <div className="text-center">
                         <ProductDropdown
                           products={availableProducts}
@@ -324,22 +322,22 @@ export default function ComparePage() {
 
         {/* Desktop Comparison Table - hidden on mobile */}
         {selectedProducts.some(product => product !== null) && (
-          <div className="hidden lg:block bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400 overflow-hidden shadow-xl max-w-6xl mx-auto">
-            <div className="bg-white px-4 py-3 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-deep-blue text-center">Detailed Specifications</h2>
+          <div className="hidden lg:block bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400 overflow-hidden shadow-xl max-w-6xl xl:max-w-7xl 2xl:max-w-full mx-auto">
+            <div className="bg-white px-4 py-4 xl:py-5 border-b border-gray-300">
+              <h2 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-deep-blue text-center">Specifications</h2>
             </div>
             
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-100">
-                    <th className="text-left p-2 font-semibold text-gray-800 text-sm min-w-[160px] sticky left-0 bg-gray-100 z-10 border-b-2 border-gray-300">
-                      Specification
+                  <tr className="bg-gray-100 border-b-2 border-gray-300">
+                    <th className="text-left p-2 xl:p-3 font-semibold text-gray-900 text-sm xl:text-base min-w-[160px] xl:min-w-[200px] sticky left-0 bg-gray-100 z-10 border-r border-gray-300">
+                      
                     </th>
                     {selectedProducts.map((product, index) => (
-                      <th key={index} className="p-2 text-center min-w-[200px] border-l border-gray-300 bg-gray-100">
+                      <th key={index} className={`p-2 xl:p-3 text-center min-w-[200px] xl:min-w-[300px] 2xl:min-w-[400px] border-l border-gray-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}`}>
                         {product ? (
-                          <span className="text-gray-800 font-semibold text-sm">
+                          <span className="text-gray-900 font-semibold text-sm xl:text-base">
                             Engine {index + 1}
                           </span>
                         ) : (
@@ -351,15 +349,15 @@ export default function ComparePage() {
                 </thead>
                 <tbody>
                   {(() => {
-                    // Flatten all specs from all categories into one list
-                    const allSpecs = specCategories.flatMap(category => category.specs);
-                    return allSpecs.map((spec, specIndex) => (
-                      <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}>
-                        <td className="p-2 font-semibold text-gray-700 text-base sticky left-0 bg-inherit z-10 border-r border-gray-200 uppercase">
+                    // Flatten all specs from all categories into one list, excluding Stock Status
+                    const allSpecs = specCategories.flatMap(category => category.specs).filter(spec => spec !== 'Stock Status');
+                    return allSpecs.map((spec) => (
+                      <tr key={spec} className="bg-white border-b border-gray-300">
+                        <td className="p-2 xl:p-3 font-semibold text-gray-900 text-base xl:text-lg sticky left-0 bg-gray-100 z-10 border-b border-r border-gray-400 uppercase">
                           {spec}
                         </td>
                         {selectedProducts.map((product, index) => (
-                          <td key={index} className="p-2 text-center text-gray-800 text-sm font-medium border-l border-gray-300">
+                          <td key={index} className={`p-2 xl:p-3 text-left text-gray-900 text-sm xl:text-base font-medium border-l border-gray-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}`}>
                             {product ? (getSpecValue(product, spec) || '-') : '-'}
                           </td>
                         ))}
@@ -372,14 +370,13 @@ export default function ComparePage() {
                     <>
                       {(() => {
                         const maxTags = Math.max(...selectedProducts.map(p => p?.tags?.length || 0));
-                        const allSpecs = specCategories.flatMap(category => category.specs);
                         return Array.from({ length: maxTags }, (_, i) => (
-                          <tr key={`feature-${i}`} className={`${(allSpecs.length + i) % 2 === 0 ? 'bg-white' : 'bg-gray-200'}`}>
-                            <td className="p-2 font-semibold text-gray-700 text-base sticky left-0 bg-inherit z-10 border-r border-gray-200 uppercase">
+                          <tr key={`feature-${i}`} className="bg-white border-b border-gray-300">
+                            <td className="p-2 xl:p-3 font-semibold text-gray-900 text-base xl:text-lg sticky left-0 bg-white z-10 border-r border-gray-300 uppercase">
                               Feature {i + 1}
                             </td>
                             {selectedProducts.map((product, index) => (
-                              <td key={index} className="p-2 text-center text-gray-800 text-sm font-medium border-l border-gray-300">
+                              <td key={index} className={`p-2 xl:p-3 text-left text-gray-900 text-sm xl:text-base font-medium border-l border-gray-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}`}>
                                 {product?.tags?.[i] || '-'}
                               </td>
                             ))}
@@ -408,7 +405,7 @@ export default function ComparePage() {
           >
             Clear All
           </button>
-          <Link 
+          <Link
             href="/inventory"
             className="text-white hover:text-white/80 font-semibold transition-colors text-lg drop-shadow"
           >

@@ -7,6 +7,7 @@ import { Product } from '@/lib/data/products';
 import { useCart } from '@/contexts/CartContext';
 import { StarIcon } from '@heroicons/react/20/solid';
 import LiftGateModal from '@/components/ui/LiftGateModal';
+import ProductSpecifications from '@/components/product/ProductSpecifications';
 
 interface ProductDetailClientProps {
   product: Product;
@@ -21,7 +22,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [showLiftGateModal, setShowLiftGateModal] = useState(false);
 
@@ -98,78 +98,6 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     }, 500);
   };
 
-  // 3-tab structure combining specification categories
-  const tabCategories = [
-    {
-      id: 'overview',
-      title: 'Overview & Engine',
-      categories: [
-        {
-          title: 'Basic Information',
-          specs: ['Horsepower', 'Brand', 'Model', 'SKU', 'Type', 'Power Category', 'Condition', 'Stock Status']
-        },
-        {
-          title: 'Engine Specifications', 
-          specs: ['Displacement', 'Engine Type', 'Cooling System', 'Ignition', 'Starting System', 'Fuel Induction System', 'Compression Ratio', 'Bore x Stroke']
-        }
-      ]
-    },
-    {
-      id: 'technical',
-      title: 'Technical & Performance',
-      categories: [
-        {
-          title: 'Physical Dimensions & Weight',
-          specs: ['Weight', 'Shaft Length']
-        },
-        {
-          title: 'Performance & Mechanical',
-          specs: ['Gear Ratio', 'Propeller', 'Tilt Positions', 'Power Trim & Tilt']
-        },
-        {
-          title: 'Fuel & Lubrication',
-          specs: ['Fuel Type', 'Recommended Oil', 'Lubrication System']
-        }
-      ]
-    },
-    {
-      id: 'features',
-      title: 'Features & Service',
-      categories: [
-        {
-          title: 'Controls & Features',
-          specs: ['Controls', 'Throttle Control', 'Steering', 'Shift System']
-        },
-        {
-          title: 'Warranty & Service',
-          specs: ['Warranty Period', 'Extended Warranty Available']
-        }
-      ]
-    }
-  ];
-
-  // Get specification value function from compare page
-  const getSpecValue = (product: Product, key: string): string => {
-    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '';
-    if (key === 'Brand') return product.brand || '';
-    if (key === 'Model') return product.title || '';
-    if (key === 'SKU') return product.variants[0]?.sku || '';
-    if (key === 'Type') return product.type || '';
-    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '';
-    if (key === 'Condition') return (product.condition || 'new').charAt(0).toUpperCase() + (product.condition || 'new').slice(1);
-    if (key === 'Stock Status') return product.inStock ? 'In Stock' : 'Out of Stock';
-    if (key === 'Weight') return product.variants[0]?.weight && product.variants[0].weight > 0 ? `${product.variants[0].weight} ${product.variants[0].weightUnit || 'lbs'}` : product.specs?.['Weight'] || product.specs?.['weight'] || product.specs?.['weight_lbs'] || '';
-    if (key === 'Shaft Length') return product.variants[0]?.option1Name?.toLowerCase().includes('shaft') ? product.variants[0].option1Value || '' : product.specs?.['Shaft Length'] || product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '';
-    
-    // Try multiple key variations for specs lookup
-    return product.specs?.[key] || 
-           product.specs?.[key.toLowerCase()] || 
-           product.specs?.[key.replace(/ /g, '_')] || 
-           product.specs?.[key.replace(/ /g, '_').toLowerCase()] ||
-           product.specs?.[key.replace(/\s+/g, '')] ||
-           product.specs?.[key.replace(/\s+/g, '').toLowerCase()] ||
-           '';
-  };
 
   return (
     <div className="min-h-screen bg-white -mt-20 sm:-mt-16 pt-24 sm:pt-20 overflow-x-hidden">
@@ -416,137 +344,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
         {/* Specifications */}
         <div className="mt-16">
-          <div className="space-y-8">
-            {/* Mobile: Single Combined Table */}
-            <div className="block md:hidden mb-8">
-              <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-deep-blue">Specifications</h2>
-              </div>
-              
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div>
-                  <table className="w-full table-fixed">
-                    <thead>
-                      <tr className="bg-gray-300">
-                        <th className="text-left p-3 font-semibold text-deep-blue w-1/2 text-lg">
-                          
-                        </th>
-                        <th className="text-left p-3 font-semibold text-deep-blue w-1/2 text-lg">
-                          
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {tabCategories.map((tab) => 
-                        tab.categories.map((category) => (
-                          <React.Fragment key={`${tab.id}-${category.title}`}>
-                            <tr className="bg-gray-300 border-b border-gray-400">
-                              <td colSpan={2} className="p-3 font-bold text-deep-blue text-2xl text-center">
-                                {category.title}
-                              </td>
-                            </tr>
-                            {category.specs.map((spec, specIndex) => {
-                              const value = getSpecValue(product, spec);
-                              const displayValue = value || '-';
-                              return (
-                                <tr key={`${tab.id}-${spec}`} className={`${specIndex % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} border-b border-gray-400`}>
-                                  <td className="p-3 font-semibold text-deep-blue text-lg break-words border-r border-gray-300 uppercase">
-                                    {spec}
-                                  </td>
-                                  <td className="p-3 text-deep-blue font-medium text-lg break-words border-l border-gray-300">
-                                    {displayValue}
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                          </React.Fragment>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop: Tabbed Product Information */}
-            <div className="hidden md:block mb-8">
-              {/* Tab Navigation */}
-              <div className="border-b border-gray-200">
-                <nav className="-mb-px flex space-x-4 lg:space-x-8 justify-center px-4">
-                  {tabCategories.map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={classNames(
-                        activeTab === tab.id
-                          ? 'text-deep-blue border-deep-blue'
-                          : 'text-gray-600 border-transparent hover:text-deep-blue hover:border-gray-300',
-                        'whitespace-nowrap py-4 px-3 lg:px-4 border-b-2 font-bold text-lg lg:text-lg uppercase transition-colors'
-                      )}
-                    >
-                      {tab.title}
-                    </button>
-                  ))}
-                </nav>
-              </div>
-
-              {/* Tab Content */}
-              <div className="mt-8">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                  {tabCategories.map((tab) => (
-                    activeTab === tab.id && (
-                      <div key={tab.id} className="w-full">
-                        <div className="text-center mb-8">
-                          <h2 className="text-2xl font-bold text-deep-blue">{tab.title}</h2>
-                        </div>
-                            
-                        {/* Single table for desktop */}
-                        <div className="overflow-x-auto">
-                          <table className="w-full">
-                            <thead>
-                              <tr className="bg-gray-300">
-                                <th className="text-left p-4 font-semibold text-deep-blue min-w-[200px] text-lg">
-                                  
-                                </th>
-                                <th className="text-left p-4 font-semibold text-deep-blue min-w-[250px] text-lg">
-                                  
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {tab.categories.map((category) => (
-                                <React.Fragment key={category.title}>
-                                  <tr className="bg-gray-300 border-b border-gray-400">
-                                    <td colSpan={2} className="p-4 font-bold text-deep-blue text-2xl text-center">
-                                      {category.title}
-                                    </td>
-                                  </tr>
-                                  {category.specs.map((spec, specIndex) => {
-                                    const value = getSpecValue(product, spec);
-                                    const displayValue = value || '-';
-                                    return (
-                                      <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-gray-200' : 'bg-gray-100'} border-b border-gray-400`}>
-                                        <td className="p-4 font-semibold text-deep-blue text-lg border-r border-gray-300 uppercase">
-                                          {spec}
-                                        </td>
-                                        <td className="p-4 text-deep-blue font-medium text-lg border-l border-gray-300">
-                                          {displayValue}
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}
-                                </React.Fragment>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    )
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          <ProductSpecifications product={product} selectedVariant={selectedVariant} />
         </div>
       </div>
 
