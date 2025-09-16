@@ -109,12 +109,12 @@ export default function FAQsPage() {
       </div>
 
       {/* FAQ Items */}
-      <div className="w-full">
+      <div className="max-w-4xl mx-auto">
         {faqs.map((faq, index) => (
           <div key={index} className="border-b border-gray-300">
             <button
               onClick={() => toggleFaq(index)}
-              className="w-full px-6 md:px-12 py-8 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+              className="w-full px-6 md:px-12 py-8 text-left flex justify-between items-center hover:bg-slate-300 transition-colors"
             >
               <h3 className="text-xl md:text-2xl font-medium text-gray-900 pr-8 leading-relaxed">{faq.question}</h3>
               <div className="flex-shrink-0">
@@ -140,17 +140,14 @@ export default function FAQsPage() {
 
       {/* Manufacturer FAQs */}
       <div className="py-20 px-6 md:px-12">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-deep-blue mb-12 text-center">Manufacturer Support</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
           {manufacturerFaqs.map((manufacturer, index) => (
-            <div key={index} className="border border-gray-300 p-6 hover:bg-gray-50 transition-colors text-center">
-              <h3 className="font-bold text-deep-blue text-xl md:text-2xl mb-4">{manufacturer.brand}</h3>
-              <p className="text-gray-900 text-base md:text-lg mb-4">{manufacturer.description}</p>
+            <div key={index} className="bg-slate-500 py-3 px-6 hover:bg-blue-400 transition-colors text-center rounded-full">
               <a
                 href={manufacturer.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center text-gray-900 hover:text-blue-700 font-medium transition-colors"
+                className="inline-flex items-center text-white hover:text-white/80 font-medium transition-colors"
               >
                 Visit {manufacturer.brand} FAQs
                 <svg
