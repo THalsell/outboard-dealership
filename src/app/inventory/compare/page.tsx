@@ -20,7 +20,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
     <div className="relative w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-2 bg-white border-2 border-gray-300 text-left text-gray-900 hover:bg-gray-50 hover:border-blue-400 transition-all flex justify-between items-center shadow-sm"
+        className="w-full p-2 bg-white border-2 border-gray-500 text-left text-gray-900 hover:bg-gray-50 hover:border-blue-400 transition-all flex justify-between items-center shadow-sm"
       >
         <span className={selectedProduct ? 'text-gray-900 font-medium' : 'text-gray-500'}>
           {selectedProduct ? `${selectedProduct.brand} ${selectedProduct.title} - ${selectedProduct.horsepower}HP` : placeholder}
@@ -29,13 +29,13 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
       </button>
       
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-300 shadow-xl z-50 max-h-72 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-500 shadow-xl z-50 max-h-72 overflow-y-auto">
           <button
             onClick={() => {
               onSelect(null);
               setIsOpen(false);
             }}
-            className="w-full p-2 text-left text-gray-500 hover:bg-gray-50 transition-colors border-b border-gray-300"
+            className="w-full p-2 text-left text-gray-500 hover:bg-gray-50 transition-colors border-b border-gray-500"
           >
             {placeholder}
           </button>
@@ -46,7 +46,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
                 onSelect(product);
                 setIsOpen(false);
               }}
-              className="w-full p-2 text-left text-gray-900 hover:bg-blue-50 transition-colors border-b border-gray-300 last:border-b-0"
+              className="w-full p-2 text-left text-gray-900 hover:bg-blue-50 transition-colors border-b border-gray-500 last:border-b-0"
             >
               <div className="font-semibold text-deep-blue">{product.brand} {product.title}</div>
               <div className="text-sm text-gray-600 mt-1">{product.horsepower}HP • ${product.variants[0]?.price?.toLocaleString()}</div>
@@ -161,7 +161,7 @@ export default function ComparePage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-200 via-blue-300 to-blue-500">
+    <div className="min-h-screen bg-gray-100">
       {/* Content wrapper */}
       <div className="w-full px-4 sm:px-6 lg:px-8 pt-[180px] sm:pt-[120px] pb-8 sm:pb-12">
         {/* Header */}
@@ -210,7 +210,7 @@ export default function ComparePage() {
                       </Link>
                     </div>
                   ) : (
-                    <div className="bg-white rounded-lg p-4 border border-gray-300 shadow-md">
+                    <div className="bg-white rounded-lg p-4 border border-gray-500 shadow-md">
                       <div className="text-center">
                         <ProductDropdown
                           products={availableProducts}
@@ -230,7 +230,7 @@ export default function ComparePage() {
         {/* Mobile Card-Based Comparison - visible only on small screens */}
         {selectedProducts.some(product => product !== null) && (
           <div className="block lg:hidden mb-8">
-            <div className="bg-white p-6 shadow-lg border border-gray-300">
+            <div className="bg-white p-6 shadow-lg border border-gray-500">
               <h2 className="text-2xl font-bold text-deep-blue text-center mb-6">Compare Engines</h2>
 
               {/* Key Specifications Comparison */}
@@ -260,11 +260,11 @@ export default function ComparePage() {
                       
                       return (
                         <tr key={spec} className={`${specIndex % 2 === 0 ? 'bg-gray-100' : 'bg-gray-200'}`}>
-                          <td className="p-3 font-semibold text-gray-900 text-lg border-r border-gray-300 uppercase">
+                          <td className="p-3 font-semibold text-gray-900 text-lg border-r border-gray-500 uppercase">
                             {spec}
                           </td>
                           {selectedProducts.slice(0, 2).map((product, index) => (
-                            <td key={index} className="p-3 text-left text-gray-900 text-base font-medium border-l border-gray-300">
+                            <td key={index} className="p-3 text-left text-gray-900 text-base font-medium border-l border-gray-500">
                               {product ? (getSpecValue(product, spec) || '-') : '-'}
                             </td>
                           ))}
@@ -303,7 +303,7 @@ export default function ComparePage() {
                       </Link>
                     </div>
                   ) : (
-                    <div className="bg-white rounded-lg p-6 border border-gray-300 shadow-md">
+                    <div className="bg-white rounded-lg p-6 border border-gray-500 shadow-md">
                       <div className="text-center">
                         <ProductDropdown
                           products={availableProducts}
@@ -322,20 +322,20 @@ export default function ComparePage() {
 
         {/* Desktop Comparison Table - hidden on mobile */}
         {selectedProducts.some(product => product !== null) && (
-          <div className="hidden lg:block bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400 overflow-hidden shadow-xl max-w-6xl xl:max-w-7xl 2xl:max-w-full mx-auto">
-            <div className="bg-white px-4 py-4 xl:py-5 border-b border-gray-300">
-              <h2 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-deep-blue text-center">Specifications</h2>
+          <div className="hidden lg:block bg-white border-4 border-slate-600 rounded-lg shadow-2xl overflow-hidden max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+            <div className="bg-deep-blue px-4 py-4 xl:py-5 border-b border-gray-500">
+              <h2 className="text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white text-center">Specifications</h2>
             </div>
             
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-100 border-b-2 border-gray-300">
-                    <th className="text-left p-2 xl:p-3 font-semibold text-gray-900 text-sm xl:text-base min-w-[160px] xl:min-w-[200px] sticky left-0 bg-gray-100 z-10 border-r border-gray-300">
+                  <tr className="bg-gray-100 border-b-2 border-gray-500">
+                    <th className="text-left p-2 xl:p-3 font-semibold text-gray-900 text-sm xl:text-base min-w-[160px] xl:min-w-[200px] sticky left-0 bg-gray-100 z-10 border-r border-gray-500">
                       
                     </th>
                     {selectedProducts.map((product, index) => (
-                      <th key={index} className={`p-2 xl:p-3 text-center min-w-[200px] xl:min-w-[300px] 2xl:min-w-[400px] border-l border-gray-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}`}>
+                      <th key={index} className={`p-2 xl:p-3 text-center min-w-[200px] xl:min-w-[300px] 2xl:min-w-[400px] border-l border-gray-500 ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'}`}>
                         {product ? (
                           <span className="text-gray-900 font-semibold text-sm xl:text-base">
                             Engine {index + 1}
@@ -352,12 +352,12 @@ export default function ComparePage() {
                     // Flatten all specs from all categories into one list, excluding Stock Status
                     const allSpecs = specCategories.flatMap(category => category.specs).filter(spec => spec !== 'Stock Status');
                     return allSpecs.map((spec) => (
-                      <tr key={spec} className="bg-white border-b border-gray-300">
+                      <tr key={spec} className="bg-white border-b border-gray-500">
                         <td className="p-2 xl:p-3 font-semibold text-gray-900 text-base xl:text-lg sticky left-0 bg-gray-100 z-10 border-b border-r border-gray-400 uppercase">
                           {spec}
                         </td>
                         {selectedProducts.map((product, index) => (
-                          <td key={index} className={`p-2 xl:p-3 text-left text-gray-900 text-sm xl:text-base font-medium border-l border-gray-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}`}>
+                          <td key={index} className={`p-2 xl:p-3 text-left text-gray-900 text-sm xl:text-base font-medium border-l border-gray-500 ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'}`}>
                             {product ? (getSpecValue(product, spec) || '-') : '-'}
                           </td>
                         ))}
@@ -371,12 +371,12 @@ export default function ComparePage() {
                       {(() => {
                         const maxTags = Math.max(...selectedProducts.map(p => p?.tags?.length || 0));
                         return Array.from({ length: maxTags }, (_, i) => (
-                          <tr key={`feature-${i}`} className="bg-white border-b border-gray-300">
-                            <td className="p-2 xl:p-3 font-semibold text-gray-900 text-base xl:text-lg sticky left-0 bg-white z-10 border-r border-gray-300 uppercase">
+                          <tr key={`feature-${i}`} className="bg-white border-b border-gray-500">
+                            <td className="p-2 xl:p-3 font-semibold text-gray-900 text-base xl:text-lg sticky left-0 bg-white z-10 border-r border-gray-500 uppercase">
                               Feature {i + 1}
                             </td>
                             {selectedProducts.map((product, index) => (
-                              <td key={index} className={`p-2 xl:p-3 text-left text-gray-900 text-sm xl:text-base font-medium border-l border-gray-300 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}`}>
+                              <td key={index} className={`p-2 xl:p-3 text-left text-gray-900 text-sm xl:text-base font-medium border-l border-gray-500 ${index % 2 === 0 ? 'bg-gray-200' : 'bg-gray-300'}`}>
                                 {product?.tags?.[i] || '-'}
                               </td>
                             ))}
@@ -395,19 +395,19 @@ export default function ComparePage() {
         <div className="flex flex-col sm:flex-row justify-center items-center mt-12 gap-8 sm:gap-12">
           <button
             onClick={() => window.print()}
-            className="text-white hover:text-white/80 font-semibold transition-colors text-lg drop-shadow"
+            className="text-deep-blue hover:text-blue-700 font-semibold transition-colors text-lg"
           >
             Print Comparison
           </button>
           <button
             onClick={() => setSelectedProducts([null, null, null])}
-            className="text-white hover:text-white/80 font-semibold transition-colors text-lg drop-shadow"
+            className="text-deep-blue hover:text-blue-700 font-semibold transition-colors text-lg"
           >
             Clear All
           </button>
           <Link
             href="/inventory"
-            className="text-white hover:text-white/80 font-semibold transition-colors text-lg drop-shadow"
+            className="text-deep-blue hover:text-blue-700 font-semibold transition-colors text-lg"
           >
             ← Back to Inventory
           </Link>
