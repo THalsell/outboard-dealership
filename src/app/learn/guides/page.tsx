@@ -391,6 +391,7 @@ export default function InteractiveBuyingGuidePage() {
                         Improving hole shot and top-end speed
                       </li>
                     </ul>
+                    <div className="mt-4 w-3/4 h-px bg-gray-200"></div>
                   </div>
                 </div>
               </div>
@@ -399,67 +400,75 @@ export default function InteractiveBuyingGuidePage() {
             {/* Features Tab */}
             {activeTab === 'features' && (
               <div className="space-y-6 animate-fadeIn">
-                <h2 className="text-4xl font-bold text-deep-blue text-center mb-6">
-                  Essential Features
+                <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                  Essential Features to Consider
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-20 lg:gap-24 py-8">
-                  {/* Card 1 - Power Steering */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-2">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-1"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Power Steering</h3>
-                      <p className="text-base text-gray-700 mb-3">Essential for larger motors (150+ HP). Makes maneuvering effortless and reduces fatigue during long trips.</p>
-                      <span className="text-sm font-semibold text-red-600">HIGH PRIORITY</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 max-w-full xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  {/* Power Steering */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">Power Steering</h3>
+                      <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Essential for larger motors (150+ HP). Makes maneuvering effortless and reduces fatigue during long trips.
+                    </p>
                   </div>
 
-                  {/* Card 2 - Electric Start */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-1">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-2"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Electric Start</h3>
-                      <p className="text-base text-gray-700 mb-3">Standard on most modern outboards. Much more convenient than pull-start, especially in emergency situations.</p>
-                      <span className="text-sm font-semibold text-red-600">HIGH PRIORITY</span>
+                  {/* Electric Start */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">Electric Start</h3>
+                      <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Standard on most modern outboards. Much more convenient than pull-start, especially in emergency situations.
+                    </p>
                   </div>
 
-                  {/* Card 3 - Tilt & Trim */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-1">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-2"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Tilt & Trim</h3>
-                      <p className="text-base text-gray-700 mb-3">Power tilt allows you to adjust motor angle for optimal performance, better fuel economy, and easier trailering.</p>
-                      <span className="text-sm font-semibold text-red-600">HIGH PRIORITY</span>
+                  {/* Tilt & Trim */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">Tilt & Trim</h3>
+                      <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Power tilt allows you to adjust motor angle for optimal performance, better fuel economy, and easier trailering.
+                    </p>
                   </div>
 
-                  {/* Card 4 - Digital Gauges */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-2">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-1"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Digital Gauges</h3>
-                      <p className="text-base text-gray-700 mb-3">Modern displays provide real-time engine data, fuel consumption, maintenance alerts, and diagnostic information.</p>
+                  {/* Digital Gauges */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">Digital Gauges</h3>
+                      <span className="text-sm font-semibold text-yellow-600 uppercase tracking-wide">Recommended</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Modern displays provide real-time engine data, fuel consumption, maintenance alerts, and diagnostic information.
+                    </p>
                   </div>
 
-                  {/* Card 5 - High Output Alternator */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-3">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-1"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">High Output Alternator</h3>
-                      <p className="text-base text-gray-700 mb-3">Higher output alternators (60A+) are essential if you run multiple electronics or need to charge batteries while running.</p>
+                  {/* High Output Alternator */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">High Output Alternator</h3>
+                      <span className="text-sm font-semibold text-yellow-600 uppercase tracking-wide">Recommended</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Higher output alternators (60A+) are essential if you run multiple electronics or need to charge batteries while running.
+                    </p>
                   </div>
 
-                  {/* Card 6 - Corrosion Protection */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-1">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-2"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Corrosion Protection</h3>
-                      <p className="text-base text-gray-700 mb-3">Look for quality anti-corrosion coatings and sacrificial anodes, especially important for saltwater use.</p>
-                      <span className="text-sm font-semibold text-red-600">HIGH PRIORITY</span>
+                  {/* Corrosion Protection */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">Corrosion Protection</h3>
+                      <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Look for quality anti-corrosion coatings and sacrificial anodes, especially important for saltwater use.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -468,134 +477,170 @@ export default function InteractiveBuyingGuidePage() {
             {/* Brands Tab */}
             {activeTab === 'brands' && (
               <div className="space-y-6 animate-fadeIn">
-                <h2 className="text-4xl font-bold text-deep-blue text-center mb-6">
-                  Brand Comparison
+                <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                  Brand Comparison Guide
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-20 lg:gap-24 py-8">
-                  {/* Honda Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-1">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-2"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Honda</h3>
-                      <div className="flex items-center gap-1 mb-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 max-w-full xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  {/* Honda */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Honda</h3>
+                      <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`text-lg ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`}>*</span>
+                          <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
                         ))}
-                        <span className="text-base text-gray-600 ml-2">4.8</span>
+                        <span className="text-lg text-gray-500 ml-2">4.8/5.0</span>
                       </div>
-                      <p className="text-base font-semibold text-gray-700 mb-2">Strengths:</p>
-                      <ul className="text-base text-gray-600 space-y-1 mb-3">
-                        <li>- Fuel efficiency</li>
-                        <li>- Quiet operation</li>
-                        <li>- Reliability</li>
-                      </ul>
-                      <p className="text-sm text-gray-500">Best for: <span className="font-semibold text-blue-600">Fuel economy lovers</span></p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Strengths</p>
+                        <ul className="text-lg text-gray-600 space-y-2">
+                          <li>• Fuel efficiency</li>
+                          <li>• Quiet operation</li>
+                          <li>• Reliability</li>
+                        </ul>
+                      </div>
+                      <div className="text-lg">
+                        <span className="text-gray-500">Best for:</span>
+                        <span className="text-gray-900 font-medium ml-1">Fuel economy buyers</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Yamaha Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-2">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-1"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Yamaha</h3>
-                      <div className="flex items-center gap-1 mb-3">
+                  {/* Yamaha */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Yamaha</h3>
+                      <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`text-lg ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`}>*</span>
+                          <span key={i} className={`text-xl ${i < 5 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
                         ))}
-                        <span className="text-base text-gray-600 ml-2">4.9</span>
+                        <span className="text-lg text-gray-500 ml-2">4.9/5.0</span>
                       </div>
-                      <p className="text-base font-semibold text-gray-700 mb-2">Strengths:</p>
-                      <ul className="text-base text-gray-600 space-y-1 mb-3">
-                        <li>- Performance</li>
-                        <li>- Innovation</li>
-                        <li>- Dealer network</li>
-                      </ul>
-                      <p className="text-sm text-gray-500">Best for: <span className="font-semibold text-blue-600">All-around excellence</span></p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Strengths</p>
+                        <ul className="text-lg text-gray-600 space-y-2">
+                          <li>• Performance</li>
+                          <li>• Innovation</li>
+                          <li>• Dealer network</li>
+                        </ul>
+                      </div>
+                      <div className="text-lg">
+                        <span className="text-gray-500">Best for:</span>
+                        <span className="text-gray-900 font-medium ml-1">All-around excellence</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Mercury Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-2">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-1"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Mercury</h3>
-                      <div className="flex items-center gap-1 mb-3">
+                  {/* Mercury */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Mercury</h3>
+                      <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`text-lg ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`}>*</span>
+                          <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
                         ))}
-                        <span className="text-base text-gray-600 ml-2">4.7</span>
+                        <span className="text-lg text-gray-500 ml-2">4.7/5.0</span>
                       </div>
-                      <p className="text-base font-semibold text-gray-700 mb-2">Strengths:</p>
-                      <ul className="text-base text-gray-600 space-y-1 mb-3">
-                        <li>- Speed</li>
-                        <li>- Power</li>
-                        <li>- Technology</li>
-                      </ul>
-                      <p className="text-sm text-gray-500">Best for: <span className="font-semibold text-blue-600">Performance enthusiasts</span></p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Strengths</p>
+                        <ul className="text-lg text-gray-600 space-y-2">
+                          <li>• Speed</li>
+                          <li>• Power</li>
+                          <li>• Technology</li>
+                        </ul>
+                      </div>
+                      <div className="text-lg">
+                        <span className="text-gray-500">Best for:</span>
+                        <span className="text-gray-900 font-medium ml-1">Performance enthusiasts</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Suzuki Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-1">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-3"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Suzuki</h3>
-                      <div className="flex items-center gap-1 mb-3">
+                  {/* Suzuki */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Suzuki</h3>
+                      <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`text-lg ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`}>*</span>
+                          <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
                         ))}
-                        <span className="text-base text-gray-600 ml-2">4.5</span>
+                        <span className="text-lg text-gray-500 ml-2">4.5/5.0</span>
                       </div>
-                      <p className="text-base font-semibold text-gray-700 mb-2">Strengths:</p>
-                      <ul className="text-base text-gray-600 space-y-1 mb-3">
-                        <li>- Lightweight</li>
-                        <li>- Value</li>
-                        <li>- Efficiency</li>
-                      </ul>
-                      <p className="text-sm text-gray-500">Best for: <span className="font-semibold text-blue-600">Budget-conscious buyers</span></p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Strengths</p>
+                        <ul className="text-lg text-gray-600 space-y-2">
+                          <li>• Lightweight</li>
+                          <li>• Value</li>
+                          <li>• Efficiency</li>
+                        </ul>
+                      </div>
+                      <div className="text-lg">
+                        <span className="text-gray-500">Best for:</span>
+                        <span className="text-gray-900 font-medium ml-1">Budget-conscious buyers</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Freedom Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-3">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-2"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Freedom</h3>
-                      <div className="flex items-center gap-1 mb-3">
+                  {/* Freedom */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Freedom</h3>
+                      <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`text-lg ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`}>*</span>
+                          <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
                         ))}
-                        <span className="text-base text-gray-600 ml-2">4.3</span>
+                        <span className="text-lg text-gray-500 ml-2">4.3/5.0</span>
                       </div>
-                      <p className="text-base font-semibold text-gray-700 mb-2">Strengths:</p>
-                      <ul className="text-base text-gray-600 space-y-1 mb-3">
-                        <li>- Modern features</li>
-                        <li>- Competitive pricing</li>
-                        <li>- Warranty</li>
-                      </ul>
-                      <p className="text-sm text-gray-500">Best for: <span className="font-semibold text-blue-600">Value seekers</span></p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Strengths</p>
+                        <ul className="text-lg text-gray-600 space-y-2">
+                          <li>• Modern features</li>
+                          <li>• Competitive pricing</li>
+                          <li>• Warranty</li>
+                        </ul>
+                      </div>
+                      <div className="text-lg">
+                        <span className="text-gray-500">Best for:</span>
+                        <span className="text-gray-900 font-medium ml-1">Value seekers</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Tohatsu Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-3">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-2"></div>
-                    <div className="relative bg-white p-6 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Tohatsu</h3>
-                      <div className="flex items-center gap-1 mb-3">
+                  {/* Tohatsu */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Tohatsu</h3>
+                      <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <span key={i} className={`text-lg ${i < 4 ? 'text-yellow-400' : 'text-gray-300'}`}>*</span>
+                          <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
                         ))}
-                        <span className="text-base text-gray-600 ml-2">4.4</span>
+                        <span className="text-lg text-gray-500 ml-2">4.4/5.0</span>
                       </div>
-                      <p className="text-base font-semibold text-gray-700 mb-2">Strengths:</p>
-                      <ul className="text-base text-gray-600 space-y-1 mb-3">
-                        <li>- Reliability</li>
-                        <li>- Simple design</li>
-                        <li>- Commercial grade</li>
-                      </ul>
-                      <p className="text-sm text-gray-500">Best for: <span className="font-semibold text-blue-600">Commercial use</span></p>
+                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Strengths</p>
+                        <ul className="text-lg text-gray-600 space-y-2">
+                          <li>• Reliability</li>
+                          <li>• Simple design</li>
+                          <li>• Commercial grade</li>
+                        </ul>
+                      </div>
+                      <div className="text-lg">
+                        <span className="text-gray-500">Best for:</span>
+                        <span className="text-gray-900 font-medium ml-1">Commercial use</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -605,88 +650,77 @@ export default function InteractiveBuyingGuidePage() {
             {/* Maintenance Tab */}
             {activeTab === 'maintenance' && (
               <div className="space-y-6 animate-fadeIn">
-                <h2 className="text-4xl font-bold text-deep-blue text-center mb-6">
-                  Maintenance Schedule
+                <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                  Maintenance Schedule & Best Practices
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 md:gap-20 lg:gap-24 py-8">
-                  {/* First 20 Hours Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-2">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-1"></div>
-                    <div className="relative bg-white p-8 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">First 20 hours</h3>
-                      <p className="text-base text-gray-700 mb-3">Initial break-in service - oil change, filter replacement</p>
-                      <span className="text-sm font-semibold text-red-600">CRITICAL PRIORITY</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 xl:gap-12 max-w-full xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  {/* First 20 Hours */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">First 20 Hours</h3>
+                      <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">Critical</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Initial break-in service - oil change, filter replacement
+                    </p>
                   </div>
 
-                  {/* 100 Hours Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-1">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-3"></div>
-                    <div className="relative bg-white p-8 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Every 100 hours / Annually</h3>
-                      <p className="text-base text-gray-700 mb-3">Oil change, gear oil, spark plugs, fuel filter</p>
-                      <span className="text-sm font-semibold text-orange-600">HIGH PRIORITY</span>
+                  {/* 100 Hours */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">100 Hours / Annually</h3>
+                      <span className="text-sm font-semibold text-orange-600 uppercase tracking-wide">High</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Oil change, gear oil, spark plugs, fuel filter
+                    </p>
                   </div>
 
-                  {/* 200 Hours Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-1">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-2"></div>
-                    <div className="relative bg-white p-8 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Every 200 hours / 2 years</h3>
-                      <p className="text-base text-gray-700 mb-3">Impeller, thermostats, fuel pump inspection</p>
-                      <span className="text-sm font-semibold text-orange-600">HIGH PRIORITY</span>
+                  {/* 200 Hours */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">200 Hours / 2 Years</h3>
+                      <span className="text-sm font-semibold text-orange-600 uppercase tracking-wide">High</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Impeller, thermostats, fuel pump inspection
+                    </p>
                   </div>
 
-                  {/* 300 Hours Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-2">
-                    <div className="absolute top-0 left-0 right-0 bg-white border-2 border-gray-800 transform rotate-1 h-[140px]"></div>
-                    <div className="relative bg-white p-8 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Every 300 hours / 3 years</h3>
-                      <p className="text-base text-gray-700 mb-3">Major service - timing belt, valve adjustment</p>
-                      <span className="text-sm font-semibold text-yellow-600">MEDIUM PRIORITY</span>
+                  {/* 300 Hours */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <div className="flex items-start justify-between mb-4">
+                      <h3 className="text-2xl font-bold text-gray-900">300 Hours / 3 Years</h3>
+                      <span className="text-sm font-semibold text-yellow-600 uppercase tracking-wide">Medium</span>
                     </div>
+                    <p className="text-gray-700 text-lg leading-relaxed">
+                      Major service - timing belt, valve adjustment
+                    </p>
                   </div>
 
-                  {/* Pro Maintenance Tips Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-3 mt-16">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-3"></div>
-                    <div className="relative bg-white p-8 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Pro Maintenance Tips</h3>
-                      <ul className="text-base text-gray-700 space-y-2">
-                        <li>- Always use manufacturer-recommended parts and fluids</li>
-                        <li>- Keep detailed service records for warranty and resale value</li>
-                        <li>- Flush with fresh water after every saltwater use</li>
-                        <li>- Store with a full fuel tank to prevent condensation</li>
-                      </ul>
-                    </div>
+                  {/* Pro Maintenance Tips */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Pro Maintenance Tips</h3>
+                    <ul className="text-lg text-gray-600 space-y-3">
+                      <li>• Use manufacturer-recommended parts</li>
+                      <li>• Keep detailed service records</li>
+                      <li>• Flush after saltwater use</li>
+                      <li>• Store with full fuel tank</li>
+                    </ul>
                   </div>
 
-                  {/* Professional Service Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform -rotate-3 mt-16">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform rotate-2"></div>
-                    <div className="relative bg-white p-8 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Professional Service Benefits</h3>
-                      <ul className="text-base text-gray-700 space-y-1">
-                        <li>- Warranty compliance and protection</li>
-                        <li>- Expert diagnosis of potential issues</li>
-                        <li>- Genuine parts and proper tools</li>
-                        <li>- Service records for resale value</li>
-                      </ul>
-                    </div>
+                  {/* Professional Service Benefits */}
+                  <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Professional Service</h3>
+                    <ul className="text-lg text-gray-600 space-y-3">
+                      <li>✓ Warranty compliance</li>
+                      <li>✓ Expert diagnosis</li>
+                      <li>✓ Genuine parts</li>
+                      <li>✓ Service records</li>
+                    </ul>
                   </div>
 
-                  {/* Annual Card */}
-                  <div className="relative w-full max-w-sm mx-auto transform rotate-1 -mt-40">
-                    <div className="absolute inset-0 bg-white border-2 border-gray-800 transform -rotate-1"></div>
-                    <div className="relative bg-white p-8 border-2 border-gray-800">
-                      <h3 className="text-xl font-bold text-blue-dark mb-3">Annually</h3>
-                      <p className="text-base text-gray-700 mb-3">Winterization (if applicable)</p>
-                      <span className="text-sm font-semibold text-orange-600">HIGH PRIORITY</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
