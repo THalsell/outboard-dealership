@@ -7,7 +7,7 @@ export default function WhyChooseUs() {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 sm:gap-4">
             <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold px-2">Why Choose Outboard Motor Sales</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold px-2 text-deep-blue">Why Choose Outboard Motor Sales</h2>
             <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
           </div>
         </div>

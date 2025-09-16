@@ -36,7 +36,7 @@ export default function InteractiveBuyingGuidePage() {
       </Head>
 
       {/* Hero Image */}
-      <div className="w-full h-[40vh] sm:h-[50vh] lg:h-[60vh] relative mt-[160px] sm:mt-[55px]">
+      <div className="w-full h-[40vh] sm:h-[50vh] lg:h-[60vh] relative">
         <Image
           src="/pic10.png"
           alt="Outboard Motor Buying Guide"
@@ -281,12 +281,12 @@ export default function InteractiveBuyingGuidePage() {
 
                 <div className="grid md:grid-cols-2 gap-6 md:divide-x md:divide-gray-200">
                   <div className="space-y-4 md:pr-6">
-                    <h3 className="text-xl font-bold text-blue-dark">How to Measure</h3>
+                    <h3 className="text-xl font-bold text-deep-blue">How to Measure</h3>
 
                     {['Position Boat', 'Locate Transom', 'Measure', 'Account for Angle'].map((step, index) => (
                       <div key={step}>
                         <div className="pb-4">
-                          <h4 className="font-semibold text-blue-dark">
+                          <h4 className="font-semibold text-deep-blue">
                             {index + 1}. {step}
                           </h4>
                           <p className="text-base text-gray-600 mt-1 ml-4">
@@ -302,7 +302,7 @@ export default function InteractiveBuyingGuidePage() {
                   </div>
 
                   <div className="md:pl-6">
-                    <h3 className="text-xl font-bold text-blue-dark mb-4">Standard Lengths</h3>
+                    <h3 className="text-xl font-bold text-deep-blue mb-4">Standard Lengths</h3>
                     <div className="space-y-3">
                       {[
                         { name: 'Short (S)', length: '15"', transom: '15-16"' },
@@ -313,7 +313,7 @@ export default function InteractiveBuyingGuidePage() {
                         <div key={size.name}>
                           <div className="pb-3">
                             <div className="flex justify-between items-center">
-                              <span className="font-semibold text-blue-dark">{size.name}</span>
+                              <span className="font-semibold text-deep-blue">{size.name}</span>
                               <span className="text-gray-700 font-medium">{size.length}</span>
                             </div>
                             <p className="text-base text-gray-600 mt-1">For transoms {size.transom}</p>
@@ -339,7 +339,7 @@ export default function InteractiveBuyingGuidePage() {
                 <hr className="my-8 border-gray-200" />
 
                 <div className="mb-6">
-                  <h3 className="text-xl font-bold text-blue-dark mb-3">Important</h3>
+                  <h3 className="text-xl font-bold text-deep-blue mb-3">Important</h3>
                   <p className="text-base text-gray-700">
                     The anti-ventilation plate on your outboard should be level with or slightly below the bottom of the boat when properly mounted.
                     If you&apos;re between sizes, it&apos;s generally better to go with the longer shaft to ensure the propeller stays submerged in choppy water.
@@ -350,7 +350,7 @@ export default function InteractiveBuyingGuidePage() {
 
                 <div className="grid md:grid-cols-2 gap-6 md:divide-x md:divide-gray-200">
                   <div className="md:pr-6">
-                    <h3 className="text-xl font-bold text-blue-dark mb-3">Common Mistakes to Avoid</h3>
+                    <h3 className="text-xl font-bold text-deep-blue mb-3">Common Mistakes to Avoid</h3>
                     <ul className="space-y-2 text-base text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-500">-</span>
@@ -372,7 +372,7 @@ export default function InteractiveBuyingGuidePage() {
                   </div>
 
                   <div className="md:pl-6">
-                    <h3 className="text-xl font-bold text-blue-dark mb-3">When to Consider Jack Plates</h3>
+                    <h3 className="text-xl font-bold text-deep-blue mb-3">When to Consider Jack Plates</h3>
                     <ul className="space-y-2 text-base text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-600">-</span>
@@ -400,7 +400,7 @@ export default function InteractiveBuyingGuidePage() {
             {/* Features Tab */}
             {activeTab === 'features' && (
               <div className="space-y-6 animate-fadeIn">
-                <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                <h2 className="text-3xl font-bold text-deep-blue text-center mb-12">
                   Essential Features to Consider
                 </h2>
 
@@ -408,7 +408,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Power Steering */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">Power Steering</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">Power Steering</h3>
                       <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -419,7 +419,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Electric Start */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">Electric Start</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">Electric Start</h3>
                       <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -430,7 +430,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Tilt & Trim */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">Tilt & Trim</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">Tilt & Trim</h3>
                       <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -441,7 +441,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Digital Gauges */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">Digital Gauges</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">Digital Gauges</h3>
                       <span className="text-sm font-semibold text-yellow-600 uppercase tracking-wide">Recommended</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -452,7 +452,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* High Output Alternator */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">High Output Alternator</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">High Output Alternator</h3>
                       <span className="text-sm font-semibold text-yellow-600 uppercase tracking-wide">Recommended</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -463,7 +463,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Corrosion Protection */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">Corrosion Protection</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">Corrosion Protection</h3>
                       <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">High Priority</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -477,7 +477,7 @@ export default function InteractiveBuyingGuidePage() {
             {/* Brands Tab */}
             {activeTab === 'brands' && (
               <div className="space-y-6 animate-fadeIn">
-                <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                <h2 className="text-3xl font-bold text-deep-blue text-center mb-12">
                   Brand Comparison Guide
                 </h2>
 
@@ -485,7 +485,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Honda */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Honda</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue mb-3">Honda</h3>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
@@ -504,7 +504,7 @@ export default function InteractiveBuyingGuidePage() {
                       </div>
                       <div className="text-lg">
                         <span className="text-gray-500">Best for:</span>
-                        <span className="text-gray-900 font-medium ml-1">Fuel economy buyers</span>
+                        <span className="text-deep-blue font-medium ml-1">Fuel economy buyers</span>
                       </div>
                     </div>
                   </div>
@@ -512,7 +512,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Yamaha */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Yamaha</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue mb-3">Yamaha</h3>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <span key={i} className={`text-xl ${i < 5 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
@@ -531,7 +531,7 @@ export default function InteractiveBuyingGuidePage() {
                       </div>
                       <div className="text-lg">
                         <span className="text-gray-500">Best for:</span>
-                        <span className="text-gray-900 font-medium ml-1">All-around excellence</span>
+                        <span className="text-deep-blue font-medium ml-1">All-around excellence</span>
                       </div>
                     </div>
                   </div>
@@ -539,7 +539,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Mercury */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Mercury</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue mb-3">Mercury</h3>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
@@ -558,7 +558,7 @@ export default function InteractiveBuyingGuidePage() {
                       </div>
                       <div className="text-lg">
                         <span className="text-gray-500">Best for:</span>
-                        <span className="text-gray-900 font-medium ml-1">Performance enthusiasts</span>
+                        <span className="text-deep-blue font-medium ml-1">Performance enthusiasts</span>
                       </div>
                     </div>
                   </div>
@@ -566,7 +566,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Suzuki */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Suzuki</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue mb-3">Suzuki</h3>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
@@ -585,7 +585,7 @@ export default function InteractiveBuyingGuidePage() {
                       </div>
                       <div className="text-lg">
                         <span className="text-gray-500">Best for:</span>
-                        <span className="text-gray-900 font-medium ml-1">Budget-conscious buyers</span>
+                        <span className="text-deep-blue font-medium ml-1">Budget-conscious buyers</span>
                       </div>
                     </div>
                   </div>
@@ -593,7 +593,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Freedom */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Freedom</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue mb-3">Freedom</h3>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
@@ -612,7 +612,7 @@ export default function InteractiveBuyingGuidePage() {
                       </div>
                       <div className="text-lg">
                         <span className="text-gray-500">Best for:</span>
-                        <span className="text-gray-900 font-medium ml-1">Value seekers</span>
+                        <span className="text-deep-blue font-medium ml-1">Value seekers</span>
                       </div>
                     </div>
                   </div>
@@ -620,7 +620,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* Tohatsu */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Tohatsu</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue mb-3">Tohatsu</h3>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <span key={i} className={`text-xl ${i < 4 ? 'text-yellow-500' : 'text-gray-300'}`}>★</span>
@@ -639,7 +639,7 @@ export default function InteractiveBuyingGuidePage() {
                       </div>
                       <div className="text-lg">
                         <span className="text-gray-500">Best for:</span>
-                        <span className="text-gray-900 font-medium ml-1">Commercial use</span>
+                        <span className="text-deep-blue font-medium ml-1">Commercial use</span>
                       </div>
                     </div>
                   </div>
@@ -650,7 +650,7 @@ export default function InteractiveBuyingGuidePage() {
             {/* Maintenance Tab */}
             {activeTab === 'maintenance' && (
               <div className="space-y-6 animate-fadeIn">
-                <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                <h2 className="text-3xl font-bold text-deep-blue text-center mb-12">
                   Maintenance Schedule & Best Practices
                 </h2>
 
@@ -658,7 +658,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* First 20 Hours */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">First 20 Hours</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">First 20 Hours</h3>
                       <span className="text-sm font-semibold text-red-600 uppercase tracking-wide">Critical</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -669,7 +669,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* 100 Hours */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">100 Hours / Annually</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">100 Hours / Annually</h3>
                       <span className="text-sm font-semibold text-orange-600 uppercase tracking-wide">High</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -680,7 +680,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* 200 Hours */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">200 Hours / 2 Years</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">200 Hours / 2 Years</h3>
                       <span className="text-sm font-semibold text-orange-600 uppercase tracking-wide">High</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -691,7 +691,7 @@ export default function InteractiveBuyingGuidePage() {
                   {/* 300 Hours */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-2xl font-bold text-gray-900">300 Hours / 3 Years</h3>
+                      <h3 className="text-2xl font-bold text-deep-blue">300 Hours / 3 Years</h3>
                       <span className="text-sm font-semibold text-yellow-600 uppercase tracking-wide">Medium</span>
                     </div>
                     <p className="text-gray-700 text-lg leading-relaxed">
@@ -701,7 +701,7 @@ export default function InteractiveBuyingGuidePage() {
 
                   {/* Pro Maintenance Tips */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Pro Maintenance Tips</h3>
+                    <h3 className="text-2xl font-bold text-deep-blue mb-4">Pro Maintenance Tips</h3>
                     <ul className="text-lg text-gray-600 space-y-3">
                       <li>• Use manufacturer-recommended parts</li>
                       <li>• Keep detailed service records</li>
@@ -712,7 +712,7 @@ export default function InteractiveBuyingGuidePage() {
 
                   {/* Professional Service Benefits */}
                   <div className="bg-white shadow-lg border border-gray-200 p-8 hover:shadow-xl transition-shadow">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Professional Service</h3>
+                    <h3 className="text-2xl font-bold text-deep-blue mb-4">Professional Service</h3>
                     <ul className="text-lg text-gray-600 space-y-3">
                       <li>✓ Warranty compliance</li>
                       <li>✓ Expert diagnosis</li>

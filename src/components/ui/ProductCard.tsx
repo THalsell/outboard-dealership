@@ -3,16 +3,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Product } from '@/lib/data/products';
-import { useCart } from '@/contexts/CartContext';
 import { useFilter } from '@/contexts/FilterContext';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 
 interface ProductCardProps {
   product: Product;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
-  useCart();
+function ProductCard({ product }: ProductCardProps) {
   const { compareList } = useFilter();
   const [imageHover, setImageHover] = useState(false);
   const isInCompare = compareList.includes(product.id as string);
@@ -191,3 +189,5 @@ export default function ProductCard({ product }: ProductCardProps) {
     </article>
   );
 }
+
+export default memo(ProductCard);

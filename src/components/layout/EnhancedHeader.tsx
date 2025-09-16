@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useAppReady } from '@/contexts/AppReadyContext';
 
 export default function EnhancedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -11,6 +12,7 @@ export default function EnhancedHeader() {
   const [mobileNestedDropdowns, setMobileNestedDropdowns] = useState<string[]>([]);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pathname = usePathname();
+  const { setNavigationReady } = useAppReady();
 
   const navigation = [
     {
@@ -105,6 +107,15 @@ export default function EnhancedHeader() {
     };
   }, []);
 
+  // Signal that navigation is ready for interaction
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setNavigationReady(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [setNavigationReady]);
+
   // Remove scroll-based hiding - keep header always visible
   // Close mobile menu on scroll for better UX, but don't hide the header
   useEffect(() => {
@@ -121,7 +132,7 @@ export default function EnhancedHeader() {
   }, [mobileMenuOpen]);
   return (
     <>
-      <header className="bg-gray-900 shadow-md fixed top-[115px] sm:top-[60px] left-0 right-0 z-[100] overflow-hidden">
+      <header className="bg-gray-900 fixed top-[118px] sm:top-[70px] left-0 right-0 z-[150] overflow-hidden">
         {/* Main Navigation */}
         <nav className="w-full px-2 sm:px-4 py-3">
           <div className="flex justify-between items-center w-full">
@@ -157,7 +168,8 @@ export default function EnhancedHeader() {
               {navigation.map((item) => (
                 <div
                   key={item.name}
-                  className="relative z-[101]"
+                  className="relative"
+                  style={{ zIndex: 9999 }}
                   onMouseEnter={() => handleMouseEnter(item.name)}
                   onMouseLeave={handleMouseLeave}
                 >
@@ -188,7 +200,7 @@ export default function EnhancedHeader() {
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && activeDropdown === item.name && (
-                    <div className={`fixed top-[160px] sm:top-[108px] ${item.name === 'Outboard Motors' ? 'w-96 max-w-[95vw]' : 'w-72 max-w-[95vw]'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 z-[9999] left-2 right-2 mx-auto`} style={{ left: 'max(8px, calc(50% - 200px))', right: 'max(8px, calc(50% - 200px))' }}>
+                    <div className={`fixed top-[186px] sm:top-[128px] ${item.name === 'Outboard Motors' ? 'w-96 max-w-[95vw]' : 'w-72 max-w-[95vw]'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 left-1/2 transform -translate-x-1/2`} style={{ zIndex: 10001 }}>
                       {item.name === 'Outboard Motors' ? (
                         // Special layout for Inventory dropdown
                         <div className="grid grid-cols-2 gap-1">

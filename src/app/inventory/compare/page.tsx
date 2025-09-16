@@ -48,7 +48,7 @@ const ProductDropdown: React.FC<ProductDropdownProps> = ({ products, selectedPro
               }}
               className="w-full p-2 text-left text-gray-800 hover:bg-blue-50 transition-colors border-b border-gray-200 last:border-b-0"
             >
-              <div className="font-semibold text-gray-900">{product.brand} {product.title}</div>
+              <div className="font-semibold text-deep-blue">{product.brand} {product.title}</div>
               <div className="text-sm text-gray-600 mt-1">{product.horsepower}HP • ${product.variants[0]?.price?.toLocaleString()}</div>
             </button>
           ))}
@@ -169,7 +169,7 @@ export default function ComparePage() {
       ></div>
       
       {/* Content wrapper */}
-      <div className="relative z-20 w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="relative z-20 w-full px-4 sm:px-6 lg:px-8 pt-[180px] sm:pt-[120px] pb-8 sm:pb-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">Engine Comparison</h1>
@@ -237,7 +237,7 @@ export default function ComparePage() {
         {selectedProducts.some(product => product !== null) && (
           <div className="block lg:hidden mb-8">
             <div className="bg-white p-6 shadow-lg border border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">Compare Engines</h2>
+              <h2 className="text-2xl font-bold text-deep-blue text-center mb-6">Compare Engines</h2>
 
               {/* Key Specifications Comparison */}
               <div className="overflow-x-auto">
@@ -326,7 +326,7 @@ export default function ComparePage() {
         {selectedProducts.some(product => product !== null) && (
           <div className="hidden lg:block bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400 overflow-hidden shadow-xl max-w-6xl mx-auto">
             <div className="bg-white px-4 py-3 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900 text-center">Detailed Specifications</h2>
+              <h2 className="text-xl font-bold text-deep-blue text-center">Detailed Specifications</h2>
             </div>
             
             <div className="overflow-x-auto">

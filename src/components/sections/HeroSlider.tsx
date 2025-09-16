@@ -1,15 +1,60 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
+import { useAppReady } from '@/contexts/AppReadyContext';
+
 export default function HeroSlider() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const { isNavigationReady } = useAppReady();
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isNavigationReady) return;
+
+    // Only start video loading after navigation is ready
+    const loadVideo = () => {
+      video.load();
+      video.addEventListener('loadeddata', () => {
+        setVideoLoaded(true);
+        // Additional delay to ensure smooth navigation interaction
+        setTimeout(() => {
+          video.play().catch(() => {
+            // Autoplay failed, that's okay
+          });
+        }, 200);
+      });
+    };
+
+    // Use requestIdleCallback if available, otherwise use setTimeout
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadVideo);
+    } else {
+      setTimeout(loadVideo, 300);
+    }
+
+    return () => {
+      if (video) {
+        video.pause();
+        video.removeAttribute('src');
+        video.load();
+      }
+    };
+  }, [isNavigationReady]);
+
   return (
-    <section className="relative w-screen h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden ml-[calc(-50vw+50%)]">
+    <section className="relative w-full h-[450px] md:h-[550px] lg:h-[600px] overflow-hidden">
+      {/* Poster/Fallback Background */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900" />
+
       {/* Video Background */}
       <video
-        className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
+        ref={videoRef}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
         muted
         loop
         playsInline
+        preload="none"
       >
         <source src="/video.mp4" type="video/mp4" />
         Your browser does not support the video tag.

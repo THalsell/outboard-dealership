@@ -83,13 +83,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-x-hidden">
       <body className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen bg-light-gray text-text-blue font-body overflow-x-hidden`} suppressHydrationWarning={true} style={{ fontSize: '16px', fontWeight: '400', lineHeight: '1.6', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
         <AppProviders>
           <TopBanner />
           <EnhancedHeader />
-          
-          <main className="">
+
+          <main className="overflow-x-hidden pt-[180px] sm:pt-[130px]">
             {children}
           </main>
           <Footer />

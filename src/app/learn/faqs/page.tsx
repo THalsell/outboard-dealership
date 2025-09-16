@@ -100,103 +100,76 @@ export default function FAQsPage() {
   };
 
   return (
-    <div 
-      className="min-h-screen relative"
-      style={{
-        background: '#1e293b'
-      }}
-    >
-      {/* Fixed background layer */}
-      <div 
-        className="fixed inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/background.png)',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center center',
-          backgroundSize: 'cover',
-          backgroundColor: '#1e293b'
-        }}
-      ></div>
-      
-      {/* Content wrapper */}
-      <div className="relative z-20">
-      
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <div className="text-center py-16">
+        <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-deep-blue mb-6">
+          Frequently asked questions
+        </h1>
+      </div>
 
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">
-              Frequently asked questions
-            </h1>
-          </div>
-
-          {/* FAQ Items */}
-          <div className="space-y-1 bg-slate-800/90 backdrop-blur-sm rounded-lg shadow-2xl">
-            {faqs.map((faq, index) => (
-              <div key={index} className="border-b border-slate-600">
-                <button
-                  onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-6 text-left flex justify-between items-center hover:bg-slate-700/70 transition-colors"
-                >
-                  <h3 className="text-lg font-medium text-white pr-8">{faq.question}</h3>
-                  <div className="flex-shrink-0">
-                    {openFaq === index ? (
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                      </svg>
-                    ) : (
-                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                    )}
-                  </div>
-                </button>
-                {openFaq === index && (
-                  <div className="px-6 pb-6">
-                    <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
-                  </div>
+      {/* FAQ Items */}
+      <div className="w-full">
+        {faqs.map((faq, index) => (
+          <div key={index} className="border-b border-gray-300">
+            <button
+              onClick={() => toggleFaq(index)}
+              className="w-full px-6 md:px-12 py-8 text-left flex justify-between items-center hover:bg-gray-50 transition-colors"
+            >
+              <h3 className="text-xl md:text-2xl font-medium text-gray-900 pr-8 leading-relaxed">{faq.question}</h3>
+              <div className="flex-shrink-0">
+                {openFaq === index ? (
+                  <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                  </svg>
+                ) : (
+                  <svg className="w-8 h-8 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
                 )}
               </div>
-            ))}
+            </button>
+            {openFaq === index && (
+              <div className="px-6 md:px-12 pb-8">
+                <p className="text-gray-900 text-lg md:text-xl leading-relaxed">{faq.answer}</p>
+              </div>
+            )}
           </div>
-
-          {/* Manufacturer FAQs */}
-          <div className="mt-20">
-            <h2 className="text-2xl font-bold text-white mb-8 text-center">Manufacturer Support</h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {manufacturerFaqs.map((manufacturer, index) => (
-                <div key={index} className="bg-slate-700/90 backdrop-blur-sm rounded-lg p-6 hover:bg-slate-600/90 transition-colors">
-                  <h3 className="font-bold text-white mb-2">{manufacturer.brand}</h3>
-                  <p className="text-gray-300 text-sm mb-4">{manufacturer.description}</p>
-                  <a
-                    href={manufacturer.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-blue-400 hover:text-blue-300 font-medium transition-colors"
-                  >
-                    Visit {manufacturer.brand} FAQs
-                    <svg
-                      className="w-4 h-4 ml-1"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </div>
+        ))}
       </div>
+
+      {/* Manufacturer FAQs */}
+      <div className="py-20 px-6 md:px-12">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-deep-blue mb-12 text-center">Manufacturer Support</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+          {manufacturerFaqs.map((manufacturer, index) => (
+            <div key={index} className="border border-gray-300 p-6 hover:bg-gray-50 transition-colors text-center">
+              <h3 className="font-bold text-deep-blue text-xl md:text-2xl mb-4">{manufacturer.brand}</h3>
+              <p className="text-gray-900 text-base md:text-lg mb-4">{manufacturer.description}</p>
+              <a
+                href={manufacturer.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-gray-900 hover:text-blue-700 font-medium transition-colors"
+              >
+                Visit {manufacturer.brand} FAQs
+                <svg
+                  className="w-4 h-4 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+              </a>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

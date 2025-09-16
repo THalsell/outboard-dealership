@@ -118,7 +118,7 @@ export default function CartDrawer() {
                     {item.productType === 'service' && item.name === 'Lift Gate Service' ? (
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-gray-900">Lift Gate Service</h3>
+                          <h3 className="text-deep-blue">Lift Gate Service</h3>
                           <span className="font-semibold">${item.price}</span>
                         </div>
                         <button
@@ -132,7 +132,7 @@ export default function CartDrawer() {
                       <>
                         <div className="flex justify-between items-start">
                           <div>
-                            <h3 className="font-medium text-gray-900">{item.name}</h3>
+                            <h3 className="font-medium text-deep-blue">{item.name}</h3>
                             <p className="text-sm text-gray-600 mt-1">
                               ${item.price.toLocaleString()} each
                             </p>

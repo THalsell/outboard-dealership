@@ -99,15 +99,15 @@ export default function PartsPageClient() {
   return (
     <div className="min-h-screen bg-gray-50">
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 pt-[180px] sm:pt-[120px] pb-6">
         {/* Main Content */}
         <main className="w-full">
           {/* Header with controls */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Parts & Accessories</h1>
+              <h1 className="text-2xl font-bold text-deep-blue mb-2">Parts & Accessories</h1>
               <p className="text-gray-600">
-                Showing <span className="font-medium text-gray-900">{totalResults}</span> results
+                Showing <span className="font-medium text-deep-blue">{totalResults}</span> results
               </p>
             </div>
 
@@ -141,7 +141,7 @@ export default function PartsPageClient() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m6-8V8a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No parts found</h3>
+              <h3 className="text-xl font-semibold text-deep-blue mb-2">No parts found</h3>
               <p className="text-gray-600">We&apos;re currently updating our parts inventory. Please check back soon.</p>
             </div>
           ) : (

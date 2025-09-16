@@ -34,7 +34,7 @@ export default function FeaturedProducts() {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
             <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2">Featured Motors</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2 text-deep-blue">Featured Motors</h2>
             <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
           </div>
           <p className="text-xl text-charcoal opacity-80">Top-rated motors from trusted brands</p>

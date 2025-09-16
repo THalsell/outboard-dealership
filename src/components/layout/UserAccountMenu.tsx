@@ -46,7 +46,7 @@ export default function UserAccountMenu() {
             <>
               {/* User Info */}
               <div className="px-4 py-3 border-b">
-                <p className="font-semibold text-gray-900">John Doe</p>
+                <p className="font-semibold text-deep-blue">John Doe</p>
                 <p className="text-sm text-gray-600">john.doe@example.com</p>
                 <div className="flex items-center gap-2 mt-2">
                   <span className="text-xs bg-gold-100 text-gold-800 px-2 py-1 rounded-full">

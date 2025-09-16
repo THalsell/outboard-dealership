@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <>
       {/* Logo positioned below fixed headers */}
-      <div className="mt-[50px] sm:mt-[50px]">
+      <div>
         <Logo />
       </div>
 

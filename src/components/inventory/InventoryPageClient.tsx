@@ -795,7 +795,7 @@ export default function InventoryPageClient() {
       )}
 
 
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-4 pt-[180px] sm:pt-[120px] pb-6">
         <div className="flex gap-6">
           {/* Desktop Sidebar */}
           <aside className="hidden lg:block w-64 flex-shrink-0">

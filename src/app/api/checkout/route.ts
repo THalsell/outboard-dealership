@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { storefrontClient } from '@/lib/shopify';
-
-interface CartItem {
-  id: string;
-  productId: string;
-  variantId?: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import { CartItem } from '@/types/models/order';
 
 export async function POST(request: NextRequest) {
   try {

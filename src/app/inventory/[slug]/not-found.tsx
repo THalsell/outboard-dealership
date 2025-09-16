@@ -10,7 +10,7 @@ export default function ProductNotFound() {
           </svg>
         </div>
         
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
+        <h1 className="text-2xl font-bold text-deep-blue mb-4">Product Not Found</h1>
         <p className="text-gray-600 mb-8">
           The outboard motor you&#39;re looking for doesn&#39;t exist or may have been removed.
         </p>

@@ -33,7 +33,7 @@ export default function InventoryGrid({ products, loading = false, onClearFilter
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center bg-white rounded-lg border border-gray-200">
         
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No products found</h3>
+        <h3 className="text-lg font-semibold text-deep-blue mb-2">No products found</h3>
         <p className="text-gray-600 mb-4 max-w-md">
           We couldn&apos;t find any outboard motors matching your criteria. Try adjusting your filters.
         </p>

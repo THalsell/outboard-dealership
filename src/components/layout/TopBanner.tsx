@@ -12,7 +12,7 @@ export default function TopBanner() {
   const [searchQuery, setSearchQuery] = useState('');
   return (
     <>
-      <div className="bg-gray-900 text-white dark:text-white py-2 sm:py-4 sticky top-0 z-50 w-full overflow-x-hidden">
+      <div className="bg-gray-900 text-white dark:text-white py-2 sm:py-4 fixed top-0 left-0 right-0 z-[200] w-full overflow-x-hidden">
         {/* Mobile Layout */}
         <div className="sm:hidden">
           <div className="flex justify-between items-center px-3 mb-2">
