@@ -89,7 +89,7 @@ export default function RootLayout({
           <TopBanner />
           <EnhancedHeader />
 
-          <main className="overflow-x-hidden pt-[180px] sm:pt-[130px]">
+          <main className="overflow-x-hidden pt-[178px] sm:pt-[130px]">
             {children}
           </main>
           <Footer />

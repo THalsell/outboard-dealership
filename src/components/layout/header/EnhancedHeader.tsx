@@ -133,7 +133,7 @@ export default function EnhancedHeader() {
   }, [mobileMenuOpen]);
   return (
     <>
-      <header className="bg-gray-900 fixed top-[118px] sm:top-[70px] left-0 right-0 z-[150] overflow-hidden">
+      <header className="bg-gray-900 fixed top-[116px] sm:top-[70px] left-0 right-0 z-[150] overflow-hidden border-t border-gray-800">
         {/* Main Navigation */}
         <nav className="w-full px-2 sm:px-4 py-3">
           <div className="flex justify-between items-center w-full">
@@ -191,7 +191,7 @@ export default function EnhancedHeader() {
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && activeDropdown === item.name && (
-                    <div className={`fixed top-[186px] sm:top-[128px] ${item.name === 'Outboard Motors' ? 'w-96 max-w-[95vw]' : 'w-72 max-w-[95vw]'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 left-1/2 transform -translate-x-1/2`} style={{ zIndex: 10001 }}>
+                    <div className={`fixed top-[184px] sm:top-[128px] ${item.name === 'Outboard Motors' ? 'w-96 max-w-[95vw]' : 'w-72 max-w-[95vw]'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 left-1/2 transform -translate-x-1/2`} style={{ zIndex: 10001 }}>
                       {item.name === 'Outboard Motors' ? (
                         // Special layout for Inventory dropdown
                         <div className="grid grid-cols-2 gap-1">
