@@ -69,8 +69,8 @@ export default function Footer() {
                 </a>
               </p>
               <p className="break-all">
-                <a href="mailto:eli@claypowersports.com" className="hover:text-blue-400">
-                  Email: eli@claypowersports.com
+                <a href="mailto:eli@outboardmotorsales.com" className="hover:text-blue-400">
+                  Email: eli@outboardmotorsales.com
                 </a>
               </p>
               <p className="mt-4 font-semibold">Business Hours:</p>
@@ -82,7 +82,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p className="text-xs">&copy; {currentYear} Outboard Motors Dealership. All rights reserved.</p>
+          <p className="text-xs">&copy; {currentYear} Outboard Motor Sales. All rights reserved.</p>
           <div className="mt-2 space-x-4 text-xs">
             <a href="https://outboard-practice-store.myshopify.com/policies/privacy-policy" className="hover:text-blue-400" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
             <span>|</span>
