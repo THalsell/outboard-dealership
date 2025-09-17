@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import SectionHeader from '@/components/ui/SectionHeader';
 import { useState, useEffect } from 'react';
 import { Product } from '@/lib/data/products';
+import Icon from '@/components/ui/Icon';
 
 const powerCategories = [
   {
@@ -69,14 +71,10 @@ export default function ShopByCategory() {
   return (
     <section className="py-16 bg-light-gray overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
-            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2 text-deep-blue">Shop by Power Category</h2>
-            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-          </div>
-          <p className="text-xl text-charcoal opacity-80">Find the perfect motor for your boat and needs</p>
-        </div>
+        <SectionHeader
+          title="Shop by Power Category"
+          subtitle="Find the perfect motor for your boat and needs"
+        />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {powerCategories.map((category) => (
             <Link
@@ -102,9 +100,7 @@ export default function ShopByCategory() {
                   </span>
                   <div className="flex items-center text-blue-300 font-bold text-xl">
                     <span>Browse Selection</span>
-                    <svg className="w-6 h-6 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <Icon name="chevronRight" size="lg" className="ml-2 group-hover:translate-x-2 transition-transform" />
                   </div>
                 </div>
               </div>

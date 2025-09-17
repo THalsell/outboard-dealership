@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import SectionHeader from '@/components/ui/SectionHeader';
 
 export default function BrandsSection() {
   const brands = [
@@ -14,14 +15,10 @@ export default function BrandsSection() {
   return (
     <section className="py-16 bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
-            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center px-2 text-deep-blue">Authorized Dealer For</h2>
-            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-          </div>
-          <p className="text-lg sm:text-xl text-charcoal opacity-80 px-2">Industry-leading manufacturers</p>
-        </div>
+        <SectionHeader
+          title="Authorized Dealer For"
+          subtitle="Industry-leading manufacturers"
+        />
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
           {brands.map((brand, index) => (
             <Link

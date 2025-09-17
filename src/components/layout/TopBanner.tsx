@@ -6,13 +6,14 @@ import Image from 'next/image';
 import UserAccountMenu from './UserAccountMenu';
 import CartDrawer from './CartDrawer';
 import { useCart } from '@/contexts/CartContext';
+import Input from '@/components/ui/Input';
 
 export default function TopBanner() {
   const { itemCount, setIsOpen: setCartOpen } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
   return (
     <>
-      <div className="bg-gray-900 text-white dark:text-white py-2 sm:py-4 fixed top-0 left-0 right-0 z-[200] w-full overflow-x-hidden">
+      <div className="bg-gray-900 text-white dark:text-white py-2 sm:py-4 fixed top-0 left-0 right-0 z-[200] w-full">
         {/* Mobile Layout */}
         <div className="sm:hidden">
           <div className="flex justify-between items-center px-3 mb-2">
@@ -58,22 +59,24 @@ export default function TopBanner() {
               }}
               className="relative"
             >
-              <div className="relative">
-                <Image 
-                  src="/search.svg" 
-                  alt="Search" 
-                  width={20} 
-                  height={20} 
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 filter brightness-0 invert" 
-                />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search motors..."
-                  className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:border-gray-500"
-                />
-              </div>
+              <Input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search motors..."
+                variant="dark"
+                size="sm"
+                fullWidth
+                leftIcon={
+                  <Image
+                    src="/search.svg"
+                    alt="Search"
+                    width={16}
+                    height={16}
+                    className="w-4 h-4 filter brightness-0 invert"
+                  />
+                }
+              />
             </form>
           </div>
           <div className="px-3 text-xs text-gray-300 text-center">

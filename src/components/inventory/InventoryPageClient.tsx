@@ -782,7 +782,7 @@ export default function InventoryPageClient() {
                 <button
                   className="bg-white text-deep-blue px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={() => {
-                    router.push('/inventory/compare');
+                    router.push('/compare');
                   }}
                   disabled={compareList.length < 2}
                 >

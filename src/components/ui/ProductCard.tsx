@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { Product } from '@/lib/data/products';
 import { useFilter } from '@/contexts/FilterContext';
 import { useState, useCallback, memo } from 'react';
+import PriceDisplay from '@/components/ui/PriceDisplay';
+import StockStatus from '@/components/ui/StockStatus';
+import Badge from '@/components/ui/Badge';
 
 interface ProductCardProps {
   product: Product;
@@ -71,9 +74,9 @@ function ProductCard({ product }: ProductCardProps) {
       {/* Sale Badge */}
       {hasDiscount && (
         <div className="absolute top-2 right-2 z-20">
-          <span className="text-red-600 text-xs font-bold">
+          <Badge variant="sale" size="xs">
             SALE
-          </span>
+          </Badge>
         </div>
       )}
 
@@ -90,13 +93,16 @@ function ProductCard({ product }: ProductCardProps) {
             alt={product.title}
             itemProp="image"
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
             className={`object-contain transition-transform duration-200 ${imageHover ? 'scale-[1.02]' : 'scale-100'}`}
-            unoptimized={mainImage.startsWith('https://') || mainImage.startsWith('/placeholder')}
           />
           
           {/* Quick View Button */}
           <div className={`absolute bottom-2 left-1/2 -translate-x-1/2 transition-opacity duration-300 ${imageHover ? 'opacity-100' : 'opacity-0'}`}>
-            <button className="relative z-20 bg-white/95 backdrop-blur-sm text-deep-blue px-4 py-2 rounded-lg text-sm font-medium hover:bg-white transition-all duration-200 shadow-sm">
+            <button
+              className="relative z-20 bg-white/95 backdrop-blur-sm text-deep-blue px-4 py-2 rounded-lg text-sm font-medium hover:bg-white transition-all duration-200 shadow-sm"
+              aria-label={`Quick view ${product.title}`}
+            >
               Quick View
             </button>
           </div>
@@ -147,41 +153,22 @@ function ProductCard({ product }: ProductCardProps) {
         {/* Price - Push to bottom */}
         <div className="mt-auto">
           <div className="mb-3">
-            {hasDiscount ? (
-              <div className="flex items-baseline gap-2">
-                <span className="text-xl font-bold text-charcoal" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-                  <meta itemProp="priceCurrency" content="USD" />
-                  <span itemProp="price" content={price.toString()}>${price.toLocaleString()}</span>
-                </span>
-                <span className="text-sm text-gray-500 line-through">
-                  ${comparePrice.toLocaleString()}
-                </span>
-                {Math.round(((comparePrice - price) / comparePrice) * 100) > 0 && (
-                  <span className="text-xs text-red-600 font-bold">
-                    {Math.round(((comparePrice - price) / comparePrice) * 100)}% OFF
-                  </span>
-                )}
-              </div>
-            ) : product.priceRange.min !== product.priceRange.max ? (
-              <span className="text-lg font-bold text-charcoal">
-                ${product.priceRange.min.toLocaleString()} - ${product.priceRange.max.toLocaleString()}
-              </span>
-            ) : (
-              <span className="text-xl font-bold text-charcoal">
-                ${price.toLocaleString()}
-              </span>
-            )}
+            <PriceDisplay
+              price={price}
+              comparePrice={comparePrice}
+              priceRange={product.priceRange}
+              variant="card"
+            />
           </div>
 
           {/* Stock Status */}
           <div className="mb-3">
-            {product.inStock ? (
-              <span className="text-xs text-green-600 font-medium">
-                In Stock {defaultVariant?.inventory && `(${defaultVariant.inventory} available)`}
-              </span>
-            ) : (
-              <span className="text-xs text-red-600 font-medium">Out of Stock</span>
-            )}
+            <StockStatus
+              inStock={product.inStock}
+              inventory={defaultVariant?.inventory}
+              size="xs"
+              variant="card"
+            />
           </div>
 
         </div>

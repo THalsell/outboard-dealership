@@ -1,5 +1,6 @@
 import { Brand } from '@/data/types';
 import StarRating from './StarRating';
+import Card from '@/components/ui/Card';
 
 interface BrandCardProps {
   brand: Brand;
@@ -8,7 +9,12 @@ interface BrandCardProps {
 
 export default function BrandCard({ brand, index }: BrandCardProps) {
   return (
-    <div key={index} className="bg-white hover:bg-slate-200 transition-colors p-6 text-center">
+    <Card
+      key={index}
+      padding="lg"
+      hover
+      className="text-center hover:bg-slate-200 transition-colors"
+    >
       <h4 className="text-xl font-bold mb-4">{brand.name}</h4>
       <StarRating rating={brand.rating} maxStars={brand.maxStars} />
       <ul className="mt-4 space-y-2">
@@ -16,6 +22,6 @@ export default function BrandCard({ brand, index }: BrandCardProps) {
           <li key={idx} className="text-gray-600">• {strength}</li>
         ))}
       </ul>
-    </div>
+    </Card>
   );
 }

@@ -3,6 +3,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Product } from '@/lib/data/products';
 import ProductCard from '@/components/ui/ProductCard';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import EmptyState from '@/components/ui/EmptyState';
+import Icon from '@/components/ui/Icon';
+import Card from '@/components/ui/Card';
 
 interface SortOption {
   label: string;
@@ -87,11 +91,8 @@ export default function PartsPageClient() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-deep-blue mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading parts and accessories...</p>
-        </div>
+      <div className="min-h-screen bg-gray-50">
+        <LoadingSpinner message="Loading parts and accessories..." />
       </div>
     );
   }
@@ -116,7 +117,7 @@ export default function PartsPageClient() {
               
 
               {/* Sort Dropdown */}
-              <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2">
+              <Card padding="sm" border className="flex items-center gap-2">
                 <label className="text-sm text-gray-700 whitespace-nowrap">Sort by:</label>
                 <select
                   value={sortBy}
@@ -129,21 +130,18 @@ export default function PartsPageClient() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </Card>
             </div>
           </div>
 
           {/* Products Grid */}
           {totalResults === 0 ? (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m6-8V8a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-deep-blue mb-2">No parts found</h3>
-              <p className="text-gray-600">We&apos;re currently updating our parts inventory. Please check back soon.</p>
-            </div>
+            <EmptyState
+              title="No parts found"
+              description="We're currently updating our parts inventory. Please check back soon."
+              showIcon={true}
+              icon={<Icon name="package" size="xl" className="text-gray-400" />}
+            />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (

@@ -100,7 +100,7 @@ export default function FAQsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400">
       {/* Header */}
       <div className="text-center py-16">
         <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-deep-blue mb-6">
@@ -114,7 +114,7 @@ export default function FAQsPage() {
           <div key={index} className="border-b border-gray-300">
             <button
               onClick={() => toggleFaq(index)}
-              className="w-full px-6 md:px-12 py-8 text-left flex justify-between items-center hover:bg-slate-300 transition-colors"
+              className="w-full px-6 md:px-12 py-8 text-left flex justify-between items-center hover:bg-slate-500 transition-colors"
             >
               <h3 className="text-xl md:text-2xl font-medium text-gray-900 pr-8 leading-relaxed">{faq.question}</h3>
               <div className="flex-shrink-0">
@@ -142,7 +142,7 @@ export default function FAQsPage() {
       <div className="py-20 px-6 md:px-12">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
           {manufacturerFaqs.map((manufacturer, index) => (
-            <div key={index} className="bg-slate-500 py-3 px-6 hover:bg-blue-400 transition-colors text-center rounded-full">
+            <div key={index} className="bg-slate-800 py-3 px-6 hover:bg-slate-600 transition-colors text-center rounded-full">
               <a
                 href={manufacturer.link}
                 target="_blank"

@@ -41,7 +41,7 @@ export default function UserAccountMenu() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+        <div className="fixed top-16 right-4 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-[210]">
           {isLoggedIn ? (
             <>
               {/* User Info */}

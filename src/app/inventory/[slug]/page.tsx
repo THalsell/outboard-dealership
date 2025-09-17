@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
 import ProductDetailClient from '@/components/product/ProductDetailClient';
 import { Product } from '@/lib/data/products';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
 interface ProductImage {
   src: string;
@@ -73,8 +74,8 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen">
+        <LoadingSpinner />
       </div>
     );
   }

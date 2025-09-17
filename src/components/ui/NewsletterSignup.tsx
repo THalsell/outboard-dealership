@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import Card from '@/components/ui/Card';
+import Input from '@/components/ui/Input';
 
 interface NewsletterSignupProps {
   variant?: 'default' | 'footer' | 'inline';
@@ -71,14 +73,17 @@ export default function NewsletterSignup({
         
         <form onSubmit={handleSubmit} className="space-y-3 max-w-full">
           <div className="flex flex-col sm:flex-row gap-2">
-            <input
+            <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="flex-1 min-w-0 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:border-white"
+              variant="transparent"
+              size="md"
               disabled={isSubmitting}
               required
+              fullWidth
+              className="flex-1 min-w-0"
             />
             <button
               type="submit"
@@ -111,14 +116,17 @@ export default function NewsletterSignup({
           </div>
           
           <form onSubmit={handleSubmit} className="flex gap-2 md:min-w-80">
-            <input
+            <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Your email address"
-              className="flex-1 px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/70 focus:outline-none focus:border-white"
+              variant="transparent"
+              size="md"
               disabled={isSubmitting}
               required
+              fullWidth
+              className="flex-1 bg-white/20 border-white/30 placeholder-white/70"
             />
             <button
               type="submit"
@@ -142,7 +150,7 @@ export default function NewsletterSignup({
 
   // Default variant - full form
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+    <Card padding="lg" shadow="lg" border>
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold text-charcoal mb-2">{title}</h3>
         <p className="text-gray-600">{description}</p>
@@ -150,25 +158,27 @@ export default function NewsletterSignup({
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
+          <Input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             placeholder="First Name (optional)"
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-deep-blue"
+            size="lg"
             disabled={isSubmitting}
+            fullWidth
           />
-          <input
+          <Input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email Address*"
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-deep-blue"
+            size="lg"
             disabled={isSubmitting}
             required
+            fullWidth
           />
         </div>
-        
+
         <button
           type="submit"
           disabled={isSubmitting}
@@ -176,7 +186,7 @@ export default function NewsletterSignup({
         >
           {isSubmitting ? 'Subscribing...' : 'Subscribe to Newsletter'}
         </button>
-        
+
         {status === 'success' && (
           <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
             <p className="text-sm text-green-800">{message}</p>
@@ -188,10 +198,10 @@ export default function NewsletterSignup({
           </div>
         )}
       </form>
-      
+
       <p className="text-xs text-gray-500 mt-4 text-center">
         By subscribing, you agree to receive marketing emails. You can unsubscribe at any time.
       </p>
-    </div>
+    </Card>
   );
 }

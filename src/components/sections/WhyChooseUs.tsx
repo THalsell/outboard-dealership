@@ -1,16 +1,13 @@
 import Image from 'next/image';
+import SectionHeader from '@/components/ui/SectionHeader';
 
 export default function WhyChooseUs() {
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-2 sm:gap-4">
-            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold px-2 text-deep-blue">Why Choose Outboard Motor Sales</h2>
-            <div className="hidden sm:block flex-1 h-px bg-gray-300"></div>
-          </div>
-        </div>
+        <SectionHeader
+          title="Why Choose Outboard Motor Sales"
+        />
       </div>
       <div className="relative h-[800px] md:h-[900px] lg:h-[1000px] w-full overflow-hidden">
           <Image

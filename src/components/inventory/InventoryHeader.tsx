@@ -2,6 +2,9 @@
 
 import { useFilter } from '@/contexts/FilterContext';
 import { usePathname, useSearchParams } from 'next/navigation';
+import Icon from '@/components/ui/Icon';
+import Badge from '@/components/ui/Badge';
+import Button from '@/components/ui/Button';
 
 interface URLFilters {
   hp?: string;
@@ -130,12 +133,14 @@ export default function InventoryHeader({
       </div>
       {/* Filter & Sort Header - Only on mobile */}
       <div className="lg:hidden bg-professional-gray text-white text-center py-1 mb-6">
-        <button
+        <Button
+          variant="ghost"
+          size="lg"
           onClick={onShowMobileFilters}
-          className="text-lg font-semibold uppercase tracking-wide"
+          className="text-lg font-semibold uppercase tracking-wide text-white"
         >
           FILTER & SORT
-        </button>
+        </Button>
       </div>
 
       {/* Results and Display Options */}
@@ -152,17 +157,15 @@ export default function InventoryHeader({
           <span className="text-charcoal font-medium">Display:</span>
           <div className="flex items-center gap-2">
             {displayOptions.map((option) => (
-              <button
+              <Button
                 key={option}
+                variant="toggle"
+                size="sm"
+                active={(filters.resultsPerPage || 36) === option}
                 onClick={() => updateFilter('resultsPerPage', option)}
-                className={`px-3 py-1.5 text-sm font-medium rounded ${
-                  (filters.resultsPerPage || 36) === option
-                    ? 'bg-gray-300 text-charcoal'
-                    : 'bg-gray-100 text-professional-gray hover:bg-gray-200'
-                }`}
               >
                 {option}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -189,49 +192,42 @@ export default function InventoryHeader({
           
           {/* Brand filters */}
           {filters.brands.map((brand) => (
-            <span key={brand} className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-charcoal text-sm rounded-full">
+            <Badge
+              key={brand}
+              variant="filter"
+              size="sm"
+              removable
+              onRemove={() => updateFilter('brands', filters.brands.filter(b => b !== brand))}
+            >
               {brand}
-              <button
-                onClick={() => updateFilter('brands', filters.brands.filter(b => b !== brand))}
-                className="text-professional-gray hover:text-charcoal ml-1"
-              >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </span>
+            </Badge>
           ))}
 
           {/* Condition filters */}
           {filters.conditions.map((condition) => (
-            <span key={condition} className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-charcoal text-sm rounded-full">
+            <Badge
+              key={condition}
+              variant="filter"
+              size="sm"
+              removable
+              onRemove={() => updateFilter('conditions', filters.conditions.filter(c => c !== condition))}
+            >
               {condition === 'scratch-dent' ? 'Scratch & Dent' :
                condition === 'overstock' ? 'Overstock' :
                condition.charAt(0).toUpperCase() + condition.slice(1)}
-              <button
-                onClick={() => updateFilter('conditions', filters.conditions.filter(c => c !== condition))}
-                className="text-professional-gray hover:text-charcoal ml-1"
-              >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </span>
+            </Badge>
           ))}
 
           {/* Other filters */}
           {filters.inStockOnly && (
-            <span className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-charcoal text-sm rounded-full">
+            <Badge
+              variant="filter"
+              size="sm"
+              removable
+              onRemove={() => updateFilter('inStockOnly', false)}
+            >
               In Stock
-              <button
-                onClick={() => updateFilter('inStockOnly', false)}
-                className="text-professional-gray hover:text-charcoal ml-1"
-              >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </span>
+            </Badge>
           )}
 
           {filters.onSaleOnly && (
@@ -241,20 +237,20 @@ export default function InventoryHeader({
                 onClick={() => updateFilter('onSaleOnly', false)}
                 className="text-red-500 hover:text-red-700 ml-1"
               >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <Icon name="close" size="xs" />
               </button>
             </span>
           )}
 
           {/* Clear all button */}
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onClearAllFilters || resetFilters}
             className="text-sm text-deep-blue hover:text-deep-blue/80 font-medium underline"
           >
             Clear all
-          </button>
+          </Button>
         </div>
       )}
     </div>

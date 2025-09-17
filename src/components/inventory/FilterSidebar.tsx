@@ -2,6 +2,9 @@
 
 import { useFilter } from '@/contexts/FilterContext';
 import { useState } from 'react';
+import Icon from '@/components/ui/Icon';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
 
 interface FilterSidebarProps {
   isMobile?: boolean;
@@ -101,21 +104,24 @@ export default function FilterSidebar({
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-bold text-charcoal uppercase tracking-wide">Filter By</h2>
         <div className="flex gap-2">
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={onClearAll || resetFilters}
             className="text-sm text-deep-blue hover:text-deep-blue/80 font-medium"
           >
             Clear All
-          </button>
+          </Button>
           {isMobile && (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 p-1"
+              aria-label="Close filter panel"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+              <Icon name="close" size="md" />
+            </Button>
           )}
         </div>
         </div>
@@ -124,22 +130,23 @@ export default function FilterSidebar({
       <div className="space-y-0">
         {/* Availability */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('availability')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('availability')}
+            aria-controls="availability-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Availability</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('availability') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('availability') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('availability') && (
-            <div className="mt-3 space-y-2">
+            <div id="availability-section" className="mt-3 space-y-2">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input
                   type="checkbox"
@@ -164,22 +171,23 @@ export default function FilterSidebar({
 
         {/* Brand Filter */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('brand')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('brand')}
+            aria-controls="brand-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Brand</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('brand') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('brand') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('brand') && (
-            <div className="mt-3 space-y-2">
+            <div id="brand-section" className="mt-3 space-y-2">
               {brands.map((brand) => (
                 <label key={brand} className="flex items-center gap-3 cursor-pointer">
                   <input
@@ -197,46 +205,49 @@ export default function FilterSidebar({
 
         {/* Price Range */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('price')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('price')}
+            aria-controls="price-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Price</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('price') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('price') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('price') && (
-            <div className="mt-3 space-y-4">
+            <div id="price-section" className="mt-3 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={filters.minPrice || ''}
-                    onChange={(e) => updateFilter('minPrice', Number(e.target.value))}
-                    className="w-full pl-7 pr-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
-                  />
-                </div>
-                <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={filters.maxPrice === priceRange.max ? '' : filters.maxPrice}
-                    onChange={(e) => updateFilter('maxPrice', Number(e.target.value) || priceRange.max)}
-                    className="w-full pl-7 pr-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
-                  />
-                </div>
+                <Input
+                  type="number"
+                  placeholder="Min"
+                  value={filters.minPrice || ''}
+                  onChange={(e) => updateFilter('minPrice', Number(e.target.value))}
+                  leftIcon={<span className="text-gray-500 text-sm">$</span>}
+                  size="lg"
+                  fullWidth
+                  className="text-sm"
+                />
+                <Input
+                  type="number"
+                  placeholder="Max"
+                  value={filters.maxPrice === priceRange.max ? '' : filters.maxPrice}
+                  onChange={(e) => updateFilter('maxPrice', Number(e.target.value) || priceRange.max)}
+                  leftIcon={<span className="text-gray-500 text-sm">$</span>}
+                  size="lg"
+                  fullWidth
+                  className="text-sm"
+                />
               </div>
               <div className="space-y-1">
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minPrice', 0);
                     updateFilter('maxPrice', 10000);
@@ -244,8 +255,10 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   Under $10,000
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minPrice', 10000);
                     updateFilter('maxPrice', 25000);
@@ -253,8 +266,10 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   $10,000 - $25,000
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minPrice', 25000);
                     updateFilter('maxPrice', 50000);
@@ -262,8 +277,10 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   $25,000 - $50,000
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minPrice', 50000);
                     updateFilter('maxPrice', 100000);
@@ -271,7 +288,7 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   Over $50,000
-                </button>
+                </Button>
               </div>
             </div>
           )}
@@ -279,40 +296,47 @@ export default function FilterSidebar({
 
         {/* Horsepower */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('horsepower')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('horsepower')}
+            aria-controls="horsepower-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Horsepower</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('horsepower') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('horsepower') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('horsepower') && (
-            <div className="mt-3 space-y-4">
+            <div id="horsepower-section" className="mt-3 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <input
+                <Input
                   type="number"
                   placeholder="Min HP"
                   value={filters.minHorsepower || ''}
                   onChange={(e) => updateFilter('minHorsepower', Number(e.target.value))}
-                  className="px-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
+                  size="lg"
+                  fullWidth
+                  className="text-sm"
                 />
-                <input
+                <Input
                   type="number"
                   placeholder="Max HP"
                   value={filters.maxHorsepower === horsepowerRange.max ? '' : filters.maxHorsepower}
                   onChange={(e) => updateFilter('maxHorsepower', Number(e.target.value) || horsepowerRange.max)}
-                  className="px-3 py-3 border border-gray-300 rounded text-sm focus:border-deep-blue focus:ring-1 focus:ring-deep-blue"
+                  size="lg"
+                  fullWidth
+                  className="text-sm"
                 />
               </div>
               <div className="space-y-1">
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minHorsepower', 0);
                     updateFilter('maxHorsepower', 30);
@@ -320,8 +344,10 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   2.5 - 30 HP
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minHorsepower', 40);
                     updateFilter('maxHorsepower', 100);
@@ -329,8 +355,10 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   40 - 100 HP
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minHorsepower', 115);
                     updateFilter('maxHorsepower', 200);
@@ -338,8 +366,10 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   115 - 200 HP
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={() => {
                     updateFilter('minHorsepower', 225);
                     updateFilter('maxHorsepower', 500);
@@ -347,7 +377,7 @@ export default function FilterSidebar({
                   className="block w-full text-left text-sm text-gray-600 hover:text-deep-blue py-1"
                 >
                   225+ HP
-                </button>
+                </Button>
               </div>
             </div>
           )}
@@ -355,22 +385,23 @@ export default function FilterSidebar({
 
         {/* Condition */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('condition')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('condition')}
+            aria-controls="condition-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Condition</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('condition') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('condition') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('condition') && (
-            <div className="mt-3 space-y-2">
+            <div id="condition-section" className="mt-3 space-y-2">
               {conditions.map((condition) => (
                 <label key={condition} className="flex items-center gap-3 cursor-pointer group">
                   <input
@@ -395,22 +426,23 @@ export default function FilterSidebar({
 
         {/* Shaft Length */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('shaft')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('shaft')}
+            aria-controls="shaft-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Shaft Length</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('shaft') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('shaft') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('shaft') && (
-            <div className="mt-3 space-y-2">
+            <div id="shaft-section" className="mt-3 space-y-2">
               {shaftLengths.map((length) => (
                 <label key={length} className="flex items-center gap-3 cursor-pointer group">
                   <input
@@ -433,22 +465,23 @@ export default function FilterSidebar({
 
         {/* Fuel Delivery */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('fuel')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('fuel')}
+            aria-controls="fuel-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Fuel Delivery</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('fuel') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('fuel') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('fuel') && (
-            <div className="mt-3 space-y-2">
+            <div id="fuel-section" className="mt-3 space-y-2">
               {fuelDeliveryTypes.map((fuelType) => (
                 <label key={fuelType} className="flex items-center gap-3 cursor-pointer group">
                   <input
@@ -471,22 +504,23 @@ export default function FilterSidebar({
 
         {/* Starting Method */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('starting')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('starting')}
+            aria-controls="starting-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Starting Method</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('starting') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('starting') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('starting') && (
-            <div className="mt-3 space-y-2">
+            <div id="starting-section" className="mt-3 space-y-2">
               {startingTypes.map((startType) => (
                 <label key={startType} className="flex items-center gap-3 cursor-pointer group">
                   <input
@@ -506,22 +540,23 @@ export default function FilterSidebar({
 
         {/* Steering */}
         <div className="py-4 border-b border-gray-200">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('steering')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('steering')}
+            aria-controls="steering-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Controls</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('steering') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('steering') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('steering') && (
-            <div className="mt-3 space-y-2">
+            <div id="steering-section" className="mt-3 space-y-2">
               {steeringTypes.map((steeringType) => (
                 <label key={steeringType} className="flex items-center gap-3 cursor-pointer group">
                   <input
@@ -541,22 +576,23 @@ export default function FilterSidebar({
 
         {/* Trim & Tilt */}
         <div className="py-4">
-          <button
+          <Button
+            variant="ghost"
+            size="md"
             onClick={() => toggleSection('trimtilt')}
             className="flex items-center justify-between w-full text-left"
+            aria-expanded={expandedSections.includes('trimtilt')}
+            aria-controls="trimtilt-section"
           >
             <h3 className="text-base font-semibold text-charcoal">Trim & Tilt</h3>
-            <svg 
-              className={`w-5 h-5 text-gray-400 transition-transform ${expandedSections.includes('trimtilt') ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+            <Icon
+              name="chevronDown"
+              size="md"
+              className={`text-gray-400 transition-transform ${expandedSections.includes('trimtilt') ? 'rotate-180' : ''}`}
+            />
+          </Button>
           {expandedSections.includes('trimtilt') && (
-            <div className="mt-3 space-y-2">
+            <div id="trimtilt-section" className="mt-3 space-y-2">
               {trimTiltTypes.map((trimTiltType) => (
                 <label key={trimTiltType} className="flex items-center gap-3 cursor-pointer group">
                   <input
@@ -580,18 +616,22 @@ export default function FilterSidebar({
       {/* Mobile Footer Buttons */}
       {isMobile && (
         <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4 flex gap-3">
-          <button
+          <Button
+            variant="secondary"
+            size="lg"
             onClick={onClose}
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+            className="flex-1 px-4 py-3"
           >
             Close
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="primary"
+            size="lg"
             onClick={onClose}
-            className="flex-1 px-4 py-3 bg-deep-blue text-white rounded-lg font-medium hover:bg-[#0a3a6e] transition-colors"
+            className="flex-1 px-4 py-3"
           >
             Apply Filters
-          </button>
+          </Button>
         </div>
       )}
     </div>

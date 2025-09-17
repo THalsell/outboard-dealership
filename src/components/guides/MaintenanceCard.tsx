@@ -1,4 +1,5 @@
 import { MaintenanceItem } from '@/data/types';
+import Card from '@/components/ui/Card';
 
 interface MaintenanceCardProps {
   item: MaintenanceItem;
@@ -7,7 +8,12 @@ interface MaintenanceCardProps {
 
 export default function MaintenanceCard({ item, index }: MaintenanceCardProps) {
   return (
-    <div key={index} className="bg-white hover:bg-slate-200 transition-colors p-6 text-center">
+    <Card
+      key={index}
+      padding="lg"
+      hover
+      className="text-center hover:bg-slate-200 transition-colors"
+    >
       <h4 className="text-xl font-bold mb-4">{item.title}</h4>
       {item.description && (
         <p className="text-gray-600 mb-4">{item.description}</p>
@@ -19,6 +25,6 @@ export default function MaintenanceCard({ item, index }: MaintenanceCardProps) {
           ))}
         </ul>
       )}
-    </div>
+    </Card>
   );
 }

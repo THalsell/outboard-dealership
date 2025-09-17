@@ -1,6 +1,7 @@
 "use client";
 
 import { Product, ProductVariant } from "@/lib/data/products";
+import Card from "@/components/ui/Card";
 
 interface ProductSpecificationsProps {
   product: Product;
@@ -107,7 +108,7 @@ export default function ProductSpecifications({
   });
 
   return (
-    <div className="p-6">
+    <Card as="section" padding="lg" border shadow="sm">
       {/* Single Specifications Header */}
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-deep-blue">Specifications</h2>
@@ -141,6 +142,6 @@ export default function ProductSpecifications({
           );
         })}
       </div>
-    </div>
+    </Card>
   );
 }

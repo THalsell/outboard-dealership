@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAppReady } from '@/contexts/AppReadyContext';
+import Icon from '@/components/ui/Icon';
 
 export default function EnhancedHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -66,7 +67,7 @@ export default function EnhancedHeader() {
     },
     {
       name: 'Compare',
-      href: '/inventory/compare'
+      href: '/compare'
     },
   ];
 
@@ -144,13 +145,7 @@ export default function EnhancedHeader() {
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {mobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              <Icon name={mobileMenuOpen ? "close" : "menu"} size="lg" />
             </button>
 
             {/* Site Title/Logo for non-home pages - Mobile */}
@@ -179,9 +174,7 @@ export default function EnhancedHeader() {
                     >
                       {item.name}
                       {item.dropdown && (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
+                        <Icon name="chevronDown" size="sm" />
                       )}
                     </span>
                   ) : (
@@ -191,9 +184,7 @@ export default function EnhancedHeader() {
                     >
                       {item.name}
                       {item.dropdown && (
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
+                        <Icon name="chevronDown" size="sm" />
                       )}
                     </Link>
                   )}

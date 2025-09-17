@@ -29,10 +29,10 @@ export default function ProductImageGallery({ images, title }: ProductImageGalle
             src={selectedImage.src}
             alt={selectedImage.alt || title}
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="object-contain"
             priority
             onError={() => setImageError(true)}
-            unoptimized={selectedImage.src.startsWith('https://') || selectedImage.src.startsWith('/placeholder')}
           />
         </div>
       </div>
@@ -55,8 +55,8 @@ export default function ProductImageGallery({ images, title }: ProductImageGalle
                   src={image.src}
                   alt={image.alt || `${title} view ${index + 1}`}
                   fill
+                  sizes="80px"
                   className="object-contain"
-                  unoptimized={image.src.startsWith('https://') || image.src.startsWith('/placeholder')}
                 />
               </div>
             </button>
