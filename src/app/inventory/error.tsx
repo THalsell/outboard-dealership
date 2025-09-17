@@ -1,6 +1,6 @@
 'use client';
 
-import EmptyState from '@/components/ui/EmptyState';
+import EmptyState from '@/components/ui/feedback/EmptyState';
 
 export default function Error({ reset }: { reset: () => void }) {
   return (

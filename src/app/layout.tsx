@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, Roboto } from "next/font/google";
 import "./globals.css";
-import TopBanner from "@/components/layout/TopBanner";
-import EnhancedHeader from "@/components/layout/EnhancedHeader";
-import Footer from "@/components/layout/Footer";
+import TopBanner from "@/components/layout/header/TopBanner";
+import EnhancedHeader from "@/components/layout/header/EnhancedHeader";
+import Footer from "@/components/layout/footer/Footer";
 import AppProviders from "@/providers/AppProviders";
 import { getAllSearchQueries } from "@/lib/seo/ai-keywords";
 
@@ -31,14 +31,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Outboard Motors Dealership" }],
   creator: "Outboard Motors Dealership",
   publisher: "Outboard Motors Dealership",
-  metadataBase: new URL("https://outboard-dealership.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://outboardmotorsales.com"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://outboard-dealership.vercel.app",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://outboardmotorsales.com",
     siteName: "Outboard Motors Dealership",
     title: "Outboard Motors Dealership - Premium Marine Motors & Service",
     description: "Your trusted source for new and used outboard motors. Yamaha, Mercury, Honda, Suzuki authorized dealer. Expert service, parts, and financing available.",

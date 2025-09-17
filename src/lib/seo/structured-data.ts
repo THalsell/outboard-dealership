@@ -1,4 +1,4 @@
-import { Product } from '@/lib/data/products';
+import { Product } from '@/types/product';
 import { enrichProductForSEO } from './product-enrichment';
 
 export function generateProductSchema(product: Product, url: string) {
@@ -301,8 +301,7 @@ export function generateLocalBusinessSchema() {
       "https://outboard-dealership.vercel.app/showroom.jpg"
     ],
     "telephone": "+1-931-243-4555",
-    "faxNumber": "+1-931-243-4556",
-    "email": "info@outboard-dealership.vercel.app",
+    "email": "eli@claypowersports.com",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "615 West Lake Avenue",

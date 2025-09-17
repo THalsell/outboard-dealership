@@ -1,4 +1,4 @@
-import { ComparePage } from '@/components/compare/ComparePage';
+import { ComparePage } from '@/components/pages/compare/ComparePage';
 
 export default function Page() {
   return <ComparePage />;

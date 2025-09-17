@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { siteConfig } from '@/config/site';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://outboard-dealership.vercel.app';
+  const baseUrl = siteConfig.url;
   const currentDate = new Date().toISOString();
 
   // Static pages

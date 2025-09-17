@@ -1,9 +1,9 @@
-import Logo from '@/components/layout/Logo';
-import HeroSlider from '@/components/sections/HeroSlider';
-import FeaturedProducts from '@/components/sections/FeaturedProducts';
-import ShopByCategory from '@/components/sections/ShopByCategory';
-import WhyChooseUs from '@/components/sections/WhyChooseUs';
-import BrandsSection from '@/components/sections/BrandsSection';
+import Logo from '@/components/layout/header/Logo';
+import HeroSlider from '@/components/pages/home/HeroSlider';
+import FeaturedProducts from '@/components/pages/home/FeaturedProducts';
+import ShopByCategory from '@/components/pages/home/ShopByCategory';
+import WhyChooseUs from '@/components/pages/home/WhyChooseUs';
+import BrandsSection from '@/components/pages/home/BrandsSection';
 import AIOptimizedContent from '@/components/seo/AIOptimizedContent';
 import { generateLocalBusinessSchema, generateFAQSchema, generateServiceSchema } from '@/lib/seo/structured-data';
 

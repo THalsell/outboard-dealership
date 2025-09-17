@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
-import ProductDetailClient from '@/components/product/ProductDetailClient';
-import { Product } from '@/lib/data/products';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import ProductDetailClient from '@/components/pages/product/ProductDetailClient';
+import { Product } from '@/types/product';
+import LoadingSpinner from '@/components/ui/feedback/LoadingSpinner';
 
 interface ProductImage {
   src: string;

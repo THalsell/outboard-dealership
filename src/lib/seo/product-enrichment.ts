@@ -1,4 +1,4 @@
-import { Product } from '@/lib/data/products';
+import { Product } from '@/types/product';
 
 /**
  * Extracts engine type from product data

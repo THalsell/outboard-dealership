@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { fetchProduct } from '@/lib/shopify';
-import { Product } from '@/lib/data/products';
+import { fetchProduct } from '@/lib/shopify/client';
+import { Product } from '@/types/product';
 
 // Transform detailed GraphQL product to our Product type
 interface GraphQLProduct {

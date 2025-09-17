@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import InventoryPageClient from '@/components/inventory/InventoryPageClient';
+import InventoryPageClient from '@/components/pages/inventory/InventoryPageClient';
 
 export const metadata: Metadata = {
   title: 'Outboard Motor Inventory | Shop New & Used Motors',

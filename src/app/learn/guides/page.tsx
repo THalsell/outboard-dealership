@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
-import { featuresData, brandsData, maintenanceData, shaftLengthData, horsepowerFAQs } from '@/data/guidesData';
-import FeatureCard from '@/components/guides/FeatureCard';
-import BrandCard from '@/components/guides/BrandCard';
-import MaintenanceCard from '@/components/guides/MaintenanceCard';
-import FAQCard from '@/components/guides/FAQCard';
+import { featuresData, brandsData, maintenanceData, shaftLengthData, horsepowerFAQs } from '@/data/guides/guidesData';
+import FeatureCard from '@/components/pages/guides/FeatureCard';
+import BrandCard from '@/components/pages/guides/BrandCard';
+import MaintenanceCard from '@/components/pages/guides/MaintenanceCard';
+import FAQCard from '@/components/pages/guides/FAQCard';
 
 
 // Reusable Grid Component

@@ -1,4 +1,4 @@
-import PartsPageClient from '@/components/parts/PartsPageClient';
+import PartsPageClient from '@/components/pages/parts/PartsPageClient';
 
 export const metadata = {
   title: 'Parts & Accessories | Outboard Motors Dealership',

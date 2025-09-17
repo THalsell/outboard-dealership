@@ -1,6 +1,6 @@
 'use client';
 
-import { CartItem } from '@/types/models/order';
+import { CartItem } from '@/types/cart';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 
