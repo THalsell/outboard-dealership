@@ -49,7 +49,7 @@ function ProductCard({ product }: ProductCardProps) {
       "price": price.toFixed(2),
       "priceCurrency": "USD",
       "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "url": `https://outboard-dealership.vercel.app/inventory/${product.handle}`
+      "url": `https://outboardmotorsales.com/inventory/${product.handle}`
     }
   };
 

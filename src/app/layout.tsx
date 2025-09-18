@@ -24,10 +24,10 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: {
     template: "%s | Outboard Motors Dealership",
-    default: "Outboard Motors Dealership - Premium Marine Motors & Service",
+    default: "Authorized Yamaha, Honda, Mercury Outboard Motors Dealer | Celina, TN",
   },
   description:
-    "Your trusted source for new and used outboard motors. Honda, Yamaha, Mercury, Freedom, Suzuki, Tohatsu authorized dealer. Expert service, parts, and financing available.",
+    "Authorized dealer for Yamaha, Honda, Mercury, Suzuki, Tohatsu & Freedom outboard motors in Celina, TN. New engines, parts, service & repairs.",
   keywords: getAllSearchQueries().slice(0, 200), // Include comprehensive AI keywords
   authors: [{ name: "Outboard Motors Dealership" }],
   creator: "Outboard Motors Dealership",
