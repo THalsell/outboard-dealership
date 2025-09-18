@@ -133,7 +133,7 @@ export default function EnhancedHeader() {
   }, [mobileMenuOpen]);
   return (
     <>
-      <header className="bg-gray-900 fixed top-[116px] sm:top-[70px] left-0 right-0 z-[150] overflow-hidden border-t border-gray-800">
+      <header className="bg-gray-900 fixed top-[104px] sm:top-[52px] left-0 right-0 z-[150] overflow-hidden border-t border-gray-800">
         {/* Main Navigation */}
         <nav className="w-full px-2 sm:px-4 py-3">
           <div className="flex justify-between items-center w-full">
@@ -150,9 +150,9 @@ export default function EnhancedHeader() {
 
             {/* Site Title/Logo for non-home pages - Mobile */}
             {pathname !== '/' && (
-              <Link 
-                href="/" 
-                className="lg:hidden text-xl font-bold text-white dark:text-white font-londrina"
+              <Link
+                href="/"
+                className="lg:hidden text-xl font-bold text-white dark:text-white font-righteous"
               >
                 OMS
               </Link>
@@ -191,7 +191,7 @@ export default function EnhancedHeader() {
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && activeDropdown === item.name && (
-                    <div className={`fixed top-[184px] sm:top-[128px] ${item.name === 'Outboard Motors' ? 'w-96 max-w-[95vw]' : 'w-72 max-w-[95vw]'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 left-1/2 transform -translate-x-1/2`} style={{ zIndex: 10001 }}>
+                    <div className={`fixed top-[172px] sm:top-[110px] ${item.name === 'Outboard Motors' ? 'w-96 max-w-[95vw]' : 'w-72 max-w-[95vw]'} bg-white rounded-lg shadow-xl border border-gray-200 py-3 left-1/2 transform -translate-x-1/2`} style={{ zIndex: 10001 }}>
                       {item.name === 'Outboard Motors' ? (
                         // Special layout for Inventory dropdown
                         <div className="grid grid-cols-2 gap-1">

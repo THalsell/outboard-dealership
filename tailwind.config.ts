@@ -27,7 +27,7 @@ const config: Config = {
         'text-blue': '#1d293d',
       },
       fontFamily: {
-        'londrina': ['Londrina Solid', 'sans-serif'],
+        'righteous': ['Righteous', 'sans-serif'],
         'bebas-neue': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],
         'roboto': ['var(--font-roboto)', 'system-ui', 'sans-serif'],
         'heading': ['var(--font-bebas-neue)', 'Arial', 'sans-serif'],

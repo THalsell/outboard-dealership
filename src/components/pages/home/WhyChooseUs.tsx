@@ -51,6 +51,7 @@ export default function WhyChooseUs() {
                   </h3>
                   <div className="hidden sm:block w-12 sm:w-20 md:w-32 lg:w-40 h-px bg-white/30"></div>
                 </div>
+                <p className="text-sm md:text-base lg:text-xl font-light"></p>
               </li>
               <li>
                 <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2">

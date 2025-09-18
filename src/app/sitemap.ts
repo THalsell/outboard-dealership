@@ -5,7 +5,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = siteConfig.url;
   const currentDate = new Date().toISOString();
 
-  // Static pages
+  // Static pages that actually exist
   const staticPages = [
     {
       url: baseUrl,
@@ -20,87 +20,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/brands`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/brands/honda`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/brands/yamaha`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/brands/mercury`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/brands/suzuki`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/brands/tohatsu`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/brands/freedom`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/service`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/parts`,
       lastModified: currentDate,
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/financing`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/deals`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/new-arrivals`,
-      lastModified: currentDate,
-      changeFrequency: 'daily' as const,
       priority: 0.7,
     },
     {
@@ -110,56 +32,109 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/faq`,
+      url: `${baseUrl}/about`,
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
-      priority: 0.4,
+      priority: 0.5,
     },
     {
-      url: `${baseUrl}/warranty`,
+      url: `${baseUrl}/learn/guides`,
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
-      priority: 0.4,
+      priority: 0.6,
     },
     {
-      url: `${baseUrl}/privacy-policy`,
+      url: `${baseUrl}/learn/faqs`,
       lastModified: currentDate,
-      changeFrequency: 'yearly' as const,
-      priority: 0.3,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
     },
     {
-      url: `${baseUrl}/terms-of-service`,
+      url: `${baseUrl}/financing/application`,
       lastModified: currentDate,
-      changeFrequency: 'yearly' as const,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/financing/offers`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/sitemap`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly' as const,
       priority: 0.3,
     },
   ];
 
-  // Category pages
-  const categories = [
-    'portable', 'mid-range', 'high-power', 'electric', 
-    '2-stroke', '4-stroke', 'new', 'used'
+  // Inventory filter pages (these are actual working URLs with filters)
+  const inventoryFilterPages = [
+    // By condition
+    {
+      url: `${baseUrl}/inventory?condition=new`,
+      lastModified: currentDate,
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/inventory?condition=used`,
+      lastModified: currentDate,
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    // By status
+    {
+      url: `${baseUrl}/inventory?status=sale`,
+      lastModified: currentDate,
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/inventory?status=overstock`,
+      lastModified: currentDate,
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    },
+    // By brand (as filters, not separate pages)
+    {
+      url: `${baseUrl}/inventory?brand=yamaha`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/inventory?brand=mercury`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/inventory?brand=honda`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/inventory?brand=suzuki`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/inventory?brand=tohatsu`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/inventory?brand=freedom`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
   ];
 
-  const categoryPages = categories.map(category => ({
-    url: `${baseUrl}/category/${category}`,
-    lastModified: currentDate,
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
-
-  // Horsepower range pages
-  const horsepowerRanges = [
-    'under-25hp', '25-50hp', '50-100hp', '100-150hp', 
-    '150-200hp', '200-250hp', 'over-250hp'
-  ];
-
-  const horsepowerPages = horsepowerRanges.map(range => ({
-    url: `${baseUrl}/horsepower/${range}`,
-    lastModified: currentDate,
-    changeFrequency: 'weekly' as const,
-    priority: 0.6,
-  }));
-
-  return [...staticPages, ...categoryPages, ...horsepowerPages];
+  return [...staticPages, ...inventoryFilterPages];
 }

@@ -7,31 +7,34 @@ import Footer from "@/components/layout/footer/Footer";
 import AppProviders from "@/providers/AppProviders";
 import { getAllSearchQueries } from "@/lib/seo/ai-keywords";
 
-const bebasNeue = Bebas_Neue({ 
+const bebasNeue = Bebas_Neue({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
-  variable: "--font-bebas-neue"
+  variable: "--font-bebas-neue",
 });
 
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"],
   display: "swap",
-  variable: "--font-roboto"
+  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {
   title: {
     template: "%s | Outboard Motors Dealership",
-    default: "Outboard Motors Dealership - Premium Marine Motors & Service"
+    default: "Outboard Motors Dealership - Premium Marine Motors & Service",
   },
-  description: "Your trusted source for new and used outboard motors. Honda, Yamaha, Mercury, Freedom, Suzuki, Tohatsu authorized dealer. Expert service, parts, and financing available.",
+  description:
+    "Your trusted source for new and used outboard motors. Honda, Yamaha, Mercury, Freedom, Suzuki, Tohatsu authorized dealer. Expert service, parts, and financing available.",
   keywords: getAllSearchQueries().slice(0, 200), // Include comprehensive AI keywords
   authors: [{ name: "Outboard Motors Dealership" }],
   creator: "Outboard Motors Dealership",
   publisher: "Outboard Motors Dealership",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://outboardmotorsales.com"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://outboardmotorsales.com"
+  ),
   alternates: {
     canonical: "/",
   },
@@ -41,7 +44,8 @@ export const metadata: Metadata = {
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://outboardmotorsales.com",
     siteName: "Outboard Motors Dealership",
     title: "Outboard Motors Dealership - Premium Marine Motors & Service",
-    description: "Your trusted source for new and used outboard motors. Yamaha, Mercury, Honda, Suzuki authorized dealer. Expert service, parts, and financing available.",
+    description:
+      "Your trusted source for new and used outboard motors. Yamaha, Mercury, Honda, Suzuki authorized dealer. Expert service, parts, and financing available.",
     images: [
       {
         url: "/og-image.jpg",
@@ -56,7 +60,8 @@ export const metadata: Metadata = {
     site: "@outboarddealer",
     creator: "@outboarddealer",
     title: "Outboard Motors Dealership - Premium Marine Motors & Service",
-    description: "Your trusted source for new and used outboard motors. Expert service, parts, and financing available.",
+    description:
+      "Your trusted source for new and used outboard motors. Expert service, parts, and financing available.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -84,12 +89,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="overflow-x-hidden">
-      <body className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen bg-light-gray text-text-blue font-body overflow-x-hidden`} suppressHydrationWarning={true} style={{ fontSize: '16px', fontWeight: '400', lineHeight: '1.6', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
+      <body
+        className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen bg-light-gray text-text-blue font-body overflow-x-hidden`}
+        suppressHydrationWarning={true}
+        style={{
+          fontSize: "16px",
+          fontWeight: "400",
+          lineHeight: "1.6",
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
+        }}
+      >
         <AppProviders>
           <TopBanner />
           <EnhancedHeader />
 
-          <main className="overflow-x-hidden pt-[178px] sm:pt-[130px]">
+          <main className="overflow-x-hidden pt-[156px] sm:pt-[104px]">
             {children}
           </main>
           <Footer />
