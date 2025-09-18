@@ -15,7 +15,7 @@ export const siteConfig = {
 
   contact: {
     phone: "(931) 243-4555",
-    email: "eli@outboardmotorsales.com",
+    email: "eli@claypowersports.com",
     address: {
       street: "615 West Lake Avenue",
       city: "Celina",
