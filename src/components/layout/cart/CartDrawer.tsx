@@ -1,7 +1,7 @@
 "use client";
 
 import { useCart } from "@/contexts/CartContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import EmptyState from "@/components/ui/feedback/EmptyState";
 import Icon from "@/components/ui/display/Icon";
@@ -12,14 +12,22 @@ export default function CartDrawer() {
     items,
     total,
     itemCount,
-    addItem,
     updateQuantity,
     removeItem,
+    clearCart,
+    cleanServiceItems,
     isOpen,
     setIsOpen,
   } = useCart();
 
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+  // Clean service items when cart opens
+  useEffect(() => {
+    if (isOpen) {
+      cleanServiceItems();
+    }
+  }, [isOpen, cleanServiceItems]);
 
   const handleCheckout = async () => {
     setIsCheckingOut(true);
@@ -36,8 +44,15 @@ export default function CartDrawer() {
       const data = await response.json();
 
       if (data.success) {
-        // Redirect to Shopify checkout
-        window.location.href = data.checkoutUrl;
+        // Clear cart and ensure localStorage is updated immediately
+        clearCart();
+        localStorage.removeItem("cart");
+        localStorage.setItem("cart", "[]");
+
+        // Small delay to ensure localStorage changes are persisted
+        setTimeout(() => {
+          window.location.href = data.checkoutUrl;
+        }, 100);
       } else {
         console.error("Checkout error:", data.error);
         alert("Failed to create checkout. Please try again.");
@@ -110,75 +125,56 @@ export default function CartDrawer() {
                     </div>
                   )}
                   <div className="flex-1">
-                    {item.productType === "service" &&
-                    item.name === "Lift Gate Service" ? (
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-deep-blue">Lift Gate Service</h3>
-                          <span className="font-semibold">${item.price}</span>
-                        </div>
-                        <Button
-                          variant="danger"
-                          size="xs"
-                          onClick={() => removeItem(item.id)}
-                        >
-                          Remove
-                        </Button>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-medium text-deep-blue">
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          ${item.price.toLocaleString()} each
+                        </p>
+                        {item.productType === "motor" && (
+                          <p className="text-xs text-green-600 mt-1">
+                            ✓ Free Shipping (Lower 48)
+                          </p>
+                        )}
                       </div>
-                    ) : (
-                      <>
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <h3 className="font-medium text-deep-blue">
-                              {item.name}
-                            </h3>
-                            <p className="text-sm text-gray-600 mt-1">
-                              ${item.price.toLocaleString()} each
-                            </p>
-                            {item.productType === "motor" && (
-                              <p className="text-xs text-green-600 mt-1">
-                                ✓ Free Shipping (Lower 48)
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 mt-3">
-                          <Button
-                            variant="secondary"
-                            size="xs"
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity - 1)
-                            }
-                            className="w-7 h-7 border border-gray-300 hover:bg-gray-50 flex items-center justify-center text-gray-600"
-                            aria-label="Decrease quantity"
-                          >
-                            -
-                          </Button>
-                          <span className="w-8 text-center text-sm">
-                            {item.quantity}
-                          </span>
-                          <Button
-                            variant="secondary"
-                            size="xs"
-                            onClick={() =>
-                              updateQuantity(item.id, item.quantity + 1)
-                            }
-                            className="w-7 h-7 border border-gray-300 hover:bg-gray-50 flex items-center justify-center text-gray-600"
-                            aria-label="Increase quantity"
-                          >
-                            +
-                          </Button>
-                          <Button
-                            variant="danger"
-                            size="xs"
-                            onClick={() => removeItem(item.id)}
-                            className="ml-auto"
-                          >
-                            Remove
-                          </Button>
-                        </div>
-                      </>
-                    )}
+                    </div>
+                    <div className="flex items-center gap-2 mt-3">
+                      <Button
+                        variant="secondary"
+                        size="xs"
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity - 1)
+                        }
+                        className="w-7 h-7 border border-gray-300 hover:bg-gray-50 flex items-center justify-center text-gray-600"
+                        aria-label="Decrease quantity"
+                      >
+                        -
+                      </Button>
+                      <span className="w-8 text-center text-sm">
+                        {item.quantity}
+                      </span>
+                      <Button
+                        variant="secondary"
+                        size="xs"
+                        onClick={() =>
+                          updateQuantity(item.id, item.quantity + 1)
+                        }
+                        className="w-7 h-7 border border-gray-300 hover:bg-gray-50 flex items-center justify-center text-gray-600"
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="xs"
+                        onClick={() => removeItem(item.id)}
+                        className="ml-auto"
+                      >
+                        Remove
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -204,41 +200,12 @@ export default function CartDrawer() {
               <span className="text-gray-600">--</span>
             </div>
             {items.some((item) => item.productType === "motor") && (
-              <>
-                {/* Lift Gate Option */}
-                {!items.some((item) => item.id === "lift-gate-service") && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                    <label className="flex items-start gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            addItem({
-                              id: "lift-gate-service",
-                              productId: "lift-gate",
-                              variantId: "lift-gate",
-                              productType: "service",
-                              name: "Lift Gate Service",
-                              price: 99,
-                              quantity: 1,
-                            });
-                          }
-                        }}
-                        className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                      />
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-blue-900">
-                          Add Lift Gate Service (+$99)
-                        </p>
-                        <p className="text-xs text-blue-700 mt-1">
-                          Hydraulic platform lowers motor to ground level.
-                          Recommended for residential delivery.
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                )}
-              </>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
+                <p className="text-sm text-blue-700">
+                  <span className="font-semibold">📦 Shipping Note:</span> Lift
+                  gate service available at checkout for residential deliveries
+                </p>
+              </div>
             )}
             <div className="text-sm text-gray-600 mb-4">
               {items.some((item) => item.productType === "motor")
