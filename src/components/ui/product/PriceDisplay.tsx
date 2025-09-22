@@ -45,9 +45,8 @@ export default function PriceDisplay({
   if (hasDiscount) {
     return (
       <div className="flex items-baseline gap-2">
-        <span className="text-xl font-bold text-charcoal" itemProp="offers" itemScope itemType="https://schema.org/Offer">
-          <meta itemProp="priceCurrency" content="USD" />
-          <span itemProp="price" content={price.toString()}>${price.toLocaleString()}</span>
+        <span className="text-xl font-bold text-charcoal">
+          ${price.toLocaleString()}
         </span>
         <span className="text-sm text-gray-500 line-through">
           ${comparePrice.toLocaleString()}

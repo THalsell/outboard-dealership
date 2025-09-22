@@ -154,32 +154,9 @@ export default function Footer() {
             &copy; {currentYear} Outboard Motor Sales. All rights reserved.
           </p>
           <div className="mt-2 space-x-4 text-xs">
-            <a
-              href="https://outboard-practice-store.myshopify.com/policies/privacy-policy"
-              className="hover:text-blue-400"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Privacy Policy
-            </a>
-            <span>|</span>
-            <a
-              href="https://outboard-practice-store.myshopify.com/policies/terms-of-service"
-              className="hover:text-blue-400"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Terms of Service
-            </a>
-            <span>|</span>
-            <a
-              href="https://outboard-practice-store.myshopify.com/policies/refund-policy"
-              className="hover:text-blue-400"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Refund Policy
-            </a>
+            <span className="text-gray-400">
+              Business Policies Available Upon Request
+            </span>
             <span>|</span>
             <Link href="/sitemap" className="hover:text-blue-400">
               Sitemap

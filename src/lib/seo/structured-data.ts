@@ -2,8 +2,14 @@ import { Product } from "@/types/product";
 import { enrichProductForSEO } from "./product-enrichment";
 
 export function generateProductSchema(product: Product, url: string) {
-  const variant = product.variants[0];
-  const price = variant?.price || 0;
+  // Find the first available variant with a valid price, or fallback to first variant
+  const availableVariant = product.variants.find(v => v.available && v.price > 0);
+  const variant = availableVariant || product.variants[0];
+
+  // Use the same price logic as PriceDisplay component
+  // If there's a compare price and it's higher, show the sale price (variant.price)
+  // Otherwise show the regular price
+  const displayPrice = variant?.price || 0;
 
   // Use enrichment to fill in any missing properties
   const enriched = enrichProductForSEO(product);
@@ -258,16 +264,25 @@ export function generateProductSchema(product: Product, url: string) {
       "@type": "Offer",
       url: url,
       priceCurrency: "USD",
-      price: price.toFixed(2),
-      priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .split("T")[0],
-      availability: product.inStock
+      price: displayPrice > 0 ? displayPrice.toFixed(2) : "0.00",
+      availability: (variant?.available && variant?.inventory > 0)
         ? "https://schema.org/InStock"
+        : variant?.available && variant?.inventory === 0
+        ? "https://schema.org/PreOrder"
         : "https://schema.org/OutOfStock",
       seller: {
         "@type": "Organization",
-        name: "Outboard Motors Dealership",
+        name: "Outboard Motor Sales",
+        url: "https://outboardmotorsales.com",
+        telephone: "(931) 243-4555",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "615 West Lake Avenue",
+          addressLocality: "Celina",
+          addressRegion: "TN",
+          postalCode: "38551",
+          addressCountry: "US",
+        },
       },
       itemCondition:
         (product.condition || product.status) === "new"
@@ -276,23 +291,12 @@ export function generateProductSchema(product: Product, url: string) {
           ? "https://schema.org/RefurbishedCondition"
           : "https://schema.org/UsedCondition",
     },
-    aggregateRating: product.rating
-      ? {
-          "@type": "AggregateRating",
-          ratingValue: product.rating.toString(),
-          reviewCount:
-            product.reviewCount || Math.floor(Math.random() * 50) + 10,
-          bestRating: "5",
-          worstRating: "1",
-        }
-      : undefined,
     additionalProperty:
       additionalProperties.length > 0 ? additionalProperties : undefined,
     isRelatedTo: product.applicationTypes?.map((appType) => ({
       "@type": "Product",
       name: `${appType} boats`,
     })),
-    review: [],
   };
 }
 
@@ -448,31 +452,6 @@ export function generateLocalBusinessSchema() {
         },
       ],
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      reviewCount: "250",
-      bestRating: "5",
-      worstRating: "1",
-    },
-    review: [
-      {
-        "@type": "Review",
-        author: {
-          "@type": "Person",
-          name: "John Smith",
-        },
-        datePublished: "2024-01-15",
-        reviewBody:
-          "Excellent service and knowledgeable staff. They helped me find the perfect outboard for my boat.",
-        reviewRating: {
-          "@type": "Rating",
-          ratingValue: "5",
-          bestRating: "5",
-          worstRating: "1",
-        },
-      },
-    ],
     potentialAction: {
       "@type": "SearchAction",
       target: "https://outboardmotorsales.com/inventory?search={search_term_string}",
@@ -508,14 +487,6 @@ export function generateFAQSchema() {
         acceptedAnswer: {
           "@type": "Answer",
           text: "Yes, we have a full-service department with certified technicians who can perform maintenance and repairs on all major outboard motor brands.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "What is your return policy?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "We offer a 30-day return policy on most parts and accessories. Outboard motors come with manufacturer warranties. Please contact us for specific warranty information.",
         },
       },
       {

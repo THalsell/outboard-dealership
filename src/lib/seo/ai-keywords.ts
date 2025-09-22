@@ -278,7 +278,6 @@ export const AI_SEARCH_KEYWORDS = {
     "outboard motor financing",
     "outboard motor specials",
     "best outboard motor",
-    "outboard motor reviews",
     "compare outboard motors",
     "outboard motor cost",
     "cheap outboard motor",

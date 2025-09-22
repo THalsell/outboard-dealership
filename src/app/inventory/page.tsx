@@ -3,30 +3,33 @@ import { Suspense } from 'react';
 import InventoryPageClient from '@/components/pages/inventory/InventoryPageClient';
 import { siteConfig } from '@/config/site';
 
+type Props = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
 export async function generateMetadata({
   searchParams
-}: {
-  searchParams: { [key: string]: string | string[] | undefined }
-}): Promise<Metadata> {
+}: Props): Promise<Metadata> {
   const baseUrl = siteConfig.url;
+  const resolvedSearchParams = await searchParams;
 
   // Build canonical URL with query parameters
   const params = new URLSearchParams();
 
-  if (searchParams.brand && typeof searchParams.brand === 'string') {
-    params.append('brand', searchParams.brand);
+  if (resolvedSearchParams.brand && typeof resolvedSearchParams.brand === 'string') {
+    params.append('brand', resolvedSearchParams.brand);
   }
-  if (searchParams.condition && typeof searchParams.condition === 'string') {
-    params.append('condition', searchParams.condition);
+  if (resolvedSearchParams.condition && typeof resolvedSearchParams.condition === 'string') {
+    params.append('condition', resolvedSearchParams.condition);
   }
-  if (searchParams.status && typeof searchParams.status === 'string') {
-    params.append('status', searchParams.status);
+  if (resolvedSearchParams.status && typeof resolvedSearchParams.status === 'string') {
+    params.append('status', resolvedSearchParams.status);
   }
-  if (searchParams.hp && typeof searchParams.hp === 'string') {
-    params.append('hp', searchParams.hp);
+  if (resolvedSearchParams.hp && typeof resolvedSearchParams.hp === 'string') {
+    params.append('hp', resolvedSearchParams.hp);
   }
-  if (searchParams.search && typeof searchParams.search === 'string') {
-    params.append('search', searchParams.search);
+  if (resolvedSearchParams.search && typeof resolvedSearchParams.search === 'string') {
+    params.append('search', resolvedSearchParams.search);
   }
 
   const queryString = params.toString();
@@ -38,17 +41,17 @@ export async function generateMetadata({
   let title = 'Outboard Motor Inventory | Shop New & Used Motors';
   let description = 'Browse our complete inventory of new and used outboard motors from top brands.';
 
-  if (searchParams.brand) {
-    const brand = String(searchParams.brand);
+  if (resolvedSearchParams.brand) {
+    const brand = String(resolvedSearchParams.brand);
     title = `${brand.charAt(0).toUpperCase() + brand.slice(1)} Outboard Motors | Shop ${brand.charAt(0).toUpperCase() + brand.slice(1)} Motors`;
     description = `Shop our selection of ${brand.charAt(0).toUpperCase() + brand.slice(1)} outboard motors. Authorized dealer with free shipping to lower 48 states.`;
-  } else if (searchParams.condition === 'new') {
+  } else if (resolvedSearchParams.condition === 'new') {
     title = 'New Outboard Motors | Shop Latest Models';
     description = 'Browse our inventory of brand new outboard motors from top manufacturers. Free shipping and financing available.';
-  } else if (searchParams.condition === 'used') {
+  } else if (resolvedSearchParams.condition === 'used') {
     title = 'Used Outboard Motors | Pre-Owned Marine Engines';
     description = 'Quality used and pre-owned outboard motors. All motors inspected and serviced. Free shipping available.';
-  } else if (searchParams.status === 'sale') {
+  } else if (resolvedSearchParams.status === 'sale') {
     title = 'Outboard Motors on Sale | Special Deals & Discounts';
     description = 'Shop outboard motors on sale. Special pricing on select models. Free shipping to lower 48 states.';
   }

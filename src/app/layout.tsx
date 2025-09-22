@@ -80,6 +80,19 @@ export const metadata: Metadata = {
     yandex: "yandex-verification-code",
     yahoo: "yahoo-site-verification-code",
   },
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon-32x32.png',
+    apple: '/apple-icon',
+    other: [
+      {
+        rel: 'icon',
+        url: '/favicon-32x32.png',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
@@ -89,6 +102,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="overflow-x-hidden">
+      <head>
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href="/favicon-32x32.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-icon" />
+      </head>
       <body
         className={`${bebasNeue.variable} ${roboto.variable} antialiased flex flex-col min-h-screen bg-light-gray text-text-blue font-body overflow-x-hidden`}
         suppressHydrationWarning={true}

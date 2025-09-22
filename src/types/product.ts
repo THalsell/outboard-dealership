@@ -85,9 +85,6 @@ export interface Product {
   applicationTypes?: string[]; // e.g., ["fishing", "pontoon", "bass boat", "sailboat"]
   boatSizeRange?: string; // e.g., "14-16 ft boats"
   
-  // Ratings and reviews (important for AI)
-  rating?: number;
-  reviewCount?: number;
   
   // Condition and year
   condition?: 'new' | 'used' | 'refurbished';

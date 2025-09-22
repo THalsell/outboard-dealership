@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
-import { StarIcon } from "@heroicons/react/20/solid";
 import LiftGateModal from "@/components/ui/feedback/LiftGateModal";
 import ProductSpecifications from "@/components/pages/product/ProductSpecifications";
 import PriceDisplay from "@/components/ui/product/PriceDisplay";
@@ -12,6 +11,7 @@ import ProductCard from "@/components/ui/product/ProductCard";
 import StockStatus from "@/components/ui/product/StockStatus";
 import Icon from "@/components/ui/display/Icon";
 import Button from "@/components/ui/forms/Button";
+import { generateProductSchema } from "@/lib/seo/structured-data";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -34,6 +34,9 @@ export default function ProductDetailClient({
   const selectedVariant = product.variants[selectedVariantIndex];
   const price = selectedVariant?.price || 0;
   const comparePrice = selectedVariant?.compareAtPrice || price;
+
+  // Generate structured data for this product
+  const productSchema = generateProductSchema(product, `https://outboardmotorsales.com/inventory/${product.handle}`);
 
   // Debug: Log available specs
   if (typeof window !== "undefined") {
@@ -102,6 +105,10 @@ export default function ProductDetailClient({
 
   return (
     <div className="min-h-screen bg-white -mt-20 sm:-mt-16 pt-24 sm:pt-20 overflow-x-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className="mx-auto max-w-7xl px-4 pt-6 pb-8 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 lg:items-start">
           {/* Image gallery */}
@@ -213,27 +220,6 @@ export default function ProductDetailClient({
                 {product.title}
               </h1>
 
-              {/* Reviews */}
-              <div className="mt-4 flex items-center space-x-4">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className="h-6 w-6 text-gray-400"
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <span className="text-lg text-gray-500">No reviews yet</span>
-                <span className="text-deep-blue">|</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-lg text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  Write a review
-                </Button>
-              </div>
             </div>
 
             {/* Price */}
@@ -410,6 +396,7 @@ export default function ProductDetailClient({
           </p>
         </div>
       </div>
+
 
       {/* Lift Gate Modal */}
       <LiftGateModal

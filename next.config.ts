@@ -20,10 +20,10 @@ const nextConfig = {
         destination: "/",
         permanent: true,
       },
-      // Redirect trailing slashes to non-trailing slash
+      // Redirect trailing slashes to non-trailing slash (but not root)
       {
-        source: "/:path*/",
-        destination: "/:path*",
+        source: "/:path+/",
+        destination: "/:path+",
         permanent: true,
       },
     ];

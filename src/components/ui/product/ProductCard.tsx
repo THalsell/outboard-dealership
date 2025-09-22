@@ -8,6 +8,7 @@ import { useState, useCallback, memo } from 'react';
 import PriceDisplay from '@/components/ui/product/PriceDisplay';
 import StockStatus from '@/components/ui/product/StockStatus';
 import Badge from '@/components/ui/display/Badge';
+import { generateProductSchema } from '@/lib/seo/structured-data';
 
 interface ProductCardProps {
   product: Product;
@@ -34,34 +35,16 @@ function ProductCard({ product }: ProductCardProps) {
   const hasDiscount = comparePrice > price;
   const mainImage = product.images[0]?.src || '/placeholder-motor.svg';
 
-  // Generate structured data for this product card
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": product.title,
-    "image": mainImage,
-    "brand": {
-      "@type": "Brand",
-      "name": product.brand
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": price.toFixed(2),
-      "priceCurrency": "USD",
-      "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      "url": `https://outboardmotorsales.com/inventory/${product.handle}`
-    }
-  };
+  // Generate structured data using the centralized function
+  const productSchema = generateProductSchema(product, `https://outboardmotorsales.com/inventory/${product.handle}`);
 
   return (
-    <article 
+    <article
       className={`rounded-xl transition-all duration-200 overflow-hidden group h-full flex flex-col relative ${
-        isInCompare 
-          ? 'ring-2 ring-deep-blue/20' 
+        isInCompare
+          ? 'ring-2 ring-deep-blue/20'
           : ''
       }`}
-      itemScope
-      itemType="https://schema.org/Product"
       role="article"
       aria-labelledby={`product-title-${product.id}`}
     >
