@@ -475,7 +475,7 @@ export function generateLocalBusinessSchema() {
     ],
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://outboardmotorsales.com/search?q={search_term_string}",
+      target: "https://outboardmotorsales.com/inventory?search={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };
