@@ -64,8 +64,8 @@ export function ComparePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400">
-      <div className="w-full px-4 sm:px-6 lg:px-8 pt-[180px] sm:pt-[120px] pb-8 sm:pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-300 via-blue-50 to-blue-400 overflow-x-hidden">
+      <div className="w-full px-2 sm:px-4 lg:px-8 pt-[180px] sm:pt-[120px] pb-8 sm:pb-12">
         {/* Header */}
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-deep-blue mb-4">
@@ -95,20 +95,22 @@ export function ComparePage() {
         {/* Product Images Grid */}
         {hasSelectedProducts && (
           <div className="mb-8 max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
-            <div className="flex">
-              {/* Empty space to align with spec label column */}
-              <div className="w-1/4 p-2 xl:p-3"></div>
-              {/* Product images aligned with table columns */}
-              {selectedProducts.map((product, index) => (
-                <div key={index} className="flex-1 p-2 xl:p-3 text-center">
-                  <ProductDisplay
-                    product={product}
-                    index={index}
-                    availableProducts={availableProducts}
-                    onUpdate={updateProduct}
-                  />
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <div className="flex min-w-max">
+                {/* Empty space to align with spec label column */}
+                <div className="w-1/4 min-w-[120px] p-2 xl:p-3"></div>
+                {/* Product images aligned with table columns */}
+                {selectedProducts.map((product, index) => (
+                  <div key={index} className="flex-1 min-w-[200px] p-2 xl:p-3 text-center">
+                    <ProductDisplay
+                      product={product}
+                      index={index}
+                      availableProducts={availableProducts}
+                      onUpdate={updateProduct}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}

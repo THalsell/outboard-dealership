@@ -30,13 +30,13 @@ const ComparisonTable = memo<ComparisonTableProps>(
       const sizeClasses = isMobile
         ? {
             wrapper: "block lg:hidden",
-            header: "text-xl sm:text-2xl",
-            th: "text-xs sm:text-sm",
-            td: "text-xs sm:text-sm",
-            padding: "p-2",
-            headerPadding: "px-4 py-3 sm:py-4",
-            specLabel: "text-xs sm:text-sm",
-            featureLabel: "text-xs sm:text-sm",
+            header: "text-lg sm:text-xl",
+            th: "text-xs",
+            td: "text-xs",
+            padding: "p-1 sm:p-2",
+            headerPadding: "px-2 py-2 sm:px-4 sm:py-3",
+            specLabel: "text-xs font-semibold",
+            featureLabel: "text-xs font-semibold",
           }
         : {
             wrapper:
@@ -62,12 +62,12 @@ const ComparisonTable = memo<ComparisonTableProps>(
             </h2>
           </div>
 
-          <div>
-            <table className="w-full">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-max">
               <thead>
                 <tr className="bg-gray-100 border-b-2 border-gray-500">
                   <th
-                    className={`text-left ${sizeClasses.padding} font-semibold text-gray-900 ${sizeClasses.th} sticky left-0 bg-gray-100 z-10 border-r border-gray-500`}
+                    className={`text-left ${sizeClasses.padding} font-semibold text-gray-900 ${sizeClasses.th} sticky left-0 bg-gray-100 z-10 border-r border-gray-500 w-24 sm:w-32 lg:w-auto min-w-[6rem]`}
                   ></th>
                   {selectedProducts.map((product, index) => (
                     <th
@@ -106,7 +106,7 @@ const ComparisonTable = memo<ComparisonTableProps>(
                       className="bg-white border-b border-gray-500"
                     >
                       <td
-                        className={`${sizeClasses.padding} font-semibold text-gray-900 ${sizeClasses.specLabel} sticky left-0 bg-gray-100 z-10 border-b border-r border-gray-400 uppercase`}
+                        className={`${sizeClasses.padding} font-semibold text-gray-900 ${sizeClasses.specLabel} sticky left-0 bg-gray-100 z-10 border-b border-r border-gray-400 uppercase w-24 sm:w-32 lg:w-auto min-w-[6rem]`}
                       >
                         {spec}
                       </td>
@@ -149,7 +149,7 @@ const ComparisonTable = memo<ComparisonTableProps>(
                         className="bg-white border-b border-gray-500"
                       >
                         <td
-                          className={`${sizeClasses.padding} font-semibold text-gray-900 ${sizeClasses.featureLabel} sticky left-0 bg-white z-10 border-r border-gray-500 uppercase`}
+                          className={`${sizeClasses.padding} font-semibold text-gray-900 ${sizeClasses.featureLabel} sticky left-0 bg-white z-10 border-r border-gray-500 uppercase w-24 sm:w-32 lg:w-auto min-w-[6rem]`}
                         >
                           Feature {i + 1}
                         </td>
