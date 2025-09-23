@@ -405,50 +405,26 @@ export function generateLocalBusinessSchema() {
         {
           "@type": "OfferCatalog",
           name: "Yamaha Outboards - Authorized Dealer",
-          itemListElement: {
-            "@type": "Product",
-            name: "Yamaha Marine Engines",
-          },
         },
         {
           "@type": "OfferCatalog",
           name: "Honda Outboards - Authorized Dealer",
-          itemListElement: {
-            "@type": "Product",
-            name: "Honda Marine Engines",
-          },
         },
         {
           "@type": "OfferCatalog",
           name: "Mercury Outboards - Authorized Dealer",
-          itemListElement: {
-            "@type": "Product",
-            name: "Mercury Marine Engines",
-          },
         },
         {
           "@type": "OfferCatalog",
           name: "Suzuki Outboards - Authorized Dealer",
-          itemListElement: {
-            "@type": "Product",
-            name: "Suzuki Marine Engines",
-          },
         },
         {
           "@type": "OfferCatalog",
           name: "Tohatsu Outboards - Authorized Dealer",
-          itemListElement: {
-            "@type": "Product",
-            name: "Tohatsu Marine Engines",
-          },
         },
         {
           "@type": "OfferCatalog",
           name: "Freedom Outboards - Authorized Dealer",
-          itemListElement: {
-            "@type": "Product",
-            name: "Freedom Marine Engines",
-          },
         },
       ],
     },
