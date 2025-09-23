@@ -36,7 +36,16 @@ export default function ProductDetailClient({
   const comparePrice = selectedVariant?.compareAtPrice || price;
 
   // Generate structured data for this product
-  const productSchema = generateProductSchema(product, `https://outboardmotorsales.com/inventory/${product.handle}`);
+  const productSchema = generateProductSchema(product, `https://outboardmotorsales.com/inventory/${product.slug}`);
+
+  // Debug: Validate structured data
+  useEffect(() => {
+    if (typeof window !== "undefined" && productSchema) {
+      console.log("Product Structured Data:", productSchema);
+      console.log("Has offers:", !!productSchema.offers);
+      console.log("Offers type:", productSchema.offers?.["@type"]);
+    }
+  }, [productSchema]);
 
   // Debug: Log available specs
   if (typeof window !== "undefined") {
@@ -104,12 +113,13 @@ export default function ProductDetailClient({
   };
 
   return (
-    <div className="min-h-screen bg-white -mt-20 sm:-mt-16 pt-24 sm:pt-20 overflow-x-hidden">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
-      <div className="mx-auto max-w-7xl px-4 pt-6 pb-8 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-white -mt-20 sm:-mt-16 pt-24 sm:pt-20 overflow-x-hidden">
+        <div className="mx-auto max-w-7xl px-4 pt-6 pb-8 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 lg:items-start">
           {/* Image gallery */}
           <div className="flex flex-col">
@@ -398,11 +408,12 @@ export default function ProductDetailClient({
       </div>
 
 
-      {/* Lift Gate Modal */}
-      <LiftGateModal
-        isOpen={showLiftGateModal}
-        onClose={() => setShowLiftGateModal(false)}
-      />
-    </div>
+        {/* Lift Gate Modal */}
+        <LiftGateModal
+          isOpen={showLiftGateModal}
+          onClose={() => setShowLiftGateModal(false)}
+        />
+      </div>
+    </>
   );
 }
