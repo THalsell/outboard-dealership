@@ -34,46 +34,34 @@ export default function NewsletterSignup({
     setStatus("idle");
 
     try {
-      // Use Klaviyo's client-side API
-      if (typeof window !== "undefined" && window.klaviyo) {
-        interface ProfileData {
-          email: string;
-          first_name?: string;
-        }
-        const profileData: ProfileData = {
+      // Use Shopify Customer API for newsletter signup
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
           email: email.trim(),
-        };
+          firstName: firstName.trim(),
+          acceptsMarketing: true,
+        }),
+      });
 
-        // Add first name if provided
-        if (firstName.trim()) {
-          profileData.first_name = firstName.trim();
-        }
+      const data = await response.json();
 
-        // Subscribe to Klaviyo list
-        await window.klaviyo.push(["identify", profileData]);
-
-        // Track the newsletter signup event
-        await window.klaviyo.push([
-          "track",
-          "Newsletter Signup",
-          {
-            email: email.trim(),
-            source: "website_newsletter_form",
-            timestamp: new Date().toISOString(),
-          },
-        ]);
-
+      if (data.success) {
         setStatus("success");
         setMessage("Thanks for subscribing! Welcome to our newsletter.");
         setEmail("");
         setFirstName("");
       } else {
-        throw new Error("Klaviyo not loaded");
+        setStatus("error");
+        setMessage(data.error || "Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Newsletter signup error:", error);
       setStatus("error");
-      setMessage("Something went wrong. Please try again.");
+      setMessage("Network error. Please check your connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
