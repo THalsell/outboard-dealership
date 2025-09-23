@@ -1,76 +1,91 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Card from '@/components/ui/display/Card';
-import Input from '@/components/ui/forms/Input';
+import { useState } from "react";
+import Card from "@/components/ui/display/Card";
+import Input from "@/components/ui/forms/Input";
 
 interface NewsletterSignupProps {
-  variant?: 'default' | 'footer' | 'inline';
+  variant?: "default" | "footer" | "inline";
   title?: string;
   description?: string;
 }
 
-export default function NewsletterSignup({ 
-  variant = 'default',
+export default function NewsletterSignup({
+  variant = "default",
   title = "Stay Updated",
-  description = "Get the latest news on new arrivals, sales, and marine tips."
+  description = "Get the latest news on new arrivals, sales, and marine tips.",
 }: NewsletterSignupProps) {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email.trim()) {
-      setStatus('error');
-      setMessage('Please enter a valid email address.');
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
       return;
     }
 
     setIsSubmitting(true);
-    setStatus('idle');
+    setStatus("idle");
 
     try {
-      const response = await fetch('/api/newsletter/subscribe', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      // Use Klaviyo's client-side API
+      if (typeof window !== "undefined" && window.klaviyo) {
+        interface ProfileData {
+          email: string;
+          first_name?: string;
+        }
+        const profileData: ProfileData = {
           email: email.trim(),
-          firstName: firstName.trim(),
-        }),
-      });
+        };
 
-      const data = await response.json();
+        // Add first name if provided
+        if (firstName.trim()) {
+          profileData.first_name = firstName.trim();
+        }
 
-      if (data.success) {
-        setStatus('success');
-        setMessage(data.message);
-        setEmail('');
-        setFirstName('');
+        // Subscribe to Klaviyo list
+        await window.klaviyo.push(["identify", profileData]);
+
+        // Track the newsletter signup event
+        await window.klaviyo.push([
+          "track",
+          "Newsletter Signup",
+          {
+            email: email.trim(),
+            source: "website_newsletter_form",
+            timestamp: new Date().toISOString(),
+          },
+        ]);
+
+        setStatus("success");
+        setMessage("Thanks for subscribing! Welcome to our newsletter.");
+        setEmail("");
+        setFirstName("");
       } else {
-        setStatus('error');
-        setMessage(data.error || 'Something went wrong. Please try again.');
+        throw new Error("Klaviyo not loaded");
       }
-    } catch {
-      setStatus('error');
-      setMessage('Network error. Please check your connection and try again.');
+    } catch (error) {
+      console.error("Newsletter signup error:", error);
+      setStatus("error");
+      setMessage("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   // Footer variant
-  if (variant === 'footer') {
+  if (variant === "footer") {
     return (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-white">{title}</h3>
         <p className="text-gray-300 text-sm">{description}</p>
-        
+
         <form onSubmit={handleSubmit} className="space-y-3 max-w-full">
           <div className="flex flex-col sm:flex-row gap-2">
             <Input
@@ -90,14 +105,14 @@ export default function NewsletterSignup({
               disabled={isSubmitting}
               className="px-6 py-2 bg-deep-blue hover:bg-[#0a3a6e] text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
             >
-              {isSubmitting ? '...' : 'Subscribe'}
+              {isSubmitting ? "..." : "Subscribe"}
             </button>
           </div>
-          
-          {status === 'success' && (
+
+          {status === "success" && (
             <p className="text-sm text-green-400">{message}</p>
           )}
-          {status === 'error' && (
+          {status === "error" && (
             <p className="text-sm text-red-400">{message}</p>
           )}
         </form>
@@ -106,7 +121,7 @@ export default function NewsletterSignup({
   }
 
   // Inline variant
-  if (variant === 'inline') {
+  if (variant === "inline") {
     return (
       <div className="bg-deep-blue rounded-lg p-6 text-white">
         <div className="flex flex-col md:flex-row md:items-center gap-4">
@@ -114,7 +129,7 @@ export default function NewsletterSignup({
             <h3 className="text-lg font-semibold mb-2">{title}</h3>
             <p className="text-sm opacity-90">{description}</p>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="flex gap-2 md:min-w-80">
             <Input
               type="email"
@@ -133,15 +148,15 @@ export default function NewsletterSignup({
               disabled={isSubmitting}
               className="px-6 py-2 bg-white text-deep-blue rounded-lg font-medium hover:bg-gray-100 transition-colors disabled:opacity-50"
             >
-              {isSubmitting ? '...' : 'Subscribe'}
+              {isSubmitting ? "..." : "Subscribe"}
             </button>
           </form>
         </div>
-        
-        {status === 'success' && (
+
+        {status === "success" && (
           <p className="text-sm text-green-200 mt-3">{message}</p>
         )}
-        {status === 'error' && (
+        {status === "error" && (
           <p className="text-sm text-red-200 mt-3">{message}</p>
         )}
       </div>
@@ -184,15 +199,15 @@ export default function NewsletterSignup({
           disabled={isSubmitting}
           className="w-full py-3 bg-deep-blue hover:bg-[#0a3a6e] text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Subscribing...' : 'Subscribe to Newsletter'}
+          {isSubmitting ? "Subscribing..." : "Subscribe to Newsletter"}
         </button>
 
-        {status === 'success' && (
+        {status === "success" && (
           <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
             <p className="text-sm text-green-800">{message}</p>
           </div>
         )}
-        {status === 'error' && (
+        {status === "error" && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-sm text-red-800">{message}</p>
           </div>
@@ -200,7 +215,8 @@ export default function NewsletterSignup({
       </form>
 
       <p className="text-xs text-gray-500 mt-4 text-center">
-        By subscribing, you agree to receive marketing emails. You can unsubscribe at any time.
+        By subscribing, you agree to receive marketing emails. You can
+        unsubscribe at any time.
       </p>
     </Card>
   );
