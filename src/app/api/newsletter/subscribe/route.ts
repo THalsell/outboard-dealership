@@ -110,7 +110,10 @@ export async function POST(request: Request) {
             },
             tags: 'newsletter-subscriber',
             verified_email: false,
-            send_email_welcome: false
+            send_email_welcome: true,
+            send_email_invite: true,
+            accepts_marketing: true,
+            marketing_opt_in_level: 'single_opt_in'
           }
         })
       }
