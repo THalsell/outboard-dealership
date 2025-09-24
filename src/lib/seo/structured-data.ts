@@ -360,6 +360,7 @@ export function generateLocalBusinessSchema() {
         "@type": "AutoPartsStore",
         name: "Parts Department",
         telephone: "+1-931-243-4555",
+        priceRange: "$$",
         address: {
           "@type": "PostalAddress",
           streetAddress: "615 West Lake Avenue",
@@ -381,6 +382,7 @@ export function generateLocalBusinessSchema() {
         "@type": "AutoRepair",
         name: "Service Department",
         telephone: "+1-931-243-4555",
+        priceRange: "$$",
         address: {
           "@type": "PostalAddress",
           streetAddress: "615 West Lake Avenue",
@@ -500,7 +502,8 @@ export function generateServiceSchema() {
     serviceType: "Outboard Motor Service and Repair",
     provider: {
       "@type": "LocalBusiness",
-      name: "Outboard Motors Dealership",
+      name: "Outboard Motor Sales",
+      priceRange: "$$",
       address: {
         "@type": "PostalAddress",
         streetAddress: "615 West Lake Avenue",
