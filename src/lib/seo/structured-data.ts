@@ -360,6 +360,14 @@ export function generateLocalBusinessSchema() {
         "@type": "AutoPartsStore",
         name: "Parts Department",
         telephone: "+1-931-243-4555",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "615 West Lake Avenue",
+          addressLocality: "Celina",
+          addressRegion: "TN",
+          postalCode: "38551",
+          addressCountry: "US",
+        },
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",
@@ -373,6 +381,14 @@ export function generateLocalBusinessSchema() {
         "@type": "AutoRepair",
         name: "Service Department",
         telephone: "+1-931-243-4555",
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "615 West Lake Avenue",
+          addressLocality: "Celina",
+          addressRegion: "TN",
+          postalCode: "38551",
+          addressCountry: "US",
+        },
         openingHoursSpecification: [
           {
             "@type": "OpeningHoursSpecification",
