@@ -504,6 +504,7 @@ export function generateServiceSchema() {
       "@type": "LocalBusiness",
       name: "Outboard Motor Sales",
       priceRange: "$$",
+      telephone: "+1-931-243-4555",
       address: {
         "@type": "PostalAddress",
         streetAddress: "615 West Lake Avenue",
