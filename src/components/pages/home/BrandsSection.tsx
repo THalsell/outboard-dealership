@@ -23,7 +23,7 @@ export default function BrandsSection() {
           {brands.map((brand, index) => (
             <Link
               key={index}
-              href={`/inventory?brand=${brand.name}`}
+              href={`/inventory?brand=${brand.name.toLowerCase()}`}
               className="flex items-center justify-center h-[100px] w-full cursor-pointer"
             >
               <Image

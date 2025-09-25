@@ -9,12 +9,14 @@ import PriceDisplay from '@/components/ui/product/PriceDisplay';
 import StockStatus from '@/components/ui/product/StockStatus';
 import Badge from '@/components/ui/display/Badge';
 import { generateProductSchema } from '@/lib/seo/structured-data';
+import { DEFAULT_BLUR_PLACEHOLDER } from '@/lib/blur-placeholder';
 
 interface ProductCardProps {
   product: Product;
+  index?: number;
 }
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { compareList } = useFilter();
   const [imageHover, setImageHover] = useState(false);
   const isInCompare = compareList.includes(product.id as string);
@@ -76,7 +78,10 @@ function ProductCard({ product }: ProductCardProps) {
             alt={product.title}
             itemProp="image"
             fill
+            priority={index < 4}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+            placeholder="blur"
+            blurDataURL={DEFAULT_BLUR_PLACEHOLDER}
             className={`object-contain transition-transform duration-200 ${imageHover ? 'scale-[1.02]' : 'scale-100'}`}
           />
           

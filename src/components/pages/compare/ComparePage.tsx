@@ -78,17 +78,20 @@ export function ComparePage() {
 
         {/* Initial Product Selection */}
         {!hasSelectedProducts && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
-            {selectedProducts.map((product, index) => (
-              <ProductDropdown
-                key={index}
-                products={availableProducts}
-                selectedProduct={product}
-                onSelect={(selectedProduct) => updateProduct(index, selectedProduct)}
-                placeholder={`Select Engine ${index + 1}`}
-                index={index}
-              />
-            ))}
+          <div className="max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
+              {selectedProducts.map((product, index) => (
+                <div key={index} className="max-w-xs mx-auto w-full">
+                  <ProductDropdown
+                    products={availableProducts}
+                    selectedProduct={product}
+                    onSelect={(selectedProduct) => updateProduct(index, selectedProduct)}
+                    placeholder={`Select Engine ${index + 1}`}
+                    index={index}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

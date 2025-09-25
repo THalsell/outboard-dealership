@@ -1,16 +1,11 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { notFound } from 'next/navigation';
-import ProductDetailClient from '@/components/pages/product/ProductDetailClient';
-import { Product } from '@/types/product';
-import LoadingSpinner from '@/components/ui/feedback/LoadingSpinner';
-
-interface ProductImage {
-  src: string;
-  position?: number;
-  alt?: string;
-}
+import { notFound } from "next/navigation";
+import ProductDetailClient from "@/components/pages/product/ProductDetailClient";
+import { Product } from "@/types/product";
+import { generateProductSchema } from "@/lib/seo/structured-data";
+import {
+  generateBreadcrumbSchema,
+  BREADCRUMB_PATTERNS,
+} from "@/lib/seo/breadcrumb-schema";
 
 interface ProductPageProps {
   params: Promise<{
@@ -18,71 +13,56 @@ interface ProductPageProps {
   }>;
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [slug, setSlug] = useState<string>('');
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
 
-  useEffect(() => {
-    async function loadParams() {
-      const resolvedParams = await params;
-      setSlug(resolvedParams.slug);
-    }
-    loadParams();
-  }, [params]);
-
-  useEffect(() => {
-    if (!slug) return;
-
-    async function fetchProduct() {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/products');
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
-        }
-        const products: Product[] = await response.json();
-        const foundProduct = products.find((p) => p.slug === slug);
-
-        if (foundProduct) {
-          foundProduct.images = foundProduct.images.map((img: ProductImage, idx: number) => ({
-            src: img.src,
-            position: typeof img.position === 'number' ? img.position : idx,
-            alt: img.alt ?? foundProduct.title ?? 'Product image',
-          }));
-          // Ensure images have proper structure
-          foundProduct.images = foundProduct.images.map((img: { src: string; position?: number; alt?: string }, idx: number) => ({
-            src: img.src,
-            position: typeof img.position === 'number' ? img.position : idx,
-            alt: img.alt ?? foundProduct.title ?? 'Product image',
-          }));
-          setProduct(foundProduct);
-        } else {
-          setProduct(null);
-        }
-      } catch (error) {
-        console.error('Error fetching product:', error);
-        setProduct(null);
-      } finally {
-        setLoading(false);
+  try {
+    // Fetch product server-side using the specific product API
+    const response = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+      }/api/products/${slug}`,
+      {
+        cache: "force-cache", // Cache for better performance
       }
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        notFound();
+      }
+      throw new Error("Failed to fetch product");
     }
 
-    fetchProduct();
-  }, [slug]);
+    const product: Product = await response.json();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <LoadingSpinner />
-      </div>
+    // Generate structured data server-side
+    const productSchema = generateProductSchema(
+      product,
+      `https://outboardmotorsales.com/inventory/${slug}`
     );
-  }
 
-  if (!product) {
+    // Generate breadcrumb schema
+    const breadcrumbItems = BREADCRUMB_PATTERNS.product(product.title, slug);
+    const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+
+    return (
+      <>
+        {productSchema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+          />
+        )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+        <ProductDetailClient product={product} />
+      </>
+    );
+  } catch (error) {
+    console.error("Error fetching product:", error);
     notFound();
   }
-
-  return <ProductDetailClient product={product} />;
 }

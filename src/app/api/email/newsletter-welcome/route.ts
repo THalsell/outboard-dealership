@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const { email } = await request.json();
+    await request.json();
 
     // Use Shopify's email API or your preferred email service
     // For now, we'll use Shopify's customer notification API
@@ -14,8 +14,6 @@ export async function POST(request: Request) {
 
     // For immediate fix: Just return success without sending additional emails
     // since Shopify's marketing consent will handle newsletter emails
-
-    console.log(`Newsletter subscription confirmed for ${email}`);
 
     return NextResponse.json({
       success: true,

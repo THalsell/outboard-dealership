@@ -1,4 +1,4 @@
-export const MAX_PRODUCTS = 3;
+export const MAX_PRODUCTS = 2;
 
 export const SPEC_CATEGORIES = [
   {

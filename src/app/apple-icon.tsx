@@ -32,7 +32,7 @@ export default function AppleIcon() {
             fontSize: '54px',
             color: 'white',
             fontWeight: 'bold',
-            fontFamily: 'system-ui',
+            fontFamily: 'Righteous',
             letterSpacing: '-2px',
           }}
         >

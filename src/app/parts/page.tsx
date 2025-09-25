@@ -1,4 +1,5 @@
 import PartsPageClient from '@/components/pages/parts/PartsPageClient';
+import { generateBreadcrumbSchema, BREADCRUMB_PATTERNS } from '@/lib/seo/breadcrumb-schema';
 
 export const metadata = {
   title: 'Parts & Accessories | Outboard Motors Dealership',
@@ -7,5 +8,16 @@ export const metadata = {
 };
 
 export default function PartsPage() {
-  return <PartsPageClient />;
+  const breadcrumbItems = BREADCRUMB_PATTERNS.parts();
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <PartsPageClient />
+    </>
+  );
 }

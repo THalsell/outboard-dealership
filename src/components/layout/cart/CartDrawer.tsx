@@ -6,6 +6,7 @@ import Image from "next/image";
 import EmptyState from "@/components/ui/feedback/EmptyState";
 import Icon from "@/components/ui/display/Icon";
 import Button from "@/components/ui/forms/Button";
+import { DEFAULT_BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 export default function CartDrawer() {
   const {
@@ -120,6 +121,8 @@ export default function CartDrawer() {
                         width={80}
                         height={80}
                         sizes="80px"
+                        placeholder="blur"
+                        blurDataURL={DEFAULT_BLUR_PLACEHOLDER}
                         className="w-full h-full object-contain"
                       />
                     </div>

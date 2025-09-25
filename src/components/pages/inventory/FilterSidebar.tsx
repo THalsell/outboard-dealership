@@ -57,6 +57,17 @@ export default function FilterSidebar({
       ? filters.brands.filter((b) => b !== brand)
       : [...filters.brands, brand];
     updateFilter("brands", newBrands);
+
+    // Update URL to match home page logo behavior
+    const url = new URL(window.location.href);
+    if (newBrands.length === 1) {
+      // Single brand selected - add to URL like home page logos do
+      url.searchParams.set('brand', newBrands[0].toLowerCase());
+    } else {
+      // Multiple brands or no brands - remove brand param
+      url.searchParams.delete('brand');
+    }
+    window.history.pushState({}, '', url.toString());
   };
 
   const handleShaftLengthToggle = (length: string) => {

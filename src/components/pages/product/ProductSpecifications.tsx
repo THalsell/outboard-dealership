@@ -16,29 +16,73 @@ export default function ProductSpecifications({
   // Helper function to get spec value with fallbacks
 
   const getSpecValue = (key: string): string => {
-    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : '';
-    if (key === 'Brand') return product.brand || '';
-    if (key === 'Model') return product.specs?.[key] || product.specs?.[key.toLowerCase()] || product.specs?.[key.replace(/ /g, '_')] || product.specs?.[key.replace(/ /g, '_').toLowerCase()] || '';
-    if (key === 'SKU') return selectedVariant?.sku || '';
-    if (key === 'Type') return product.type || '';
-    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : '';
+    // Helper function to check multiple spec key variations
+    const getFromSpecs = (specKey: string): string => {
+      if (!product.specs) return '';
+
+      // Try exact match first
+      if (product.specs[specKey]) return product.specs[specKey];
+
+      // Try variations
+      const variations = [
+        specKey,
+        specKey.toLowerCase(),
+        specKey.replace(/ /g, '_'),
+        specKey.replace(/ /g, '_').toLowerCase(),
+        `custom.${specKey.toLowerCase()}`,
+        `custom.${specKey.replace(/ /g, '_').toLowerCase()}`
+      ];
+
+      for (const variation of variations) {
+        if (product.specs[variation]) {
+          return product.specs[variation];
+        }
+      }
+
+      return '';
+    };
+
+    // Special cases with custom logic
+    if (key === 'Horsepower') return product.horsepower > 0 ? `${product.horsepower} HP` : getFromSpecs('Horsepower');
+    if (key === 'Brand') return product.brand || getFromSpecs('Brand');
+    if (key === 'Model') return getFromSpecs('Model');
+    if (key === 'SKU') return selectedVariant?.sku || getFromSpecs('SKU');
+    if (key === 'Type') return product.type || getFromSpecs('Type');
+    if (key === 'Power Category') return product.powerCategory ? product.powerCategory.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') : getFromSpecs('Power Category');
     if (key === 'Condition') return (product.condition || 'new').charAt(0).toUpperCase() + (product.condition || 'new').slice(1);
     if (key === 'Stock Status') return product.inStock ? 'In Stock' : 'Out of Stock';
-    if (key === 'Weight') return selectedVariant?.weight && selectedVariant.weight > 0 ? `${selectedVariant.weight} ${selectedVariant.weightUnit || 'lbs'}` : product.weight && product.weight > 0 ? `${product.weight} lbs` : product.specs?.['Weight'] || product.specs?.['weight'] || product.specs?.['weight_lbs'] || '';
+
+    // Weight with fallbacks
+    if (key === 'Weight') {
+      if (selectedVariant?.weight && selectedVariant.weight > 0) {
+        return `${selectedVariant.weight} ${selectedVariant.weightUnit || 'lbs'}`;
+      }
+      if (product.weight && product.weight > 0) {
+        return `${product.weight} lbs`;
+      }
+      const weightFromSpecs = getFromSpecs('Weight');
+      return weightFromSpecs.includes('lbs') || weightFromSpecs.includes('kg') ? weightFromSpecs : (weightFromSpecs ? `${weightFromSpecs} lbs` : '');
+    }
+
+    // Shaft Length with fallbacks
     if (key === 'Shaft Length') {
       if (product.shaftLength) return product.shaftLength;
       if (selectedVariant && selectedVariant.option1Name && selectedVariant.option1Name.toLowerCase().includes('shaft')) {
         return selectedVariant.option1Value || '';
       }
-      return product.specs?.['Shaft Length'] || product.specs?.['custom.shaft_length'] || product.specs?.['shaft_length'] || product.specs?.['Physical.shaft_length'] || '';
+      return getFromSpecs('Shaft Length');
     }
-    if (key === 'Recommended Cooling') return product.specs?.['Cooling System'] || product.specs?.['cooling_system'] || '';
-    if (key === 'Starting Method') return product.specs?.['Starting System'] || product.specs?.['starting_system'] || '';
-    if (key === 'Fuel Induction') return product.specs?.['Fuel Induction System'] || product.specs?.['fuel_induction_system'] || '';
-    if (key === 'Lubrication') return product.specs?.['Lubrication System'] || product.specs?.['lubrication_system'] || '';
-    if (key === 'Full Throttle RPM Range') return product.specs?.['Throttle Control'] || product.specs?.['throttle_control'] || '';
-    if (key === 'Gear Shift') return product.specs?.['Shift System'] || product.specs?.['shift_system'] || '';
-    return product.specs?.[key] || product.specs?.[key.toLowerCase()] || product.specs?.[key.replace(/ /g, '_')] || product.specs?.[key.replace(/ /g, '_').toLowerCase()] || '';
+
+    // Map renamed specs to their original names from metafields
+    if (key === 'Recommended Cooling') return getFromSpecs('Cooling System');
+    if (key === 'Starting Method') return getFromSpecs('Starting System');
+    if (key === 'Fuel Induction') return getFromSpecs('Fuel Induction System');
+    if (key === 'Lubrication') return getFromSpecs('Lubrication System');
+    if (key === 'Full Throttle RPM Range') return getFromSpecs('Throttle Control');
+    if (key === 'Gear Shift') return getFromSpecs('Shift System');
+
+    // For all other specs, try to get directly from the specs object
+    return getFromSpecs(key);
   };
 
   // Organize specifications to match compare page exactly

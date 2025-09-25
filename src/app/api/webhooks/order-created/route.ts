@@ -18,7 +18,6 @@ function verifyWebhookSignature(rawBody: string, signature: string): boolean {
     .update(rawBody, 'utf-8')
     .digest('base64');
 
-  console.log('Signature verification:', { expected: signature, calculated: hash, match: hash === signature });
   return hash === signature;
 }
 
@@ -28,7 +27,6 @@ export async function POST(request: Request) {
     const signature = request.headers.get('x-shopify-hmac-sha256');
 
     // Log webhook receipt
-    console.log('Webhook received: order-created');
 
     // Verify webhook authenticity (skip in development for testing)
     if (signature && !verifyWebhookSignature(rawBody, signature)) {

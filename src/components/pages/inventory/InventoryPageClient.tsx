@@ -62,18 +62,98 @@ export default function InventoryPageClient() {
     };
   }, [showMobileFilters]);
 
-  // Load products from Shopify API
+  // Load products from Shopify API with server-side filtering
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch("/api/products");
+
+        // Build query parameters for server-side filtering
+        const params = new URLSearchParams();
+
+        // Add search query if exists
+        if (filters.searchQuery) {
+          params.append("query", filters.searchQuery);
+        }
+
+        // Add brand filter (primary brands only for Shopify query optimization)
+        if (filters.brands.length === 1) {
+          params.append("brand", filters.brands[0]);
+        }
+        // Also check URL filters for brand
+        else if (urlFilters.brand) {
+          params.append("brand", urlFilters.brand);
+        }
+
+        // Add condition filters
+        if (filters.conditions.length === 1) {
+          params.append("condition", filters.conditions[0]);
+        }
+        // Also check URL filters for condition
+        else if (urlFilters.condition) {
+          params.append("condition", urlFilters.condition);
+        }
+
+        // Add status from URL filters
+        if (urlFilters.status) {
+          params.append("status", urlFilters.status);
+        }
+
+        // Add horsepower filters from filters state
+        if (filters.minHorsepower > 0) {
+          params.append("minHorsepower", filters.minHorsepower.toString());
+        }
+        if (filters.maxHorsepower < 1000) {
+          params.append("maxHorsepower", filters.maxHorsepower.toString());
+        }
+
+        // Add horsepower filters from URL (if not already set by filters)
+        if (
+          urlFilters.hp &&
+          filters.minHorsepower === 0 &&
+          filters.maxHorsepower === 1000
+        ) {
+          const hpRange = urlFilters.hp;
+          if (hpRange.includes("-")) {
+            const [min, max] = hpRange.split("-").map((hp) => {
+              if (hp.includes("+")) {
+                return parseInt(hp.replace("+", ""));
+              }
+              return parseFloat(hp);
+            });
+
+            if (!isNaN(min)) {
+              params.append("minHorsepower", min.toString());
+            }
+            if (!isNaN(max)) {
+              params.append("maxHorsepower", max.toString());
+            } else if (hpRange.includes("+")) {
+              params.append("maxHorsepower", "1000");
+            }
+          } else if (hpRange.includes("+")) {
+            const min = parseInt(hpRange.replace("+", ""));
+            if (!isNaN(min)) {
+              params.append("minHorsepower", min.toString());
+              params.append("maxHorsepower", "1000");
+            }
+          }
+        }
+
+        // Add status filters
+        if (filters.onSaleOnly) {
+          params.append("status", "sale");
+        }
+
+        // Add price filters (if we can determine price range)
+        // Note: We'll need to derive price from horsepower or other factors
+        // since we don't have direct price range filters in the current filters
+
+        const apiUrl = `/api/products?${params.toString()}`;
+        const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
         const fetchedProducts = await response.json();
-        console.log("Fetched products count:", fetchedProducts.length);
-        console.log("Sample product:", fetchedProducts[0]);
         setAllProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -84,7 +164,18 @@ export default function InventoryPageClient() {
     };
 
     fetchProducts();
-  }, []);
+  }, [
+    filters.searchQuery,
+    filters.brands,
+    filters.conditions,
+    filters.minHorsepower,
+    filters.maxHorsepower,
+    filters.onSaleOnly,
+    urlFilters.brand,
+    urlFilters.condition,
+    urlFilters.status,
+    urlFilters.hp,
+  ]);
 
   // Apply URL filters when URL parameters change
   useEffect(() => {
@@ -220,25 +311,22 @@ export default function InventoryPageClient() {
     updateFilter,
   ]); // Include all necessary dependencies
 
-  // Filter and sort products
+  // Filter and sort products (reduced client-side filtering since server handles primary filters)
   const filteredProducts = useMemo(() => {
-    // Start with all products (remove published filter for debugging)
-    console.log("All products before filtering:", allProducts.length);
-    let filtered = [...allProducts]; // Show ALL products for now
-    console.log("Products after removing published filter:", filtered.length);
+    let filtered = [...allProducts];
 
-    // Apply filters
+    // Apply remaining client-side filters (server handles brand, condition, horsepower, status)
     filtered = filtered.filter((product) => {
-      // Brand filter
+      // Brand filter (only apply if multiple brands selected - single brand handled server-side)
       if (
-        filters.brands.length > 0 &&
+        filters.brands.length > 1 &&
         !filters.brands.includes(product.brand)
       ) {
         return false;
       }
 
-      // Condition filter
-      if (filters.conditions.length > 0) {
+      // Condition filter (only apply if multiple conditions - single condition handled server-side)
+      if (filters.conditions.length > 1) {
         // Check product status field first, then tags, then default to 'new'
         let productCondition = "new"; // Default condition
 
@@ -711,24 +799,21 @@ export default function InventoryPageClient() {
         }
       }
 
-
-      // Horsepower filter
+      // Horsepower filter (only apply if not handled server-side)
+      const hasServerHorsepowerFilter =
+        filters.minHorsepower > 0 ||
+        filters.maxHorsepower < 1000 ||
+        urlFilters.hp;
       if (
-        product.horsepower < filters.minHorsepower ||
-        product.horsepower > filters.maxHorsepower
+        !hasServerHorsepowerFilter &&
+        (product.horsepower < filters.minHorsepower ||
+          product.horsepower > filters.maxHorsepower)
       ) {
         return false;
       }
 
-      // Search query filter
-      if (filters.searchQuery) {
-        const query = filters.searchQuery.toLowerCase();
-        const searchableText =
-          `${product.brand} ${product.title} ${product.description}`.toLowerCase();
-        if (!searchableText.includes(query)) {
-          return false;
-        }
-      }
+      // Search query filter (server-side handled, skip client-side for performance)
+      // Note: Search is now handled server-side for better performance
 
       return true;
     });
@@ -770,7 +855,7 @@ export default function InventoryPageClient() {
     }
 
     return filtered;
-  }, [allProducts, filters]);
+  }, [allProducts, filters, urlFilters.hp]);
 
   // Pagination logic
   const totalResults = filteredProducts.length;
@@ -826,14 +911,11 @@ export default function InventoryPageClient() {
       // Brands
       if (product.brand) {
         brandsSet.add(product.brand);
-        console.log("Adding brand to filter:", product.brand);
       } else {
-        console.log("Product missing brand:", product.title, product);
       }
 
       // Process variants for shaft lengths
       product.variants.forEach((variant) => {
-
         // Shaft lengths from variants (legacy)
         const optionName = variant.option1Name?.toLowerCase() || "";
         if (
@@ -870,38 +952,22 @@ export default function InventoryPageClient() {
           product.specs["shaft_length"] ||
           product.specs["custom.shaft_length"];
 
-        console.log(
-          "Checking shaft length metafield for product:",
-          product.title,
-          "value:",
-          shaftLengthSpec
-        );
 
         if (shaftLengthSpec) {
           const value = shaftLengthSpec.toString().toLowerCase();
           if (value.includes("15") || value.includes("short")) {
             shaftLengthsSet.add('Short (15")');
-            console.log('Added Short (15") from metafield');
           } else if (value.includes("20") || value.includes("long")) {
             shaftLengthsSet.add('Long (20")');
-            console.log('Added Long (20") from metafield');
           } else if (value.includes("25") || value.includes("extra")) {
             shaftLengthsSet.add('Extra Long (25")');
-            console.log('Added Extra Long (25") from metafield');
           } else if (value === '15"' || value === "15") {
             shaftLengthsSet.add('Short (15")');
-            console.log('Added Short (15") from metafield - exact match');
           } else if (value === '20"' || value === "20") {
             shaftLengthsSet.add('Long (20")');
-            console.log('Added Long (20") from metafield - exact match');
           } else if (value === '25"' || value === "25") {
             shaftLengthsSet.add('Extra Long (25")');
-            console.log('Added Extra Long (25") from metafield - exact match');
           } else {
-            console.log(
-              "Shaft length metafield value did not match any pattern:",
-              value
-            );
           }
         }
       }
@@ -916,9 +982,6 @@ export default function InventoryPageClient() {
       availableShaftLengths: Array.from(shaftLengthsSet).sort(),
     };
 
-    console.log("Dynamic ranges calculated:", result);
-    console.log("Available brands:", result.availableBrands);
-    console.log("Total products processed:", allProducts.length);
 
     return result;
   }, [allProducts]);

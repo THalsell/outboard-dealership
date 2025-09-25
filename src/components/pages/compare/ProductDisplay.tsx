@@ -3,6 +3,7 @@ import { Product } from '@/types/product';
 import Image from 'next/image';
 import Link from 'next/link';
 import ProductDropdown from './ProductDropdown';
+import { DEFAULT_BLUR_PLACEHOLDER } from '@/lib/blur-placeholder';
 
 interface ProductDisplayProps {
   product: Product | null;
@@ -43,6 +44,8 @@ const ProductDisplay = memo<ProductDisplayProps>(({
           className="object-contain"
           sizes="(max-width: 640px) 128px, (max-width: 1024px) 160px, 256px"
           priority={index === 0}
+          placeholder="blur"
+          blurDataURL={DEFAULT_BLUR_PLACEHOLDER}
         />
       </div>
       <Link

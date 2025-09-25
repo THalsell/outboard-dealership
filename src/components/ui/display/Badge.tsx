@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from '@/components/ui/display/Icon';
 
-type BadgeVariant = 'default' | 'sale' | 'discount' | 'new' | 'filter' | 'success' | 'warning';
+type BadgeVariant = 'default' | 'sale' | 'discount' | 'new' | 'filter' | 'success' | 'warning' | 'info';
 type BadgeSize = 'xs' | 'sm' | 'md' | 'lg';
 
 interface BadgeProps {
@@ -20,7 +20,8 @@ const variantClasses: Record<BadgeVariant, string> = {
   new: 'bg-green-100 text-green-800',
   filter: 'bg-gray-100 text-charcoal',
   success: 'bg-green-100 text-green-800',
-  warning: 'bg-yellow-100 text-yellow-800'
+  warning: 'bg-yellow-100 text-yellow-800',
+  info: 'bg-blue-100 text-blue-800'
 };
 
 const sizeClasses: Record<BadgeSize, string> = {

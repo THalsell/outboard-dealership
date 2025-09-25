@@ -32,7 +32,7 @@ export default function Icon() {
             fontSize: '12px',
             color: 'white',
             fontWeight: 'bold',
-            fontFamily: 'system-ui',
+            fontFamily: 'Righteous',
             letterSpacing: '-0.5px',
           }}
         >

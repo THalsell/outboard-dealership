@@ -8,10 +8,11 @@ import LiftGateModal from "@/components/ui/feedback/LiftGateModal";
 import ProductSpecifications from "@/components/pages/product/ProductSpecifications";
 import PriceDisplay from "@/components/ui/product/PriceDisplay";
 import ProductCard from "@/components/ui/product/ProductCard";
+import ProductCardSkeleton from "@/components/ui/product/ProductCardSkeleton";
 import StockStatus from "@/components/ui/product/StockStatus";
 import Icon from "@/components/ui/display/Icon";
 import Button from "@/components/ui/forms/Button";
-import { generateProductSchema } from "@/lib/seo/structured-data";
+import { DEFAULT_BLUR_PLACEHOLDER } from "@/lib/blur-placeholder";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -29,28 +30,16 @@ export default function ProductDetailClient({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [loadingRelated, setLoadingRelated] = useState(true);
   const [showLiftGateModal, setShowLiftGateModal] = useState(false);
 
   const selectedVariant = product.variants[selectedVariantIndex];
   const price = selectedVariant?.price || 0;
   const comparePrice = selectedVariant?.compareAtPrice || price;
 
-  // Generate structured data for this product
-  const productSchema = generateProductSchema(product, `https://outboardmotorsales.com/inventory/${product.slug}`);
-
-  // Debug: Validate structured data
-  useEffect(() => {
-    if (typeof window !== "undefined" && productSchema) {
-      console.log("Product Structured Data:", productSchema);
-      console.log("Has offers:", !!productSchema.offers);
-      console.log("Offers type:", productSchema.offers?.["@type"]);
-    }
-  }, [productSchema]);
 
   // Debug: Log available specs
   if (typeof window !== "undefined") {
-    console.log("Product specs available:", Object.keys(product.specs || {}));
-    console.log("Full specs object:", product.specs);
   }
 
   // Fetch related products
@@ -83,6 +72,8 @@ export default function ProductDetailClient({
         }
       } catch (error) {
         console.error("Failed to fetch related products:", error);
+      } finally {
+        setLoadingRelated(false);
       }
     };
 
@@ -113,12 +104,7 @@ export default function ProductDetailClient({
   };
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
-      />
-      <div className="min-h-screen bg-white -mt-20 sm:-mt-16 pt-24 sm:pt-20 overflow-x-hidden">
+    <div className="min-h-screen bg-white -mt-20 sm:-mt-16 pt-24 sm:pt-20 overflow-x-hidden">
         <div className="mx-auto max-w-7xl px-4 pt-6 pb-8 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16 lg:items-start">
           {/* Image gallery */}
@@ -139,6 +125,8 @@ export default function ProductDetailClient({
                     height={800}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority
+                    placeholder="blur"
+                    blurDataURL={DEFAULT_BLUR_PLACEHOLDER}
                     className="h-full w-full object-contain object-center p-8"
                   />
 
@@ -203,6 +191,8 @@ export default function ProductDetailClient({
                         width={200}
                         height={200}
                         sizes="200px"
+                        placeholder="blur"
+                        blurDataURL={DEFAULT_BLUR_PLACEHOLDER}
                         className="h-full w-full object-contain object-center p-2"
                       />
                     </button>
@@ -216,6 +206,8 @@ export default function ProductDetailClient({
                   alt={product.title}
                   width={800}
                   height={800}
+                  placeholder="blur"
+                  blurDataURL={DEFAULT_BLUR_PLACEHOLDER}
                   className="h-full w-full object-contain object-center p-8"
                 />
               </div>
@@ -376,14 +368,19 @@ export default function ProductDetailClient({
 
           {/* Related Products Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {relatedProducts.length > 0 ? (
-              relatedProducts.map((relatedProduct) => (
-                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+            {loadingRelated ? (
+              // Show skeleton cards while loading
+              Array.from({ length: 4 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))
+            ) : relatedProducts.length > 0 ? (
+              relatedProducts.map((relatedProduct, index) => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} index={index} />
               ))
             ) : (
-              // Fallback content while loading or if no related products
+              // Fallback content if no related products found
               <div className="col-span-full text-center py-12">
-                <p className="text-gray-500">Loading related products...</p>
+                <p className="text-gray-500">No related products found.</p>
               </div>
             )}
           </div>
@@ -408,12 +405,11 @@ export default function ProductDetailClient({
       </div>
 
 
-        {/* Lift Gate Modal */}
-        <LiftGateModal
-          isOpen={showLiftGateModal}
-          onClose={() => setShowLiftGateModal(false)}
-        />
-      </div>
-    </>
+      {/* Lift Gate Modal */}
+      <LiftGateModal
+        isOpen={showLiftGateModal}
+        onClose={() => setShowLiftGateModal(false)}
+      />
+    </div>
   );
 }

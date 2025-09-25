@@ -7,6 +7,7 @@ export const storefrontClient = {
   apiVersion: '2024-01',
 };
 
+
 // Helper function to fetch products from Storefront API
 export async function fetchProducts(query: string = '', first: number = 20): Promise<unknown[]> {
   const graphqlQuery = `
@@ -115,6 +116,9 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
   `;
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
     const response = await fetch(`https://${storefrontClient.domain}/api/${storefrontClient.apiVersion}/graphql.json`, {
       method: 'POST',
       headers: {
@@ -125,22 +129,30 @@ export async function fetchProducts(query: string = '', first: number = 20): Pro
         query: graphqlQuery,
         variables: { first, query },
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       throw new Error(`Shopify API error: ${response.status}`);
     }
 
     const data = await response.json();
-    
+
     if (!data.data || !data.data.products) {
       console.error('No products data found:', data);
       return [];
     }
-    
-    return data.data.products.edges.map((edge: { node: unknown }) => edge.node);
+
+    const products = data.data.products.edges.map((edge: { node: unknown }) => edge.node);
+
+    return products;
   } catch (error) {
-    console.error('Error fetching products:', error);
+    console.error('🚨 ERROR fetching products:', error);
+    console.error('Query that failed:', query);
+    console.error('Store domain:', storefrontClient.domain);
+
     return [];
   }
 }
@@ -248,11 +260,6 @@ export async function fetchProduct(handle: string): Promise<unknown> {
   `;
 
   try {
-    console.log('Making Shopify API call for handle:', handle);
-    console.log('Store domain:', storefrontClient.domain);
-    console.log('API version:', storefrontClient.apiVersion);
-    console.log('Has access token:', !!storefrontClient.storefrontAccessToken);
-    
     const response = await fetch(`https://${storefrontClient.domain}/api/${storefrontClient.apiVersion}/graphql.json`, {
       method: 'POST',
       headers: {
@@ -265,8 +272,6 @@ export async function fetchProduct(handle: string): Promise<unknown> {
       }),
     });
 
-    console.log('Shopify API response status:', response.status);
-
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Shopify API error response:', errorText);
@@ -274,12 +279,11 @@ export async function fetchProduct(handle: string): Promise<unknown> {
     }
 
     const data = await response.json();
-    console.log('Shopify API response data:', JSON.stringify(data, null, 2));
-    
+
     if (data.errors) {
       console.error('GraphQL errors:', data.errors);
     }
-    
+
     return data.data.product;
   } catch (error) {
     console.error('Error fetching product:', error);

@@ -2,6 +2,12 @@ import { Product } from "@/types/product";
 import { enrichProductForSEO } from "./product-enrichment";
 
 export function generateProductSchema(product: Product, url: string) {
+  // Validate product has required data
+  if (!product.variants?.length || !product.variants.some(v => v.price > 0)) {
+    console.warn(`Product ${product.id} has no valid pricing`);
+    return null; // Don't generate schema for products without prices
+  }
+
   // Find the first available variant with a valid price, or fallback to first variant
   const availableVariant = product.variants.find(v => v.available && v.price > 0);
   const variant = availableVariant || product.variants[0];
@@ -264,7 +270,15 @@ export function generateProductSchema(product: Product, url: string) {
       "@type": "Offer",
       url: url,
       priceCurrency: "USD",
-      price: displayPrice > 0 ? displayPrice.toFixed(2) : "0.00",
+      ...(displayPrice > 0
+        ? { price: displayPrice.toFixed(2) }
+        : {
+            priceSpecification: {
+              "@type": "PriceSpecification",
+              priceCurrency: "USD"
+            }
+          }
+      ),
       availability: (variant?.available && variant?.inventory > 0)
         ? "https://schema.org/InStock"
         : variant?.available && variant?.inventory === 0
@@ -290,6 +304,18 @@ export function generateProductSchema(product: Product, url: string) {
           : product.condition === "refurbished"
           ? "https://schema.org/RefurbishedCondition"
           : "https://schema.org/UsedCondition",
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: "0.00",
+          currency: "USD"
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "US"
+        }
+      },
     },
     additionalProperty:
       additionalProperties.length > 0 ? additionalProperties : undefined,

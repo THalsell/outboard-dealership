@@ -27,9 +27,9 @@ export default function HeroSlider() {
       description: "Mon-Fri: 8:00 AM - 5:00 PM | Saturday: 8:00 AM - 12:00 PM | Sunday: Closed"
     },
     {
-      title: "Website Under Development",
-      subtitle: "Call Us Today: (931) 243-4555",
-      description: "While we complete our online store, please call for pricing, availability, and expert advice on all outboard motors"
+      title: "New Features Coming Soon",
+      subtitle: "Call for Special Dealer Pricing: (931) 243-4555",
+      description: "Unlock exclusive dealer discounts and personalized recommendations from our outboard motor experts"
     }
   ];
 

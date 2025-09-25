@@ -6,6 +6,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 
@@ -107,7 +108,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   // Add a helper function to clean service items
-  const cleanServiceItems = () => {
+  const cleanServiceItems = useCallback(() => {
     setItems((prevItems) => {
       const validItems = prevItems.filter(
         (item) =>
@@ -117,7 +118,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       );
       return validItems;
     });
-  };
+  }, []);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const total = items.reduce(

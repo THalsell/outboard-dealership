@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import InventoryPageClient from '@/components/pages/inventory/InventoryPageClient';
 import { siteConfig } from '@/config/site';
+import { generateBreadcrumbSchema, BREADCRUMB_PATTERNS } from '@/lib/seo/breadcrumb-schema';
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -86,10 +87,29 @@ function LoadingFallback() {
   );
 }
 
-export default function InventoryPage() {
+export default async function InventoryPage({ searchParams }: Props) {
+  const resolvedSearchParams = await searchParams;
+
+  // Generate breadcrumb schema based on filters
+  let breadcrumbItems;
+  if (resolvedSearchParams.brand && typeof resolvedSearchParams.brand === 'string') {
+    const brand = resolvedSearchParams.brand.charAt(0).toUpperCase() + resolvedSearchParams.brand.slice(1);
+    breadcrumbItems = BREADCRUMB_PATTERNS.inventoryBrand(brand);
+  } else {
+    breadcrumbItems = BREADCRUMB_PATTERNS.inventory();
+  }
+
+  const breadcrumbSchema = generateBreadcrumbSchema(breadcrumbItems);
+
   return (
-    <Suspense fallback={<LoadingFallback />}>
-      <InventoryPageClient />
-    </Suspense>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <Suspense fallback={<LoadingFallback />}>
+        <InventoryPageClient />
+      </Suspense>
+    </>
   );
 }

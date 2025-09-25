@@ -1,7 +1,7 @@
 'use client';
 
 import ProductCard from '@/components/ui/product/ProductCard';
-import Card from '@/components/ui/display/Card';
+import ProductCardSkeleton from '@/components/ui/product/ProductCardSkeleton';
 import SectionHeader from '@/components/ui/display/SectionHeader';
 import { useState, useEffect } from 'react';
 import { Product } from '@/types/product';
@@ -41,18 +41,13 @@ export default function FeaturedProducts() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[...Array(4)].map((_, i) => (
-              <Card key={i} padding="lg" border rounded="xl" className="animate-pulse">
-                <div className="aspect-square bg-gray-200 rounded-lg mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded mb-4 w-2/3"></div>
-                <div className="h-6 bg-gray-200 rounded"></div>
-              </Card>
+              <ProductCardSkeleton key={i} />
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.slice(0, 4).map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {products.slice(0, 4).map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
         )}

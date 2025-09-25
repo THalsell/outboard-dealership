@@ -12,7 +12,12 @@ export function getSpecValue(product: Product, key: string): string {
       return product.brand || '';
 
     case 'Model':
-      return product.title || '';
+      return product.specs?.['Model'] ||
+             product.specs?.['model'] ||
+             product.specs?.['custom.model'] ||
+             product.specs?.['model_number'] ||
+             product.specs?.['custom.model_number'] ||
+             '';
 
     case 'SKU':
       return product.variants[0]?.sku || '';

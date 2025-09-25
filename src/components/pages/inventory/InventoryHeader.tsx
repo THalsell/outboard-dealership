@@ -76,13 +76,16 @@ export default function InventoryHeader({
       return 'SHOP ALL OUTBOARD MOTORS';
     }
     
-    // Test brand filter first (simplest case)
+    // Test brand filter first (prioritize both filter context and URL)
     if (filters.brands.length === 1) {
       return `SHOP ${filters.brands[0].toUpperCase()} OUTBOARD MOTORS`;
     } else if (filters.brands.length > 1) {
       return 'SHOP MULTIPLE BRANDS';
+    } else if (urlFilters?.brand) {
+      // Prioritize URL brand filter when no filter context brand is set
+      return `SHOP ${urlFilters.brand.toUpperCase()} OUTBOARD MOTORS`;
     }
-    
+
     // Check context filters first (sidebar), then URL filters as fallback
     if (filters.conditions.includes('new') || urlFilters?.condition === 'new') {
       return 'SHOP NEW OUTBOARD MOTORS';
@@ -97,13 +100,10 @@ export default function InventoryHeader({
     } else if (filters.inStockOnly) {
       return 'SHOP IN STOCK OUTBOARD MOTORS';
     } else if (urlFilters?.hp) {
-      const hpDisplay = urlFilters.hp.includes('+') 
-        ? `${urlFilters.hp.replace('+', '')}+ HP` 
+      const hpDisplay = urlFilters.hp.includes('+')
+        ? `${urlFilters.hp.replace('+', '')}+ HP`
         : `${urlFilters.hp.replace('-', '-')} HP`;
       return `SHOP ${hpDisplay} OUTBOARD MOTORS`;
-    } else if (urlFilters?.brand && filters.brands.length === 0) {
-      // Only use URL brand filter if no filter context brand is set
-      return `SHOP ${urlFilters.brand.toUpperCase()} OUTBOARD MOTORS`;
     } else if (filters.minHorsepower > 0 || filters.maxHorsepower < 500) {
       if (filters.minHorsepower <= 30 && filters.maxHorsepower <= 30) {
         return 'SHOP PORTABLE OUTBOARD MOTORS';

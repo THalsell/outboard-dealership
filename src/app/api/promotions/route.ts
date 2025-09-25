@@ -111,7 +111,6 @@ export async function GET(request: NextRequest) {
       
       // Check each field for brand-specific file references
       edge.node.fields.forEach((field: PromotionField) => {
-        console.log('Checking field:', field.key, 'Has reference:', !!field.reference, 'Reference type:', field.reference?.constructor?.name);
         
         // Check for each brand's field (including numbered variants like suzuki1, suzuki2)
         const brandFields = ['yamaha', 'honda', 'mercury', 'suzuki', 'tohatsu', 'freedom'];
@@ -132,7 +131,6 @@ export async function GET(request: NextRequest) {
           // Use the original image URL directly from Shopify
           const originalImageUrl = image.url;
           
-          console.log(`Using original Shopify image URL for ${brandName}:`, originalImageUrl);
 
           brandPromotions.push({
             id: `${edge.node.id}-${field.key}`,
@@ -154,7 +152,6 @@ export async function GET(request: NextRequest) {
         }
       });
       
-      console.log('Brand promotions found:', brandPromotions.length);
 
       return brandPromotions;
     }) || [];
@@ -178,13 +175,10 @@ export async function GET(request: NextRequest) {
       priority: number;
     };
 
-    console.log('Requested brand:', brand);
-    console.log('Available promotions:', promotions.map((p: Promotion) => p.brand));
 
     const filteredPromotions = brand 
       ? promotions.filter((p: Promotion) => {
           const matches = p.brand?.toLowerCase() === brand.toLowerCase() && p.active;
-          console.log(`Checking ${p.brand} vs ${brand}: ${matches}`);
           return matches;
         })
       : promotions.filter((p: Promotion) => p.active);

@@ -2,6 +2,7 @@
 
 import { Product } from '@/types/product';
 import ProductCard from '@/components/ui/product/ProductCard';
+import ProductCardSkeleton from '@/components/ui/product/ProductCardSkeleton';
 import EmptyState from '@/components/ui/feedback/EmptyState';
 
 interface InventoryGridProps {
@@ -15,16 +16,7 @@ export default function InventoryGrid({ products, loading = false, onClearFilter
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {Array.from({ length: 12 }).map((_, index) => (
-          <div key={index} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            <div className="aspect-square bg-gray-100 animate-pulse" />
-            <div className="p-4 space-y-3">
-              <div className="h-4 bg-gray-200 rounded animate-pulse" />
-              <div className="h-6 bg-gray-200 rounded w-3/4 animate-pulse" />
-              <div className="h-4 bg-gray-200 rounded w-1/2 animate-pulse" />
-              <div className="h-8 bg-gray-200 rounded animate-pulse mt-4" />
-              <div className="h-10 bg-gray-200 rounded animate-pulse" />
-            </div>
-          </div>
+          <ProductCardSkeleton key={index} />
         ))}
       </div>
     );
@@ -43,8 +35,8 @@ export default function InventoryGrid({ products, loading = false, onClearFilter
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+      {products.map((product, index) => (
+        <ProductCard key={product.id} product={product} index={index} />
       ))}
     </div>
   );
